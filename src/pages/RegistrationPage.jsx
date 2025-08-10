@@ -13,7 +13,6 @@ const RenderRegistrationPage = () => {
 
     const handlesubmit = async (values) => {
         setError(null);
-        setIsLoading(true)
         try {
             const { data: authData, error: authError } = await supabase.auth.signUp({
                 email: values.email,
