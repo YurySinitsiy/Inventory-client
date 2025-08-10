@@ -1,21 +1,10 @@
 import AppBox from "../components/AppBox";
 import { useState } from "react";
 import Loader from "../components/Loader";
-import {
-	Box,
-	Button,
-	Checkbox,
-	FormControlLabel,
-	TextField,
-	Typography,
-	Link,
-	InputAdornment,
-	IconButton,
-} from "@mui/material";
-
-import AuthForm from '../components/auth/AuthForm'
-
-
+import Title from "../components/Title";
+import { Link as RouterLink } from "react-router-dom";
+import { Box, Typography, Link, } from "@mui/material";
+import LoginForm from '../components/auth/LoginForm'
 
 const RenderLoginPage = () => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -42,20 +31,18 @@ const RenderLoginPage = () => {
 
 	return (
 		<AppBox>
-			<Typography
-				component="h1"
+			<Title
 				variant="h4"
 				sx={{ marginBottom: "30px", fontWeight: '700' }}
 			>
 				Welcome to Invy!
-			</Typography>
-
-			<AuthForm
+			</Title>
+			<LoginForm
 				onSubmit={handleSubmit} />
 			<Box textAlign="center" mt={3}>
 				<Typography variant="body2">
 					Don't have an account?{" "}
-					<Link to="/signup" underline="hover" fontWeight="bold">
+					<Link component={RouterLink} to="/signup" underline="hover" fontWeight="bold">
 						Sign Up
 					</Link>
 				</Typography>
