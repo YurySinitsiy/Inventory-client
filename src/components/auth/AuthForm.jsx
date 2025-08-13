@@ -42,14 +42,14 @@ const AuthForm = ({ title, fields, validationSchema, initialValues, onSubmit, su
                 InputProps={
                   type === "password"
                     ? {
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton onClick={togglePassword} edge="end">
-                              {showPassword ? <VisibilityOff /> : <Visibility />}
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton onClick={togglePassword} edge="end">
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }
                     : {}
                 }
               />

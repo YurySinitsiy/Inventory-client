@@ -1,17 +1,16 @@
-
+import { Box } from "@mui/material";
 const RenderAppBox = ({ children }) => {
 	return (
-		<div
-			className='d-flex align-items-center justify-content-center flex-column'
+		<Box
 			style={{
 				background:
 					"radial-gradient(circle,rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%)",
 				width: "100vw",
 				height: "100vh",
-				paddingInline: '10px'
+
 			}}>
 			{children}
-		</div>
+		</Box >
 	);
 };
 

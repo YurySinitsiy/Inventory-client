@@ -33,7 +33,7 @@ const RenderRegistrationPage = () => {
                     name: values.name,
                     surname: values.surname,
                     role: 'user',
-                    is_blocked: false,
+                    status: 'unblocked',
                 },
             ]);
 
@@ -47,26 +47,30 @@ const RenderRegistrationPage = () => {
 
     return (
         <AppBox>
-            {error && (
-                <Alert severity="error" sx={{ mb: 2 }}>
-                    {error}
-                </Alert>
-            )}
+            <Box sx={{
+                display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center', height: '100%'
+            }}>
+                {error && (
+                    <Alert severity="error" sx={{ mb: 2 }}>
+                        {error}
+                    </Alert>
+                )}
 
-            {success && (
-                <Alert severity="success" sx={{ mb: 2 }}>
-                    Registration successful! Redirecting...
-                </Alert>
-            )}
-            <RegForm
-                onSubmit={handlesubmit} />
-            <Box textAlign="center" mt={3}>
-                <Typography variant="body2">
-                    Do you have an account? {" "}
-                    <Link component={RouterLink} to="/login" underline="hover" fontWeight="bold">
-                        Sign In
-                    </Link>
-                </Typography>
+                {success && (
+                    <Alert severity="success" sx={{ mb: 2 }}>
+                        Registration successful! Redirecting...
+                    </Alert>
+                )}
+                <RegForm
+                    onSubmit={handlesubmit} />
+                <Box textAlign="center" mt={3}>
+                    <Typography variant="body2">
+                        Do you have an account? {" "}
+                        <Link component={RouterLink} to="/login" underline="hover" fontWeight="bold">
+                            Sign In
+                        </Link>
+                    </Typography>
+                </Box>
             </Box>
         </AppBox>
     )
