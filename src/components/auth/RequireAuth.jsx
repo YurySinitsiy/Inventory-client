@@ -1,5 +1,5 @@
 import  redirectByRole  from './RedirectByRole'
-import Loader from "../../components/Loader"
+import Loader from "../../components/tools/Loader"
 import { supabase } from "../../lib/supabaseClient";
 import CheckUserRole from '../auth/CheckUserRole'
 import { useNavigate } from "react-router-dom";

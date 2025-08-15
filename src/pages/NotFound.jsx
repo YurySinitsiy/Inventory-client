@@ -1,4 +1,4 @@
-import AppBox from "../components/AppBox";
+import AppBox from "../components/tools/AppBox";
 
 const renderNotFound = () => {
     return (

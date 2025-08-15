@@ -1,4 +1,4 @@
-import AppBox from "../components/AppBox";
+import AppBox from "../components/tools/AppBox";
 import { supabase } from "../lib/supabaseClient";
 
 const renderAdminPage = () => {

@@ -1,101 +1,75 @@
-import AppBox from "../components/AppBox";
-import { Box, Typography, Link, Button, Tab, Container } from "@mui/material";
+import AppBox from "../components/tools/AppBox.jsx";
+import { Box, Typography, Tab, Container, Snackbar, Alert } from "@mui/material";
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import Title from "../components/Title";
+import Title from "../components/tools/Title.jsx";
 import { useState, useEffect } from "react";
-import Loader from "../components/Loader";
-import AppBar from '../components/AppBar.jsx'
-import getUser from '../components/utils/getUser.js'
+import Loader from "../components/tools/Loader.jsx";
+import AppBar from '../components/tools/AppBar.jsx';
+import getUser from '../components/services/getUser.js';
 import { supabase } from "../lib/supabaseClient";
+import RenderUserInventory from '../components/table/RenderUserInventory.jsx'
 
 const renderCreatorPage = () => {
-    const [userName, setUserName] = useState(null)
+    const [userName, setUserName] = useState(null);
     const [value, setValue] = useState('1');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-    useEffect(() => {    //?Вынести в отдельный компонент
+    useEffect(() => {
         const getUserName = async () => {
-            const user = await getUser()
-            setUserName(user.user_metadata.name)
-        }
-
-        getUserName()
-    }, [])
+            try {
+                const user = await getUser();
+                setUserName(user.user_metadata.name);
+            } catch (err) {
+                setError('Не удалось загрузить данные пользователя');
+            }
+        };
+        getUserName();
+    }, []);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
-    const handleAddInventory = async () => {
-        try {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session) throw new Error('User not authentificated')
+    if (loading) return <Loader />
 
-            const userId = session.user.id
-
-            const res = await fetch("http://localhost:3001/api/inventory", {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json",
-                    "Authorization": `Bearer ${session.access_token}`
-                },
-                body: JSON.stringify({
-                    title: 'New Inventory',
-                    description: "descr",
-                    category: "tehno",
-                    ownerId: userId,
-                    customIdFormat: {},
-                    fields: {}
-                })
-            })
-
-            const data = await res.json()
-            console.log("Inventory создан:", data);
-        } catch (error) {
-            console.error(error)
-        }
-
-
-
-
-        console.log('inventory add')
-    }
     return (
         <AppBox>
             <AppBar userName={userName} path={'logout'} />
-            <Title variant="h4"
-                sx={{ marginBlock: "30px", fontWeight: '700' }}>My Profile</Title>
+            <Title variant="h4" sx={{ marginBlock: "30px", fontWeight: '700' }}>
+                Мой профиль
+            </Title>
             <Container maxWidth="xl">
+                <Snackbar
+                    open={!!error}
+                    autoHideDuration={6000}
+                    onClose={() => setError(null)}
+                >
+                    <Alert severity="error" onClose={() => setError(null)}>
+                        {error}
+                    </Alert>
+                </Snackbar>
                 <Box sx={{ width: '100%', typography: 'body1' }}>
-
                     <TabContext value={value}>
                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                            <TabList onChange={handleChange} aria-label="lab API tabs example">
-                                <Tab label="My Inventory" value="1" />
-                                <Tab label="Other Inventory" value="2" />
+                            <TabList onChange={handleChange} aria-label="вкладки инвентаря">
+                                <Tab label="Мой инвентарь" value="1" />
+                                <Tab label="Другой инвентарь" value="2" />
                             </TabList>
                         </Box>
                         <TabPanel value="1">
-                            <Button
-                                sx={{
-                                    display: 'block',
-                                    backgroundColor: 'white'
-                           
-                                }}
-                                variant="outlined"
-                                onClick={handleAddInventory}>add inventory
-                            </Button>
-                            My Inventory
-
+                            <RenderUserInventory />
                         </TabPanel>
-                        <TabPanel value="2">Other Inventory</TabPanel>
+                        <TabPanel value="2">
+                            <Typography>Здесь будут отображаться другие инвентари.</Typography>
+                        </TabPanel>
                     </TabContext>
-
                 </Box>
             </Container>
         </AppBox>
-    )
-}
+    );
+};
 
-export default renderCreatorPage
+export default renderCreatorPage;

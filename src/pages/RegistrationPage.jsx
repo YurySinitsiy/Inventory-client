@@ -1,4 +1,4 @@
-import AppBox from "../components/AppBox";
+import AppBox from "../components/tools/AppBox";
 import RegForm from '../components/auth/RegForm'
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { Box, Typography, Link, Alert, } from "@mui/material";

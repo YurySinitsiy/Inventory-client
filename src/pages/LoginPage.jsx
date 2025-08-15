@@ -1,7 +1,7 @@
-import AppBox from "../components/AppBox";
+import AppBox from "../components/tools/AppBox";
 import { useState, useEffect } from "react";
-import Loader from "../components/Loader";
-import Title from "../components/Title";
+import Loader from "../components/tools/Loader";
+import Title from "../components/tools/Title";
 import { Link as RouterLink } from "react-router-dom";
 import { Box, Typography, Link, Alert } from "@mui/material";
 import LoginForm from '../components/auth/LoginForm'

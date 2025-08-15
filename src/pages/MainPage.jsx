@@ -1,5 +1,5 @@
-import AppBox from "../components/AppBox";
-//import AppBar from '../components/AppBar'
+import AppBox from "../components/tools/AppBox";
+import AppBar from '../components/tools/AppBar'
 
 
 const RenderMainPage = () => {

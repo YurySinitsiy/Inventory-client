@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Title from "../Title";
+import Title from "../tools/Title";
 
 const AuthForm = ({ title, fields, validationSchema, initialValues, onSubmit, submitText }) => {
   const [showPassword, setShowPassword] = useState(false);
