@@ -10,7 +10,7 @@ const renderAdminPage = () => {
 
             const userId = session.user.id
             const res = await fetch("https://inventory-server-two.vercel.app/api/inventory", {
-           // const res = await fetch("http://localhost:3001/api/inventory", {
+            //const res = await fetch("http://localhost:3001/api/inventory", {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",
