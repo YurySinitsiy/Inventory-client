@@ -1,6 +1,6 @@
 const getInventories = async () => {
 	try {
-		const res = await fetch("https://inventory-server-two.vercel.app/api/inventory/public", {
+		const res = await fetch("http://inventory-server-two.vercel.app/api/inventory/public", {
 		//const res = await fetch("http://localhost:3001/api/inventory/public", {
 			headers: {
 				"Content-Type": "application/json",
