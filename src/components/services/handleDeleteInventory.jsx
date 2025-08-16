@@ -3,7 +3,7 @@ import { getSession } from "./getSession";
 const handleDeleteInventory = async (selectedIds) => {
 	try {
 		const session = await getSession()
-		const res = await fetch("https://inventory-server-two.vercel.app/api/inventory", {
+		const res = await fetch("http://inventory-server-two.vercel.app/api/inventory", {
 			//const res = await fetch("http://localhost:3001/api/inventory", {
 			method: "DELETE",
 			headers: {

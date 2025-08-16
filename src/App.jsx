@@ -16,7 +16,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 function App() {
 	const fetchData = async () => {
 		try {
-			const response = await fetch(`https://inventory-server-two.vercel.app/api/users`, {
+			const response = await fetch(`http://inventory-server-two.vercel.app/api/users`, {
 			//const response = await fetch(`http://localhost:3001/api/users`, {
 				method: "POST",
 				headers: {
