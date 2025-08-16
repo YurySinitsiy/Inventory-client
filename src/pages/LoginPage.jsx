@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 const RenderLoginPage = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(null);
+	const [redirecting, setRedirecting] = useState(false);
 
 	const navigate = useNavigate();
 
@@ -34,7 +35,7 @@ const RenderLoginPage = () => {
 				throw new Error('Your account is blocked or delete')
 			}
 			resetForm();
-
+			setRedirecting(true);
 			RedirectByRole(await CheckUserRole(user.id), navigate)
 
 		} catch (error) {
@@ -44,7 +45,7 @@ const RenderLoginPage = () => {
 		}
 	}
 
-	if (isLoading) return <Loader />
+	if (isLoading || redirecting) return <Loader />
 
 	return (
 		<AppBox>

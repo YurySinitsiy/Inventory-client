@@ -9,8 +9,7 @@ import AdminPage from './pages/AdminPage'
 import CreatorPage from './pages/CreatorPage'
 import WorkspacePage from './pages/WorkspacePage'
 import NotFound from './pages/NotFound'
-
-
+import InventoryPage from './pages/InventoryPage'
 //import "bootstrap/dist/css/bootstrap.min.css";
 import CssBaseline from '@mui/material/CssBaseline';
 
@@ -44,7 +43,7 @@ function App() {
 					<Route path="/" element={<MainPage />} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signup" element={<RegistrationPage />} />
-
+					<Route path="/inventory/:id" element={<InventoryPage />} />
 					{/* Только user, admin, creator, write */}
 					<Route
 						path="/dashboard"

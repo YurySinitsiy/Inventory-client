@@ -1,8 +1,9 @@
-import { useState } from 'react';
-import { Box, Button, TextField, Modal, Typography } from '@mui/material';
-import { supabase } from '../../lib/supabaseClient';
+import { Box, Modal, } from '@mui/material';
 import AuthForm from '../auth/AuthForm'
 import * as Yup from "yup";
+import handleAddInventory from '../services/handleAddInventory';
+import { useInventories } from "../services/hooks/useInventories";
+import Loader from '../tools/Loader'
 
 const style = {
     position: 'absolute',
@@ -17,49 +18,17 @@ const style = {
 };
 
 const AddInventory = ({ open, onClose, onAdd }) => {
-    const [formData, setFormData] = useState({
-        title: 'Nev inventory',
-        description: 'Description',
-        category: 'Category'
-    });
-    const [error, setError] = useState(null);
+    const { isLoading } = useInventories();
 
-    const handleAdd = async (values) => {
+    const onSubmit = async (values) => {
         try {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session) throw new Error('Пользователь не аутентифицирован');
-
-            const userId = session.user.id;
-            const res = await fetch('http://localhost:3001/api/inventory', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${session.access_token}`,
-                },
-                body: JSON.stringify({
-                    title: values.title,
-                    description: values.description,
-                    category: values.category,
-                    ownerId: userId,
-                    customIdFormat: {},
-                    fields: {},
-                }),
-            });
-
-            if (!res.ok) throw new Error('Не удалось создать инвентарь');
-            const data = await res.json();
-            onAdd(data);
+            onAdd(await handleAddInventory(values))
             onClose();
-            setFormData({
-                title: 'Nev inventory',
-                description: 'Description',
-                category: 'Category'
-            })
-            setError(null);
-        } catch (error) {
-            setError(error.message);
+        } catch (err) {
+            console.error(err);
         }
     };
+    if (isLoading) return <Loader />
 
     return (
         <Modal
@@ -72,7 +41,7 @@ const AddInventory = ({ open, onClose, onAdd }) => {
                 <AuthForm
                     title="Add inventory"
                     submitText="Add inventory"
-                    initialValues={{ title: "", description: "", category: '' }}
+                    initialValues={{ title: "", description: "", category: '', isPublic: false }}
                     validationSchema={Yup.object({
                         title: Yup.string().required("Required field"),
                         description: Yup.string().required("Required field"),
@@ -82,11 +51,11 @@ const AddInventory = ({ open, onClose, onAdd }) => {
                         { name: "title", label: "Title", type: "text" },
                         { name: "description", label: "Description", type: "text" },
                         { name: "category", label: "Category", type: "text" },
-
+                        { name: "isPublic", label: "Make it public", type: "checkbox" },
                     ]}
-                    onSubmit={handleAdd}
-                />
 
+                    onSubmit={onSubmit}
+                />
             </Box>
         </Modal>
     );

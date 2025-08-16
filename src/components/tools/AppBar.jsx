@@ -7,9 +7,19 @@ import AdbIcon from '@mui/icons-material/Adb';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../../lib/supabaseClient"
 
 const RenderAppBar = ({ userName, path }) => {
     const navigate = useNavigate();
+
+    const handleAuthClick = async () => {
+        if (path === 'logout') {
+            await supabase.auth.signOut();
+            navigate('/'); // после логаута отправляем на главную
+        } else {
+            navigate('/login');
+        }
+    };
 
     return (
         <AppBar position="static">
@@ -19,10 +29,10 @@ const RenderAppBar = ({ userName, path }) => {
                     <Typography>Welcome, {userName ? userName : 'Guest'} </Typography>
                     <Button
                         sx={{ color: 'white', marginLeft: 'auto', fontWeight: 'bold' }}
-                        onClick={() => navigate('/login')}
-                        startIcon={path ? <LogoutIcon /> : <LoginIcon />}
+                        onClick={handleAuthClick}
+                        startIcon={path === 'logout' ? <LogoutIcon /> : <LoginIcon />}
                     >
-                        {path ? 'Logout' : 'Sign in'}
+                        {path === 'logout' ? 'Logout' : 'Sign in'}
                     </Button>
                 </Toolbar>
             </Container>

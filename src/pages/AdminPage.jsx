@@ -9,8 +9,8 @@ const renderAdminPage = () => {
             if (!session) throw new Error('User not authentificated')
 
             const userId = session.user.id
-
-            const res = await fetch("http://localhost:3001/api/inventory", {
+            const res = await fetch("http://inventory-server-two.vercel.app/api/inventory", {
+           // const res = await fetch("http://localhost:3001/api/inventory", {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",
