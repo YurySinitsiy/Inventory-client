@@ -14,24 +14,24 @@ import InventoryPage from './pages/InventoryPage'
 import CssBaseline from '@mui/material/CssBaseline';
 
 function App() {
-	const fetchData = async () => {
-		try {
-			const response = await fetch(`http://inventory-server-two.vercel.app/api/users`, {
-			//const response = await fetch(`http://localhost:3001/api/users`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					user: "user",
-				}),
-			});
-			console.log(await response.json());
-			return;
-		} catch (error) {
-			console.error(error);
-		}
-	};
+	// const fetchData = async () => {
+	// 	try {
+	// 		const response = await fetch(`http://inventory-server-two.vercel.app/api/users`, {
+	// 		//const response = await fetch(`http://localhost:3001/api/users`, {
+	// 			method: "POST",
+	// 			headers: {
+	// 				"Content-Type": "application/json",
+	// 			},
+	// 			body: JSON.stringify({
+	// 				user: "user",
+	// 			}),
+	// 		});
+	// 		console.log(await response.json());
+	// 		return;
+	// 	} catch (error) {
+	// 		console.error(error);
+	// 	}
+	// };
 
 	fetchData();
 	return (
