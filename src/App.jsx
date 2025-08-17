@@ -33,7 +33,7 @@ function App() {
 	// 	}
 	// };
 
-	fetchData();
+	//fetchData();
 	return (
 
 		<CssBaseline>
