@@ -5,6 +5,7 @@ const SignUp = ({ onSubmit, isSubmitting }) => {
     return (
         <BaseForm
             title="Sign up"
+            submitText={'Register'}
             initialValues={{ email: "", name: "", surname: "", password: "" }}
             validationSchema={Yup.object({
                 email: Yup.string().email("Неверный формат email").required("Обязательное поле"),

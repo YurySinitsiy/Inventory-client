@@ -1,18 +1,20 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-import { useState, useEffect } from 'react'
+
 import RequireAuth from './components/auth/RequireAuth'
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 import MainPage from './pages/MainPage'
 import LoginPage from "./pages/LoginPage";
 import RegistrationPage from './pages/RegistrationPage'
-import DashboardPage from './pages/DashboardsPage'
+
 import AdminPage from './pages/AdminPage'
-import CreatorPage from './pages/CreatorPage'
-import WorkspacePage from './pages/WorkspacePage'
+import PersonalPage from './pages/PersonalPage'
+
 import NotFound from './pages/NotFound'
 import InventoryPage from './pages/InventoryPage'
 import { useContext } from "react";
 import { ThemeProviderWrapper, ThemeContext } from "./components/tools/ThemeContext";
+
+import OAuthRedirectHandler from "./components/auth/OAuthREdirectHandler";
 const API_URL = import.meta.env.VITE_API_URL;
 
 function AppContent() {
@@ -32,15 +34,9 @@ function AppContent() {
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/signup" element={<RegistrationPage />} />
 						<Route path="/inventory/:id" element={<InventoryPage />} />
+						<Route path="/oauth-redirect" element={<OAuthRedirectHandler />} />
 						{/* Только user, admin, creator, write */}
-						<Route
-							path="/dashboard"
-							element={
-								<RequireAuth allowedRoles={["user", "admin", "creator", "write"]}>
-									<DashboardPage />
-								</RequireAuth>
-							}
-						/>
+
 
 						{/* Только admin */}
 						<Route
@@ -54,20 +50,10 @@ function AppContent() {
 
 						{/* Только editor */}
 						<Route
-							path="/creator"
+							path="/personal"
 							element={
-								<RequireAuth allowedRoles={["creator", "admin"]}>
-									<CreatorPage />
-								</RequireAuth>
-							}
-						/>
-
-						{/* Только write */}
-						<Route
-							path="/workspace"
-							element={
-								<RequireAuth allowedRoles={["write", "admin"]}>
-									<WorkspacePage />
+								<RequireAuth allowedRoles={["creator", "user"]}>
+									<PersonalPage />
 								</RequireAuth>
 							}
 						/>

@@ -23,7 +23,6 @@ const CustomFieldsTab = ({ inventoryId, initialFields, initialVersion, onFieldsU
     const { snackbar, showSnackbar, closeSnackbar } = useSnackbar()
     const [isSaving, setIsSaving] = useState(false);
 
-
     const normalizeFields = (data) => data.fields?.fields || [];
 
     const validationSchema = Yup.object({

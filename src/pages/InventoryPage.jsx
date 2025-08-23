@@ -57,7 +57,7 @@ const InventoryPage = () => {
 
     // Функция для возврата назад
     const handleBackClick = () => {
-        navigate(role ? `/${role}` : '/');
+        navigate(role ? '/personal' : '/');
     };
 
     // Переключение вкладок

@@ -6,6 +6,7 @@ import { supabase } from "../lib/supabaseClient";
 import { useState } from 'react'
 import SnackbarAlert from "../components/tools/Snackbar";
 import { useSnackbar } from "../components/services/hooks/useSnackbar";
+import SocialAuth from "../components/auth/SocialAuth";
 const RenderRegistrationPage = () => {
     const navigate = useNavigate();
     const { snackbar, showSnackbar, closeSnackbar } = useSnackbar()
@@ -57,13 +58,14 @@ const RenderRegistrationPage = () => {
                     onSubmit={handlesubmit}
                     isSubmitting={isSubmitting} />
                 <Box textAlign="center" mt={3}>
-                    <Typography variant="body2">
+                    <Typography variant="body2" mb={2}>
                         Do you have an account? {" "}
                         <Link component={RouterLink} to="/login" underline="hover" fontWeight="bold">
                             Sign In
                         </Link>
                     </Typography>
                 </Box>
+                <SocialAuth/>
             </Box>
         </AppBox>
     )

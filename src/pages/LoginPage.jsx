@@ -8,19 +8,20 @@ import LoginForm from '../components/auth/LoginForm'
 import { supabase } from "../lib/supabaseClient";
 import CheckUserStatus from '../components/auth/CheckUserStatus'
 import CheckUserRole from '../components/auth/CheckUserRole'
-import RedirectByRole from '../components/auth/RedirectByRole.js'
+import RedirectByRole from '../components/auth/RedirectByRole'
 import { useNavigate } from "react-router-dom";
-
+import SnackbarAlert from "../components/tools/Snackbar";
+import { useSnackbar } from "../components/services/hooks/useSnackbar"
+import SocialAuth from "../components/auth/SocialAuth";
 
 const RenderLoginPage = () => {
 	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState(null);
 	const [redirecting, setRedirecting] = useState(false);
+	const { snackbar, showSnackbar, closeSnackbar } = useSnackbar()
 
 	const navigate = useNavigate();
 
 	const handleSubmit = async (values, { resetForm }) => {
-		setError(null)
 		setIsLoading(true)
 		try {
 			const { data: { user }, error: authError } = await supabase.auth.signInWithPassword({
@@ -39,7 +40,7 @@ const RenderLoginPage = () => {
 			RedirectByRole(await CheckUserRole(user.id), navigate)
 
 		} catch (error) {
-			setError(error.message)
+			showSnackbar(error.message || "Login failed", "error");
 		} finally {
 			setIsLoading(false)
 		}
@@ -51,14 +52,8 @@ const RenderLoginPage = () => {
 		<AppBox>
 			<Box sx={{
 				display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center', height: '100%',
-				
-
 			}}>
-				{error && (
-					<Alert severity="error" sx={{ mb: 2 }}>
-						{error}
-					</Alert>
-				)}
+				<SnackbarAlert snackbar={snackbar} closeSnackbar={closeSnackbar} />
 				<Title
 					variant="h4"
 					sx={{ marginBottom: "30px", fontWeight: '700' }}
@@ -67,8 +62,8 @@ const RenderLoginPage = () => {
 				</Title>
 				<LoginForm
 					onSubmit={handleSubmit}
-					/>
-				<Box textAlign="center" mt={3} >
+				/>
+				<Box textAlign="center" mt={3} mb={2}>
 					<Typography variant="body2">
 						Don't have an account?{" "}
 						<Link component={RouterLink} to="/signup" underline="hover" fontWeight="bold">
@@ -76,6 +71,7 @@ const RenderLoginPage = () => {
 						</Link>
 					</Typography>
 				</Box>
+				<SocialAuth />
 			</Box>
 		</AppBox>
 	);

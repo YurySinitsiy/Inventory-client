@@ -1,4 +1,4 @@
-import  redirectByRole  from './RedirectByRole'
+import  RedirectByRole  from './RedirectByRole'
 import Loader from "../../components/tools/Loader"
 import { supabase } from "../../lib/supabaseClient";
 import CheckUserRole from '../auth/CheckUserRole'
@@ -28,7 +28,7 @@ const RequireAuth = ({ allowedRoles, children }) => {
             }
 
             if (!allowedRoles.includes(userRole)) {
-                redirectByRole(userRole)
+                RedirectByRole(userRole)
                 return
             }
 

@@ -13,7 +13,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Title from "../tools/Title";
 
-const BaseForm = ({ title, fields, validationSchema, initialValues, onSubmit, }) => {
+const BaseForm = ({ title, fields, validationSchema, initialValues, onSubmit, submitText}) => {
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword(prev => !prev);
 
@@ -85,7 +85,7 @@ const BaseForm = ({ title, fields, validationSchema, initialValues, onSubmit, })
               sx={{ mt: 3, py: 1.5 }}
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Submitting..." : "Register"}
+              {isSubmitting ? "Submitting..." : submitText}
             </Button>
           </Box>
         </Form>
