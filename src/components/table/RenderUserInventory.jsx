@@ -3,24 +3,31 @@ import Loader from "../tools/Loader";
 import { useInventories } from "../services/hooks/useInventories";
 import ActionsInventory from "../actions/ActionsInventory";
 import InventoryTable from "../table/InventoryTable";
-import Snackbar from "../tools/Snackbar";
-
+import SnackbarAlert from "../tools/Snackbar";
+import { useSnackbar } from "../services/hooks/useSnackbar";
 const RenderUserInventory = () => {
     const {
         userInventories, selectedIds, setSelectedIds,
-        setUserInventories, isLoading, error, message, setError, setMessage, deleteSelected, addInventory
+        setUserInventories, isLoading, error, message,
+        setError, setMessage, deleteSelected
     } = useInventories();
 
+    const { snackbar, showSnackbar, closeSnackbar } = useSnackbar()
+
     if (isLoading) return <Loader />;
+    if (message) {
+        showSnackbar(message, "success");
+        setMessage(null);
+    }
+
+    if (error) {
+        showSnackbar(error, "error");
+        setError(null);
+    }
 
     return (
         <Box>
-            <Snackbar
-                open={!!message || !!error}
-                message={message || error}
-                severity={message ? 'success' : 'error'}
-                onClose={() => { setError(null); setMessage(null); }}
-            />
+            <SnackbarAlert snackbar={snackbar} closeSnackbar={closeSnackbar} />
             <ActionsInventory
                 selectedIds={selectedIds}
                 onDelete={deleteSelected}

@@ -4,17 +4,17 @@ import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { Box, Typography, Link, Alert, } from "@mui/material";
 import { supabase } from "../lib/supabaseClient";
 import { useState } from 'react'
-
+import SnackbarAlert from "../components/tools/Snackbar";
+import { useSnackbar } from "../components/services/hooks/useSnackbar";
 const RenderRegistrationPage = () => {
     const navigate = useNavigate();
-
-    const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(null);
+    const { snackbar, showSnackbar, closeSnackbar } = useSnackbar()
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handlesubmit = async (values) => {
-        setError(null);
+        setIsSubmitting(true);
         try {
-            const { data: authData, error: authError } = await supabase.auth.signUp({
+            const { data: authData, error: Error } = await supabase.auth.signUp({
                 email: values.email,
                 password: values.password,
                 options: {
@@ -24,7 +24,7 @@ const RenderRegistrationPage = () => {
                     },
                 },
             });
-            if (authError) throw authError;
+            if (Error) throw Error;
 
             const { error: dbError } = await supabase.from("profiles").insert([
                 {
@@ -38,10 +38,12 @@ const RenderRegistrationPage = () => {
             ]);
 
             if (dbError) throw dbError;
-            setSuccess(true);
+            showSnackbar("Registration successful! Redirecting...", "success");
             setTimeout(() => navigate("/login"), 2000);
         } catch (error) {
-            setError(error.message);
+            showSnackbar(error.message || "Registration failed", "error");
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -50,19 +52,10 @@ const RenderRegistrationPage = () => {
             <Box sx={{
                 display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center', height: '100%'
             }}>
-                {error && (
-                    <Alert severity="error" sx={{ mb: 2 }}>
-                        {error}
-                    </Alert>
-                )}
-
-                {success && (
-                    <Alert severity="success" sx={{ mb: 2 }}>
-                        Registration successful! Redirecting...
-                    </Alert>
-                )}
+                <SnackbarAlert snackbar={snackbar} closeSnackbar={closeSnackbar} />
                 <RegForm
-                    onSubmit={handlesubmit} />
+                    onSubmit={handlesubmit}
+                    isSubmitting={isSubmitting} />
                 <Box textAlign="center" mt={3}>
                     <Typography variant="body2">
                         Do you have an account? {" "}

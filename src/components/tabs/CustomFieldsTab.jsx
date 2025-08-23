@@ -6,7 +6,8 @@ import * as Yup from 'yup';
 import { getSession } from '../services/getSession';
 import FieldList from './customFields/FieldList';
 import FieldTypeButtons from './customFields/FieldTypeButtons';
-import SnackbarAlert from './customFields/SnackbarAlert';
+import SnackbarAlert from '../tools/Snackbar';
+import { useSnackbar } from "../services/hooks/useSnackbar";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -19,10 +20,9 @@ const fieldTypes = [
 ];
 
 const CustomFieldsTab = ({ inventoryId, initialFields, initialVersion, onFieldsUpdate }) => {
-    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+    const { snackbar, showSnackbar, closeSnackbar } = useSnackbar()
     const [isSaving, setIsSaving] = useState(false);
 
-    const showSnackbar = (message, severity = 'success') => setSnackbar({ open: true, message, severity });
 
     const normalizeFields = (data) => data.fields?.fields || [];
 
@@ -146,9 +146,7 @@ const CustomFieldsTab = ({ inventoryId, initialFields, initialVersion, onFieldsU
                 </Button>
             </Box>
 
-            <SnackbarAlert
-                snackbar={snackbar}
-                setSnackbar={setSnackbar} />
+            <SnackbarAlert snackbar={snackbar} closeSnackbar={closeSnackbar} />
 
             <FieldList
                 fields={formik.values.fields}

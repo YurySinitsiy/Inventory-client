@@ -1,23 +1,23 @@
-import { Snackbar as MuiSnackbar, Alert } from "@mui/material";
+import { Snackbar, Alert } from "@mui/material";
 
-const Snackbar = ({ open, message, severity = "success", onClose, autoHideDuration = 3000 }) => {
-    return (
-        <MuiSnackbar
-            open={open}
-            autoHideDuration={autoHideDuration}
-            onClose={onClose}
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        >
-            <Alert
-                onClose={onClose}
-                severity={severity}
-                variant="filled"
-            >
-                {message}
-            </Alert>
-        </MuiSnackbar>
-    );
+const SnackbarAlert = ({ snackbar, closeSnackbar }) => {
+  return (
+    <Snackbar
+      open={snackbar.open}
+      autoHideDuration={4000}
+      onClose={closeSnackbar}  
+      anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+    >
+      <Alert
+        severity={snackbar.severity}
+        onClose={closeSnackbar}  
+        variant="filled"
+      >
+        {snackbar.message}
+      </Alert>
+    </Snackbar>
+  );
 };
 
-export default Snackbar;
+export default SnackbarAlert;
 

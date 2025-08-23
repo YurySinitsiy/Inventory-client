@@ -1,11 +1,10 @@
 import * as Yup from "yup";
 import BaseForm from "../form/BaseForm";
 
-const SignUp = ({ onSubmit }) => {
+const SignUp = ({ onSubmit, isSubmitting }) => {
     return (
         <BaseForm
             title="Sign up"
-            submitText="SIGN UP"
             initialValues={{ email: "", name: "", surname: "", password: "" }}
             validationSchema={Yup.object({
                 email: Yup.string().email("Неверный формат email").required("Обязательное поле"),
@@ -20,6 +19,7 @@ const SignUp = ({ onSubmit }) => {
                 { name: "password", label: "Password", type: "password", },
             ]}
             onSubmit={onSubmit}
+            isSubmitting = {isSubmitting}
         />
     );
 };
