@@ -1,45 +1,55 @@
 import AppBox from "../components/tools/AppBox";
-import { supabase } from "../lib/supabaseClient";
+import { Container } from "@mui/material";
+import AppBar from '../components/tools/AppBar'
+import { useUserData } from '../components/services/hooks/useUserData';
+import Title from "../components/tools/Title.jsx";
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+import RenderUserInventory from '../components/table/RenderUserInventory'
+import { Box, Tab } from "@mui/material";
+import { useState } from "react";
+import AllUsersTable from '../components/table/AllUsersTable'
 
+import RenderAllUsersInventories from '../components/table/RenderAllUsersInventories.jsx'
 const renderAdminPage = () => {
+    const [value, setValue] = useState('1');
+    const { userName } = useUserData('')
 
-    const handleAddInventory = async () => {
-        try {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session) throw new Error('User not authentificated')
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
 
-            const userId = session.user.id
-            const res = await fetch("https://inventory-server-two.vercel.app/api/inventory", {
-            //const res = await fetch("http://localhost:3001/api/inventory", {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json",
-                    "Authorization": `Bearer ${session.access_token}`
-                },
-                body: JSON.stringify({
-                    title: 'New Inventory',
-                    description: "descr",
-                    category: "tehno",
-                    ownerId: userId,
-                    customIdFormat: {},
-                    fields: {}
-                })
-            })
-
-            const data = await res.json()
-            console.log("Inventory создан:", data);
-        } catch (error) {
-            console.error(error)
-        }
-
-
-
-
-        console.log('inventory add')
-    }
     return (
         <AppBox>
-            <button onClick={handleAddInventory}>add inventory</button>
+            <AppBar userName={userName} path={'logout'} />
+            <Container maxWidth="xl">
+                <Title variant="h4" sx={{ marginBlock: "30px", fontWeight: '700' }}>
+                    My profile
+                </Title>
+                <Box sx={{ width: '100%', typography: 'body1' }}>
+                    <TabContext value={value}>
+                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                            <TabList onChange={handleChange} aria-label="вкладки инвентаря">
+                                <Tab label="My Inventories" value="1" />
+                                <Tab label="All Users Inventories" value="2" />
+                                <Tab label="All Users" value="3" />
+                            </TabList>
+                        </Box>
+                        <TabPanel value="1">
+                            <RenderUserInventory />
+                        </TabPanel>
+                        <TabPanel value="2">
+                            <RenderAllUsersInventories />
+                        </TabPanel>
+                        <TabPanel value="3">
+                            <AllUsersTable />
+                        </TabPanel>
+                    </TabContext>
+
+                </Box>
+
+            </Container>
         </AppBox>
     )
 }

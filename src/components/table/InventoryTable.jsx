@@ -1,12 +1,13 @@
 import { DataGrid } from '@mui/x-data-grid';
-import { Checkbox } from "@mui/material";
+import { Checkbox, Box } from "@mui/material";
 import { useState, useEffect } from 'react'
 import Loader from '../tools/Loader'
 import { useNavigate } from "react-router-dom";
+import inventoriesColumns from './InventoriesColumns'
 const InventoryTable = ({ inventories = [], enotherColumns, selectedIds = [], setSelectedIds = () => { } }) => {
     const [isAllSelected, setIsAllSelected] = useState(false);
     const [isIndeterminate, setIsIndeterminate] = useState(false);
-	const navigate = useNavigate();
+    const navigate = useNavigate();
 
     useEffect(() => {
         setIsAllSelected(selectedIds.length > 0 && selectedIds.length === inventories.length);
@@ -20,9 +21,9 @@ const InventoryTable = ({ inventories = [], enotherColumns, selectedIds = [], se
     const handleRowSelection = (id) => {
         setSelectedIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
     };
-    const columns = [
+    const selectionColumn = 
         {
-            field: 'selection',
+            field: "selection",
             width: 50,
             sortable: false,
             disableColumnMenu: true,
@@ -40,11 +41,11 @@ const InventoryTable = ({ inventories = [], enotherColumns, selectedIds = [], se
                     onClick={(e) => e.stopPropagation()}
                 />
             ),
-        },
-        { field: 'title', headerName: 'Title', minWidth: 170, flex: 1 },
-        { field: 'description', headerName: 'Description', minWidth: 270, flex: 1 },
-        { field: 'category', headerName: 'Category', minWidth: 170, flex: 1 },
-    ];
+        }
+    ;
+
+    const columns = [selectionColumn, ...inventoriesColumns]
+
     if (!inventories) return <Loader />;
     return (
         <DataGrid
@@ -52,7 +53,7 @@ const InventoryTable = ({ inventories = [], enotherColumns, selectedIds = [], se
             columns={enotherColumns || columns}
             pageSizeOptions={[10]}
             checkboxSelection={false}
-            autoHeight
+            getRowHeight={() => 'auto'}
             sx={{ border: 0 }}
             rowSelection={false}
             initialState={{
@@ -61,6 +62,7 @@ const InventoryTable = ({ inventories = [], enotherColumns, selectedIds = [], se
                 },
             }}
             onRowClick={(params) => navigate(`/inventory/${params.id}`)}
+            autoHeight
         />
     );
 };

@@ -1,7 +1,7 @@
 import { Box, Paper } from "@mui/material";
 import Loader from "../tools/Loader";
 import { useInventories } from "../services/hooks/useInventories";
-import ActionsInventory from "../inventory/ActionsInventory";
+import ActionsInventory from "../actions/ActionsInventory";
 import InventoryTable from "../table/InventoryTable";
 import Snackbar from "../tools/Snackbar";
 

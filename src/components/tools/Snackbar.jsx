@@ -1,11 +1,12 @@
 import { Snackbar as MuiSnackbar, Alert } from "@mui/material";
 
-const CustomSnackbar = ({ open, message, severity = "success", onClose, autoHideDuration = 3000 }) => {
+const Snackbar = ({ open, message, severity = "success", onClose, autoHideDuration = 3000 }) => {
     return (
         <MuiSnackbar
             open={open}
             autoHideDuration={autoHideDuration}
             onClose={onClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         >
             <Alert
                 onClose={onClose}
@@ -18,5 +19,5 @@ const CustomSnackbar = ({ open, message, severity = "success", onClose, autoHide
     );
 };
 
-export default CustomSnackbar;
+export default Snackbar;
 

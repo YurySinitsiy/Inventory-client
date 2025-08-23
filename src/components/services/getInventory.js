@@ -1,7 +1,8 @@
-const getInventories = async () => {
+const API_URL = import.meta.env.VITE_API_URL;
+
+const getInventory = async (id) => {
 	try {
-		const res = await fetch("https://inventory-server-two.vercel.app/api/inventory/public", {
-		//const res = await fetch("http://localhost:3001/api/inventory/public", {
+		const res = await fetch(`${API_URL}/api/inventories/${id}`, {
 			headers: {
 				"Content-Type": "application/json",
 			},
@@ -17,4 +18,4 @@ const getInventories = async () => {
 	}
 };
 
-export default getInventories;
+export default getInventory;

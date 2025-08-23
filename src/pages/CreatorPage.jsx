@@ -20,10 +20,10 @@ const RenderCreatorPage = () => {
     return (
         <AppBox>
             <AppBar userName={userName} path={'logout'} />
-            <Title variant="h4" sx={{ marginBlock: "30px", fontWeight: '700' }}>
-                Мой профиль
-            </Title>
             <Container maxWidth="xl">
+                <Title variant="h4" sx={{ marginBlock: "30px", fontWeight: '700' }}>
+                    My profile
+                </Title>
                 <Box sx={{ width: '100%', typography: 'body1' }}>
                     <TabContext value={value}>
                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

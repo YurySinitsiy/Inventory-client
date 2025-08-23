@@ -1,10 +1,10 @@
 import { getSession } from "./getSession";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const handleDeleteInventory = async (selectedIds) => {
 	try {
-		const session = await getSession()
-		const res = await fetch("https://inventory-server-two.vercel.app/api/inventory", {
-			//const res = await fetch("http://localhost:3001/api/inventory", {
+		const session = await getSession();
+		const res = await fetch(`${API_URL}/api/inventories`, {
 			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",

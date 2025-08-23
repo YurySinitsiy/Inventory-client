@@ -1,10 +1,10 @@
 import { Box, Modal, } from '@mui/material';
-import AuthForm from '../auth/AuthForm'
-import * as Yup from "yup";
-import handleAddInventory from '../services/handleAddInventory';
+import handleAddInventory from '../services/handleAddInventory.js';
 import { useInventories } from "../services/hooks/useInventories";
 import Loader from '../tools/Loader'
-
+import { useCategories } from '../services/hooks/useCategories';
+import { useTags } from '../services/hooks/useTags';
+import InventoryForm from "../form/InventoryForm.jsx"
 const style = {
     position: 'absolute',
     top: '50%',
@@ -18,17 +18,21 @@ const style = {
 };
 
 const AddInventory = ({ open, onClose, onAdd }) => {
-    const { isLoading } = useInventories();
-
+    const { isLoading, setIsLoading } = useInventories();
+    const { categories, isLoading: loadingCategories } = useCategories();
+    const { tags, isLoading: loadingTags } = useTags();;
     const onSubmit = async (values) => {
         try {
+            setIsLoading(true)
             onAdd(await handleAddInventory(values))
             onClose();
         } catch (err) {
             console.error(err);
+        } finally {
+            setIsLoading(false)
         }
     };
-    if (isLoading) return <Loader />
+    if (isLoading || loadingCategories || loadingTags) return <Loader />;
 
     return (
         <Modal
@@ -38,24 +42,11 @@ const AddInventory = ({ open, onClose, onAdd }) => {
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-                <AuthForm
-                    title="Add inventory"
-                    submitText="Add inventory"
-                    initialValues={{ title: "", description: "", category: '', isPublic: false }}
-                    validationSchema={Yup.object({
-                        title: Yup.string().required("Required field"),
-                        description: Yup.string().required("Required field"),
-                        category: Yup.string().required("Required field"),
-                    })}
-                    fields={[
-                        { name: "title", label: "Title", type: "text" },
-                        { name: "description", label: "Description", type: "text" },
-                        { name: "category", label: "Category", type: "text" },
-                        { name: "isPublic", label: "Make it public", type: "checkbox" },
-                    ]}
-
-                    onSubmit={onSubmit}
-                />
+                <InventoryForm
+                categories={categories}
+                tagOptions = {tags}
+                onSubmit={onSubmit}>
+                </InventoryForm>
             </Box>
         </Modal>
     );

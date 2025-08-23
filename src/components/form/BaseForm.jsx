@@ -7,7 +7,7 @@ import {
   InputAdornment,
   IconButton,
   FormControlLabel,
-  Checkbox
+  Checkbox,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -24,18 +24,20 @@ const AuthForm = ({ title, fields, validationSchema, initialValues, onSubmit, su
       onSubmit={onSubmit}
     >
       {({ values, errors, touched, handleChange, handleBlur, isSubmitting, setFieldValue }) => (
-        <Form >
-          <Box sx={{ backgroundColor: "white", p: 3, borderRadius: "20px", maxWidth: '600px' }}>
+        <Form>
+          <Box sx={{ p: 3, borderRadius: "20px", maxWidth: '900px' }}>
             <Title variant="h5">{title}</Title>
-            {fields.map(({ name, label, type }) => {
+
+            {fields.map(({ name, label, type }, index) => {
+              const key = name || label || index;
               if (type === "checkbox") {
                 return (
                   <FormControlLabel
-                    key={name}
+                    key={key}
                     control={
                       <Checkbox
                         name={name}
-                        checked={!!values[name]} 
+                        checked={!!values[name]}
                         onChange={e => setFieldValue(name, e.target.checked)}
                         onBlur={handleBlur}
                       />
@@ -87,8 +89,9 @@ const AuthForm = ({ title, fields, validationSchema, initialValues, onSubmit, su
             </Button>
           </Box>
         </Form>
-      )}
-    </Formik>
+      )
+      }
+    </Formik >
   );
 };
 

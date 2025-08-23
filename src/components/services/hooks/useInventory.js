@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import getInventory from "../getInventory";
+import  getInventory  from "../getInventory.js";
 
 export const useInventory = (id) => {
 	const [inventory, setInventory] = useState([]);

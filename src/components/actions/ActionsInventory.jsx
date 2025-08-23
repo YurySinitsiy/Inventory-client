@@ -1,5 +1,5 @@
 import { Box, Button } from "@mui/material";
-import AddInventory from "./AddInventory";
+import AddInventory from "../inventory/AddInventory";
 import { useState } from 'react'
 
 const ActionsInventory = ({ selectedIds, onDelete, onAdd }) => {
@@ -8,7 +8,7 @@ const ActionsInventory = ({ selectedIds, onDelete, onAdd }) => {
     return (
         <Box sx={{ display: 'flex', gap: 1 }}>
             <Button
-                sx={{ backgroundColor: 'white', my: 1 }}
+                sx={{ my: 1 }}
                 variant="outlined"
                 onClick={() => setOpenAddModal(true)}
             >

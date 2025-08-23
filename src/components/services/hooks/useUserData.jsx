@@ -3,25 +3,38 @@ import { useState, useEffect } from "react";
 
 export const useUserData = () => {
 	const [user, setUser] = useState(null);
+	const [allUsers, setAllUsers] = useState([]);
 	const [userName, setUserName] = useState("");
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		const fetchUser = async () => {
-			const { data: { user } } = await supabase.auth.getUser();
-			setUser(user || null);
-			setUserName(user?.user_metadata?.name || '');
-			setLoading(false);
+		const fetchData = async () => {
+			setLoading(true);
+			try {
+				const { data: { user } } = await supabase.auth.getUser();
+				setUser(user);
 
-
+				setUserName(user?.user_metadata?.name || '');
+				if (!user) return
+				const { data } = await supabase
+					.from("profiles")
+					.select("*")
+					.order("name", { ascending: true });
+				setAllUsers(data || []);
+			} catch (error) {
+				console.error(error);
+			} finally {
+				setLoading(false);
+			}
 		};
-		fetchUser();
-	}, []);
 
+		fetchData();
+	}, []);
 
 	return {
 		user,
 		userName,
-		loading
+		loading,
+		allUsers
 	};
 };

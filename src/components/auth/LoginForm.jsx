@@ -1,9 +1,9 @@
 import * as Yup from "yup";
-import AuthForm from "./AuthForm";
+import BaseForm from "../form/BaseForm";
 
 const SignIn = ({ onSubmit }) => {
   return (
-    <AuthForm
+    <BaseForm
       title="Sign in"
       submitText="SIGN IN"
       initialValues={{ email: "", password: "" }}

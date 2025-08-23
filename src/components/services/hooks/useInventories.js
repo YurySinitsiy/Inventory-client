@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import handleDeleteInventory from "../handleDeleteInventory";
-import getInventories from "../getInventories";
-import getUserInventories from "../getUserInventories";
+import handleDeleteInventory from "../handleDeleteInventory.js";
+import  getInventories  from "../getInventories.js";
+import getUserInventories from "../getUserInventories.js";
 
 export const useInventories = () => {
 	const [inventories, setInventories] = useState([]);
@@ -42,7 +42,7 @@ export const useInventories = () => {
 			//userInventories.filter((row) => !selectedIds.includes(row.id))
 			setSelectedIds([]);
 			setMessage("Inventory deleted!");
-			await fetchUserInventories()
+			await fetchUserInventories();
 		} catch (err) {
 			setError(err.message);
 		} finally {
@@ -63,6 +63,7 @@ export const useInventories = () => {
 		selectedIds,
 		setSelectedIds,
 		isLoading,
+		setIsLoading,
 		error,
 		message,
 		setError,

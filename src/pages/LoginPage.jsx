@@ -50,7 +50,9 @@ const RenderLoginPage = () => {
 	return (
 		<AppBox>
 			<Box sx={{
-				display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center', height: '100%'
+				display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center', height: '100%',
+				
+
 			}}>
 				{error && (
 					<Alert severity="error" sx={{ mb: 2 }}>
@@ -64,8 +66,9 @@ const RenderLoginPage = () => {
 					Welcome to Invy!
 				</Title>
 				<LoginForm
-					onSubmit={handleSubmit} />
-				<Box textAlign="center" mt={3}>
+					onSubmit={handleSubmit}
+					/>
+				<Box textAlign="center" mt={3} >
 					<Typography variant="body2">
 						Don't have an account?{" "}
 						<Link component={RouterLink} to="/signup" underline="hover" fontWeight="bold">
