@@ -20,7 +20,7 @@ const ActionsInventory = ({ selectedIds, onDelete, onAdd }) => {
                 onAdd={onAdd}
             />
             <Button
-                variant="contained"
+                variant="outlined"
                 color="error"
                 sx={{ my: 1 }}
                 disabled={!selectedIds.length}

@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
 import handleDeleteInventory from "../handleDeleteInventory.js";
-import  getInventories  from "../getInventories.js";
+import getInventories from "../getInventories.js";
 import getUserInventories from "../getUserInventories.js";
-
+import getAllPublicInventories from "../getAllPublicInventories.js";
+import getAccessWriteInventories from "../getAccessWriteInventories.js";
 export const useInventories = () => {
 	const [inventories, setInventories] = useState([]);
 	const [userInventories, setUserInventories] = useState([]);
+	const [allPublicInventories, setAllPublicInventories] = useState([]);
+	const [allWriteAccessInventories, setAllWriteAccessInventories] = useState(
+		[]
+	);
 	const [selectedIds, setSelectedIds] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(null);
@@ -50,9 +55,35 @@ export const useInventories = () => {
 		}
 	};
 
+	const fetchAllPublickInventories = async () => {
+		setIsLoading(true);
+		try {
+			const data = await getAllPublicInventories();
+			setAllPublicInventories(data);
+		} catch (err) {
+			setError(err.message);
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
+	const fetchAllWriteAccessInventories = async () => {
+		setIsLoading(true);
+		try {
+			const data = await getAccessWriteInventories();
+			setAllWriteAccessInventories(data);
+			console.log(data)
+		} catch (err) {
+			setError(err.message);
+		} finally {
+			setIsLoading(false);
+		}
+	};
 	useEffect(() => {
 		fetchInventories();
 		fetchUserInventories();
+		fetchAllPublickInventories();
+		fetchAllWriteAccessInventories();
 	}, []);
 
 	return {
@@ -69,5 +100,9 @@ export const useInventories = () => {
 		setError,
 		setMessage,
 		deleteSelected,
+		allPublicInventories,
+		setAllPublicInventories,
+		allWriteAccessInventories,
+		setAllWriteAccessInventories,
 	};
 };

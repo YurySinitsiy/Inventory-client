@@ -1,4 +1,4 @@
-import  RedirectByRole  from './RedirectByRole'
+import RedirectByRole from './RedirectByRole'
 import Loader from "../../components/tools/Loader"
 import { supabase } from "../../lib/supabaseClient";
 import CheckUserRole from '../auth/CheckUserRole'
@@ -14,26 +14,32 @@ const RequireAuth = ({ allowedRoles, children }) => {
     useEffect(() => {
         const checkAccess = async () => {
             setIsLoading(true)
-            const { data: { user } } = await supabase.auth.getUser()
+            try {
+                const { data: { user } } = await supabase.auth.getUser()
 
-            if (!user) {
+                if (!user) {
+                    navigate("/login");
+                    return;
+                }
+
+                const userRole = await CheckUserRole(user.id)
+                if (!userRole) {
+                    navigate("/login");
+                    return;
+                }
+
+                if (!allowedRoles.includes(userRole)) {
+                    RedirectByRole(userRole, navigate)
+                    return
+                }
+
+                setHasAccess(true);
+            } catch (err) {
+                console.error(err);
                 navigate("/login");
-                return;
+            } finally {
+                setIsLoading(false);
             }
-
-            const userRole = await CheckUserRole(user.id)
-            if (!userRole) {
-                navigate("/login");
-                return;
-            }
-
-            if (!allowedRoles.includes(userRole)) {
-                RedirectByRole(userRole)
-                return
-            }
-
-            setHasAccess(true);
-            setIsLoading(false);
         }
 
         checkAccess();

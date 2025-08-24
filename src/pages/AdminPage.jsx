@@ -9,7 +9,7 @@ import TabPanel from '@mui/lab/TabPanel';
 import RenderUserInventory from '../components/table/RenderUserInventory'
 import { Box, Tab } from "@mui/material";
 import { useState } from "react";
-import AllUsersTable from '../components/table/AllUsersTable'
+import AllUsersAdminActions from '../components/table/users/AllUsersAdminActions.jsx'
 
 import RenderAllUsersInventories from '../components/table/RenderAllUsersInventories.jsx'
 const renderAdminPage = () => {
@@ -43,7 +43,7 @@ const renderAdminPage = () => {
                             <RenderAllUsersInventories />
                         </TabPanel>
                         <TabPanel value="3">
-                            <AllUsersTable />
+                            <AllUsersAdminActions />
                         </TabPanel>
                     </TabContext>
 

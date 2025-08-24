@@ -14,6 +14,7 @@ import Title from '../components/tools/Title.jsx';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
 import CustomFieldsTab from '../components/tabs/CustomFieldsTab.jsx';
 import CustomIdTab from '../components/tabs/CustomIdTab.jsx';
+import AccessSetting from '../components/tabs/accessSetting/AccessSetting';
 
 // Главная страница инвентаря
 const InventoryPage = () => {
@@ -71,6 +72,12 @@ const InventoryPage = () => {
         setFields(newFields);
         setVersion(newVersion);
     };
+    const isCreator = user.id === inventory.ownerId
+    const isAdmin = role === 'admin'
+
+    console.log(isCreator)
+    console.log(isAdmin)
+
 
     return (
         <AppBox>
@@ -101,7 +108,9 @@ const InventoryPage = () => {
                             >
                                 <Tab label="Items" value="1" />
                                 {user && [
-                                    <Tab key="chat" label="Chat" value="2" />,
+                                    <Tab key="chat" label="Chat" value="2" />
+                                ]}
+                                {(isCreator || isAdmin) && [
                                     <Tab key="settings" label="Setting" value="3" />,
                                     <Tab key="customId" label="Custom IDs" value="4" />,
                                     <Tab key="fields" label="Fields" value="5" />,
@@ -119,6 +128,10 @@ const InventoryPage = () => {
                                 <TabPanel value="2">
                                     <Typography>Chat</Typography>
                                 </TabPanel>
+                            </>
+                        )}
+                        {(isCreator || isAdmin) && (
+                            <>
                                 <TabPanel value="3">
                                     <Typography>Setting</Typography>
                                 </TabPanel>
@@ -134,7 +147,8 @@ const InventoryPage = () => {
                                     />
                                 </TabPanel>
                                 <TabPanel value="6">
-                                    <Typography>Access</Typography>
+                                    <AccessSetting
+                                        inventory={inventory} />
                                 </TabPanel>
                                 <TabPanel value="7">
                                     <Typography>Stats</Typography>
@@ -144,10 +158,13 @@ const InventoryPage = () => {
                                 </TabPanel>
                             </>
                         )}
+
+
+
                     </TabContext>
                 </Box>
             </Container>
-        </AppBox>
+        </AppBox >
     );
 };
 

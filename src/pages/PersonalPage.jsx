@@ -10,7 +10,7 @@ import { useUserData } from '../components/services/hooks/useUserData.jsx';
 import RenderUserInventory from '../components/table/RenderUserInventory.jsx'
 import checkUserRole from "../components/auth/CheckUserRole.jsx";
 import Loader from "../components/tools/Loader.jsx"
-import RenderAllUsersInventories from '../components/table/RenderAllUsersInventories.jsx'
+import AccessWriteInventories from '../components/table/AccessWriteInventories.jsx'
 
 const RenderCreatorPage = () => {
     const [value, setValue] = useState('1');
@@ -40,8 +40,7 @@ const RenderCreatorPage = () => {
         fetchUserRole();
     }, [user?.id]);
 
-    console.log(userRole)
-if (!user || isLoading) return <Loader />;
+    if (!user || isLoading) return <Loader />;
     return (
         <AppBox>
             <AppBar userName={userName} path={'logout'} />
@@ -58,16 +57,10 @@ if (!user || isLoading) return <Loader />;
                             </TabList>
                         </Box>
                         <TabPanel value="1">
-                            {userRole === 'creator' ?
-                                <RenderUserInventory />
-                                :
-                                <Title variant="h5" sx={{ marginBlock: "30px", fontWeight: '700' }}>
-                                    У вас нет прав создателя. Пожалуйста, обратитесь к администратору
-                                </Title>}
-
+                            <RenderUserInventory />
                         </TabPanel>
                         <TabPanel value="2">
-                            <RenderAllUsersInventories />
+                            <AccessWriteInventories />
                         </TabPanel>
                     </TabContext>
                 </Box>
