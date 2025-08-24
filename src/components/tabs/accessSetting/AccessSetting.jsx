@@ -4,7 +4,7 @@ import Loader from "../../tools/Loader";
 import { Box } from "@mui/material";
 import ActionsAccessWrite from "../../actions/ActionsAccessWrite";
 const accessSetting = ({ inventory }) => {
-    const { allUsersAccess, loading, selectedIds, setSelectedIds, } = useUserData({ inventoryId: inventory.id })
+    const { allUsersAccess, loading, selectedIds, setSelectedIds, fetchUsersAccess } = useUserData({ inventoryId: inventory.id })
 
     const usersColumns = [
         { field: 'email', headerName: 'Email', flex: 1 },
@@ -17,12 +17,19 @@ const accessSetting = ({ inventory }) => {
     return (
         <Box>
             <ActionsAccessWrite
-                selectedIds={selectedIds} />
+                selectedIds={selectedIds}
+                loading={loading}
+                inventoryId={inventory.id}
+                setSelectedIds={setSelectedIds}
+                fetchUsersAccess={fetchUsersAccess}
+            />
             <AllUsersTable
                 usersColumns={usersColumns}
                 rows={allUsersAccess}
                 selectedIds={selectedIds}
-                setSelectedIds={setSelectedIds} />
+                setSelectedIds={setSelectedIds}
+            />
+
         </Box>
 
     )

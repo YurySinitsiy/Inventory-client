@@ -5,9 +5,7 @@ const RedirectByRole = (role, navigate) => {
 		case "admin":
 			navigate("/admin");
 			break;
-		case "creator":
 		case "user":
-		case 'authentificated':
 			navigate("/personal");
 			break;
 

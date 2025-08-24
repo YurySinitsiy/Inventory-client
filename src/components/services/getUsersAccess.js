@@ -3,6 +3,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const getUsersAccess = async (inventoryId) => {
 	const session = await getSession();
+	if(!session) return
 
 	try {
 		const response = await fetch(
@@ -17,7 +18,7 @@ const getUsersAccess = async (inventoryId) => {
 		);
 
 		if (!response.ok) {
-			throw new Error("Ошибка при получении пользователей с доступом");
+			throw new Error("Error when getting users with access");
 		}
 
 		const usersWithAccess = await response.json();
