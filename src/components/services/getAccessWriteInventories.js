@@ -4,7 +4,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const getAllPublicInventories = async () => {
     const session = await getSession();
-
+    if(!session) return
     try {
         const res = await fetch(`${API_URL}/api/all-access-write-inventories`, {
             headers: {
