@@ -1,11 +1,12 @@
 import { getSession } from "./getSession";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const getUsersAccess = async (inventoryId) => {
 	const session = await getSession();
 
 	try {
 		const response = await fetch(
-			`http://localhost:3001/api/inventories/${inventoryId}/users-access`,
+			`${API_URL}/api/inventories/${inventoryId}/users-access`,
 			{
 				method: "GET",
 				headers: {
