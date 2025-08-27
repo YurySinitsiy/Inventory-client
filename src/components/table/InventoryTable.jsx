@@ -1,8 +1,9 @@
-import { DataGrid } from "@mui/x-data-grid";
-import Loader from "../tools/Loader";
-import { useNavigate } from "react-router-dom";
-import inventoriesColumns from "./InventoriesColumns";
-import Checkbox from "../tools/Checkbox";
+import { DataGrid } from '@mui/x-data-grid';
+import Loader from '../tools/Loader';
+import { useNavigate } from 'react-router-dom';
+import getColumns from './InventoriesColumns';
+import Checkbox from '../tools/Checkbox';
+
 const InventoryTable = ({
   inventories = [],
   enotherColumns,
@@ -18,7 +19,7 @@ const InventoryTable = ({
     selectedIds,
     setSelectedIds,
   });
-
+  const inventoriesColumns = getColumns();
   const columns = [selectionColumn, ...inventoriesColumns];
 
   return (

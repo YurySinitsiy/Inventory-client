@@ -1,0 +1,37 @@
+{
+  "app.title": "Inventory Management",
+  "nav.login": "Login",
+  "nav.logout": "Logout",
+  "nav.signup": "Sign Up",
+  "nav.admin": "Admin Panel",
+  "nav.personal": "Personal Page",
+  "nav.inventory": "Inventory",
+  "nav.language": "Language",
+
+  "auth.email": "Email",
+  "auth.password": "Password",
+  "auth.confirmPassword": "Confirm Password",
+  "auth.login": "Sign In",
+  "auth.signup": "Create Account",
+  "auth.oauth": "Continue with {provider}",
+
+  "profiles.my": "My profiles",
+
+  "theme.light": "Light Mode",
+  "theme.dark": "Dark Mode",
+
+  "status.loading": "Loading...",
+  "status.error": "Something went wrong",
+  "status.notfound": "Page not found",
+
+  "invenotories.my": "My inventories",
+  "invenotories.users": "Users inventories",
+
+  "inventory.add": "Add item",
+  "inventory.edit": "Edit",
+  "inventory.delete": "Delete",
+  "inventory.search": "Search...",
+  "inventory.empty": "No items available",
+
+  "welcome": "Welcome"
+}

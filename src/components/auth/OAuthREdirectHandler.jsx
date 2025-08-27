@@ -1,42 +1,45 @@
-import { useEffect } from "react";
-import { supabase } from "../../lib/supabaseClient";
-import { useNavigate } from "react-router-dom";
-import Loader from "../tools/Loader"
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Loader from '../tools/Loader';
+import { getSession } from '../services/getSession';
+import upsertUser from '../services/upsertUser';
+import checkUserRole from './CheckUserRole';
+import RedirectByRole from './RedirectByRole';
+
+const parseName = (fullName = '') => {
+  const [name, ...surnameParts] = fullName.split(' ');
+  return { name, surname: surnameParts.join(' ') };
+};
+
+const saveProfile = async (user) => {
+  const { name, surname } = parseName(user.user_metadata?.full_name);
+  await upsertUser(user.id, { name, surname, email: user.email });
+};
+
+const handleRedirect = async (user, navigate) => {
+  await saveProfile(user);
+  const role = (await checkUserRole(user.id)) || 'user';
+  RedirectByRole(role, navigate);
+};
+
 const OAuthRedirectHandler = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const checkUserProfile = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
+  useEffect(() => {
+    const run = async () => {
+      try {
+        const session = await getSession();
+        if (!session?.user) return navigate('/login');
+        await handleRedirect(session.user, navigate);
+      } catch (err) {
+        console.error('OAuth error:', err);
+        navigate('/login');
+      }
+    };
+    run();
+  }, [navigate]);
 
-            if (!session?.user) return navigate("/login");
-
-            const userId = session.user.id;
-
-            // проверяем профиль
-            const { data, error } = await supabase
-                .from("profiles")
-                .select("role")
-                .eq("id", userId);
-
-            let role = "user";
-
-            if (!data || data.length === 0) {
-                // создаём или обновляем профиль
-                await supabase.from("profiles").upsert({ id: userId, role });
-            } else {
-                role = data[0].role;
-            }
-
-            // редирект по роли
-            if (role === "admin") navigate("/admin");
-            else navigate("/personal");
-        };
-
-        checkUserProfile();
-    }, []);
-
-    return <Loader/>;
+  return <Loader />;
 };
 
 export default OAuthRedirectHandler;

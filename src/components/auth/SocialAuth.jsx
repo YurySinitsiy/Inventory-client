@@ -1,35 +1,46 @@
-import GitHubIcon from '@mui/icons-material/GitHub';
 import { Box, Typography } from '@mui/material';
+import GoogleIcon from '@mui/icons-material/Google';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import { supabase } from '../../lib/supabaseClient';
+import { useTranslation } from 'react-i18next';
+
+const API_URL = import.meta.env.VITE_API_URL;
+
+const style = {
+  display: 'flex',
+  gap: 1,
+  cursor: 'pointer',
+  padding: '8px 16px',
+  border: '1px solid #ddd',
+  borderRadius: '8px',
+  transition: 'background-color 0.3s',
+  '&:hover': {
+    backgroundColor: '#fca351ff',
+  },
+};
 
 const SocialAuth = () => {
-  const handleGitHubLogin = async () => {
+  const { t } = useTranslation();
+
+  const handleOAuthLogin = async (provider) => {
     const { error } = await supabase.auth.signInWithOAuth({
-      provider: "github",
-      options: {
-        redirectTo: "http://localhost:5173/oauth-redirect"
-      },
+      provider,
+      options: { redirectTo: `http://localhost:5173/oauth-redirect` },
     });
-    if (error) console.error("GitHub login error:", error.message);
+
+    if (error) console.error(`${provider} login error:`, error.message);
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 1, alignItems: "center" }}>
-      <Typography>Continue with</Typography>
-      <Box
-        onClick={handleGitHubLogin}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 1,
-          cursor: "pointer",
-          padding: "8px 16px",
-          border: "1px solid #ddd",
-          borderRadius: "8px",
-        }}
-      >
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+      <Typography textAlign='center'>{t('continue.with')}</Typography>
+      <Box onClick={() => handleOAuthLogin('github')} sx={style}>
         <GitHubIcon />
-        <Typography fontWeight="bold">GitHub</Typography>
+        <Typography fontWeight='bold'>GitHub</Typography>
+      </Box>
+      <Box onClick={() => handleOAuthLogin('google')} sx={style}>
+        <GoogleIcon />
+        <Typography fontWeight='bold'>Google</Typography>
       </Box>
     </Box>
   );

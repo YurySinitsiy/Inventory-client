@@ -1,8 +1,8 @@
-import MDEditor from "@uiw/react-md-editor";
-import { Box } from "@mui/material";
-import { useContext } from "react";
-import { ThemeContext } from "../../tools/ThemeContext"; // твой ThemeContext
-import { useTheme } from "@mui/material/styles";
+import MDEditor from '@uiw/react-md-editor';
+import { Box } from '@mui/material';
+import { useContext } from 'react';
+import { ThemeContext } from '../../tools/ThemeContext'; // твой ThemeContext
+import { useTheme } from '@mui/material/styles';
 
 const MarkdownField = ({ value, onChange, label }) => {
   const { darkMode } = useContext(ThemeContext);
@@ -17,8 +17,7 @@ const MarkdownField = ({ value, onChange, label }) => {
         backgroundColor: theme.palette.background.paper,
         color: theme.palette.text.primary,
       }}
-      data-color-mode={darkMode ? "dark" : "light"} // важно для MDEditor
-    >
+      data-color-mode={darkMode ? 'dark' : 'light'}>
       <label>{label}</label>
       <MDEditor
         value={value}

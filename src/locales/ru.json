@@ -1,0 +1,68 @@
+{
+  "app.title": "Управление инвентарём",
+  "nav.login": "Вход",
+  "nav.logout": "Выход",
+  "nav.signup": "Регистрация",
+  "nav.admin": "Админ панель",
+  "nav.personal": "Личный кабинет",
+  "nav.inventory": "Инвентарь",
+  "nav.language": "Язык",
+
+  "auth.email": "Эл. почта",
+  "auth.email.invalid": "Неверный формат email",
+
+  "auth.password": "Пароль",
+  "auth.confirmPassword": "Повторите пароль",
+  "auth.login": "Войти",
+  "auth.signup": "Создать аккаунт",
+  "auth.block": "Ваш аккаунт заблокирован или удален",
+  "auth.account.not": "Нету аккаунта?",
+  "auth.account.have": "Есть аккаунт?",
+  "auth.min.symbols": "Минимум 6 символов",
+  "auth.name": "Имя",
+  "auth.surname": "Фамилия",
+
+  "profiles.my": "Мой профиль",
+
+  "continue.with": "Продолжить с",
+
+  "reg.err": "Не удалось выполнить регистрацию",
+  "reg.ok": "Регистрация прошла успешно! Перенаправление...",
+
+  "theme.light": "Светлая тема",
+  "theme.dark": "Тёмная тема",
+
+  "status.loading": "Загрузка...",
+  "status.error": "Произошла ошибка",
+  "status.notfound": "Страница не найдена",
+
+  "invenotories.my": "Mои инвентари",
+  "invenotories.users": "Инвентари пользователей",
+  "inventories.all": "Все публичные инвентари",
+
+  "inventory.add": "Добавить инвентарь",
+  "inventory.edit": "Редактировать",
+  "inventory.delete": "Удалить",
+  "inventory.search": "Поиск...",
+  "inventory.empty": "Нет предметов",
+  "inventory.added": "Инвентарь добавлен",
+  "inventories.back": "Вернуться к списку инвентарей",
+
+  "save": "Сохранить",
+  "saved": "Успешно сохранено",
+  "saved.fail": "Ошибка сохранения",
+  "welcome": "Добро пожаловать",
+  "welcome.to": "Добро пожаловать в",
+  "title": "Название",
+  "description": "Описание",
+  "category": "Категория",
+  "tags": "Теги",
+  "drop.file": "Перетащите файл сюда...",
+  "drag.drop": "Перетащите или нажмите, чтобы загрузить",
+  "uploading": "Загрузка...",
+  "public.make": "Сделать публичным",
+  "required": "Обязательно ",
+
+  "version.conflict": "Конфликт версий. Текущая версия ",
+  "name.unique": "Название должно быть уникальным"
+}

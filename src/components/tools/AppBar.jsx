@@ -1,52 +1,82 @@
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import AdbIcon from '@mui/icons-material/Adb';
-import LoginIcon from '@mui/icons-material/Login';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { useNavigate } from "react-router-dom";
-import Switch from '@mui/material/Switch';
-import { supabase } from "../../lib/supabaseClient"
-import LightModeIcon from '@mui/icons-material/LightMode';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Container,
+  Box,
+  Button,
+  Switch,
+} from '@mui/material';
+import {
+  Login,
+  Logout,
+  LightMode,
+  DarkMode,
+  Language,
+} from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '../../lib/supabaseClient';
 import { ThemeContext } from './ThemeContext';
-import { useContext } from "react";
-const RenderAppBar = ({ userName, path}) => {
-    const { darkMode, toggleTheme } = useContext(ThemeContext);
-    const navigate = useNavigate();
+import { useContext } from 'react';
+import i18n from './i18n';
+import { useTranslation } from 'react-i18next';
 
-    const handleAuthClick = async () => {
-        if (path === 'logout') {
-            await supabase.auth.signOut();
-            navigate('/'); 
-        } else {
-            navigate('/login');
-        }
-    };
+const RenderAppBar = ({ userName, path }) => {
+  const { darkMode, toggleTheme } = useContext(ThemeContext);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
 
-    return (
-        <AppBar position="static">
-            <Container maxWidth="xl">
-                <Toolbar disableGutters>
-                    <AdbIcon sx={{ display: 'flex', mr: 1 }} />
-                    <Typography>Welcome, {userName ? userName : 'Guest'} </Typography>
+  const handleAuthClick = async () => {
+    if (path === 'logout') {
+      await supabase.auth.signOut();
+      navigate('/');
+    } else {
+      navigate('/login');
+    }
+  };
 
-                    {darkMode ? <DarkModeIcon /> : <LightModeIcon />}
-                    <Switch checked={darkMode} onChange={toggleTheme} />
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'en' ? 'ru' : 'en';
+    i18n.changeLanguage(newLang);
+    localStorage.setItem('lang', newLang);
+  };
 
-                    <Button
-                        sx={{ color: 'white', marginLeft: 'auto', fontWeight: 'bold' }}
-                        onClick={handleAuthClick}
-                        startIcon={path === 'logout' ? <LogoutIcon /> : <LoginIcon />}
-                    >
-                        {path === 'logout' ? 'Logout' : 'Sign in'}
-                    </Button>
-                </Toolbar>
-            </Container>
-        </AppBar >
-    )
-}
+  return (
+    <AppBar position='static'>
+      <Container maxWidth='xl'>
+        <Toolbar
+          disableGutters
+          sx={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}>
+          <Typography>
+            {' '}
+            {t('welcome')}, {userName ? userName : 'Guest'}{' '}
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+            }}>
+            {darkMode ? <DarkMode /> : <LightMode />}
+            <Switch checked={darkMode} onChange={toggleTheme} />
+          </Box>
+          <Button onClick={toggleLanguage} color={'white'}>
+            EN <Language /> RU
+          </Button>
 
-export default RenderAppBar
+          <Button
+            sx={{ color: 'white', fontWeight: 'bold' }}
+            onClick={handleAuthClick}
+            startIcon={path === 'logout' ? <Logout /> : <Login />}>
+            {path === 'logout' ? t('nav.logout') : t('nav.login')}
+          </Button>
+        </Toolbar>
+      </Container>
+    </AppBar>
+  );
+};
+
+export default RenderAppBar;
