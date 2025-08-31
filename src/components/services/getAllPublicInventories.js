@@ -1,7 +1,7 @@
 import apiFetch from './apiFetch.js';
 
 const getAllPublicInventories = async () => {
-  return apiFetch(`/api/public-inventories`);
+  return apiFetch(`/api/inventories/public`);
 };
 
 export default getAllPublicInventories;
