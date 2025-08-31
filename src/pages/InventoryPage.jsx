@@ -51,7 +51,7 @@ const InventoryPage = () => {
   // Проверка роли
   useEffect(() => {
     const checkRole = async () => {
-      const me = await apiFetch('/api/me');
+      const me = await apiFetch('/api/users/me');
       setRole(me.role);
     };
     checkRole();

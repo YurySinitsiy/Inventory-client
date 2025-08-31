@@ -1,7 +1,7 @@
 import apiFetch from './apiFetch.js';
 
 const getUserInventories = () => {
-  return apiFetch('/api/my-inventories');
+  return apiFetch('/api/inventories/my');
 };
 
 export default getUserInventories;

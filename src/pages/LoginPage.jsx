@@ -29,7 +29,7 @@ const RenderLoginPage = () => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword(values);
       if (error) throw error;
-      const me = await apiFetch('/api/me');
+      const me = await apiFetch('/api/users/me');
       afterLogin(me, resetForm);
     } catch (err) {
       showSnackbar(err.message || t('auth.loginFailed'), 'error');
