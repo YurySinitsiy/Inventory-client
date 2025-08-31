@@ -1,53 +1,53 @@
-import { Box, Button } from "@mui/material";
-import { useUserData } from "../services/hooks/useUserData";
+import { Box, Button } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
-const ActionsAllUsers = ({ selectedIds }) => {
-    const { handleDeleteUser } = useUserData()
+const ActionsAllUsers = ({ selectedIds, deleteUsers, updateUsers }) => {
+  const { t } = useTranslation();
+  const disabled = !selectedIds.length;
 
-    const deleteUser = async () => {
-        handleDeleteUser(selectedIds)
-    }
-    return (
-        <Box sx={{ display: 'flex', gap: 1 }}>
-            <Button
-                variant='outlined'
-                sx={{ my: 1 }}
-                onClick={deleteUser}
-                disabled={!selectedIds.length}
-                color='error'>
-                Delete
-            </Button>
-            <Button
-                variant='outlined'
-                sx={{ my: 1 }}
-                disabled={!selectedIds.length}
-                color="success">
+  const actions = [
+    {
+      label: t('delete'),
+      color: 'error',
+      onClick: deleteUsers,
+    },
+    {
+      label: t('unblock'),
+      color: 'success',
+      onClick: () => updateUsers({ status: 'unblocked' }),
+    },
+    {
+      label: t('block'),
+      color: 'error',
+      onClick: () => updateUsers({ status: 'blocked' }),
+    },
+    {
+      label: t('admin.role'),
+      color: 'secondary',
+      onClick: () => updateUsers({ role: 'admin' }),
+    },
+    {
+      label: t('user.role'),
+      color: 'primary',
+      onClick: () => updateUsers({ role: 'user' }),
+    },
+  ];
 
-                Unblock
-            </Button>
-            <Button
-                variant='outlined'
-                sx={{ my: 1 }}
-                disabled={!selectedIds.length}
-                color='error'>
-                Block
-            </Button>
-            <Button
-                variant='outlined'
-                sx={{ my: 1 }}
-                disabled={!selectedIds.length}
-                color="secondary">
-                Admin role
-            </Button>
-            <Button
-                variant='outlined'
-                sx={{ my: 1 }}
-                disabled={!selectedIds.length}>
-                User role
-            </Button>
-        </Box>
+  return (
+    <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+      {actions.map(({ label, color, onClick }) => (
+        <Button
+          key={label}
+          variant='outlined'
+          sx={{ my: 1 }}
+          disabled={disabled}
+          color={color}
+          onClick={onClick}>
+          {label}
+        </Button>
+      ))}
+    </Box>
+  );
+};
 
-    )
-}
-
-export default ActionsAllUsers
+export default ActionsAllUsers;

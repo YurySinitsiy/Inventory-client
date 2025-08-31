@@ -17,7 +17,8 @@ import {
   ThemeContext,
 } from './components/tools/ThemeContext';
 import OAuthRedirectHandler from './components/auth/OAuthREdirectHandler';
-
+import AppBar from './components/tools/AppBar';
+import AppBox from './components/tools/AppBox';
 const API_URL = import.meta.env.VITE_API_URL;
 
 function AppContent() {
@@ -31,38 +32,44 @@ function AppContent() {
     <ThemeProvider theme={theme}>
       <CssBaseline>
         <BrowserRouter>
-          <Routes>
-            {/* Доступ для всех */}
-            <Route path='/' element={<MainPage />} />
-            <Route path='/login' element={<LoginPage />} />
-            <Route path='/signup' element={<RegistrationPage />} />
-            <Route path='/inventory/:id' element={<InventoryPage />} />
-            <Route path='/oauth-redirect' element={<OAuthRedirectHandler />} />
-            {/* Только user, admin, creator, write */}
+          <AppBox>
+            <AppBar />
+            <Routes>
+              {/* Доступ для всех */}
+              <Route path='/' element={<MainPage />} />
+              <Route path='/login' element={<LoginPage />} />
+              <Route path='/signup' element={<RegistrationPage />} />
+              <Route path='/inventory/:id' element={<InventoryPage />} />
+              <Route
+                path='/oauth-redirect'
+                element={<OAuthRedirectHandler />}
+              />
+              {/* Только user, admin, creator, write */}
 
-            {/* Только admin */}
-            <Route
-              path='/admin'
-              element={
-                <RequireAuth allowedRoles={['admin']}>
-                  <AdminPage />
-                </RequireAuth>
-              }
-            />
+              {/* Только admin */}
+              <Route
+                path='/admin'
+                element={
+                  <RequireAuth allowedRoles={['admin']}>
+                    <AdminPage />
+                  </RequireAuth>
+                }
+              />
 
-            {/* Только editor */}
-            <Route
-              path='/personal'
-              element={
-                <RequireAuth allowedRoles={['creator', 'user']}>
-                  <PersonalPage />
-                </RequireAuth>
-              }
-            />
+              {/* Только editor */}
+              <Route
+                path='/personal'
+                element={
+                  <RequireAuth allowedRoles={['creator', 'user']}>
+                    <PersonalPage />
+                  </RequireAuth>
+                }
+              />
 
-            {/* 404 */}
-            <Route path='*' element={<NotFound />} />
-          </Routes>
+              {/* 404 */}
+              <Route path='*' element={<NotFound />} />
+            </Routes>
+          </AppBox>
         </BrowserRouter>
       </CssBaseline>
     </ThemeProvider>

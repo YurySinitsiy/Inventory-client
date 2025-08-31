@@ -1,15 +1,13 @@
-import AppBox from '../components/tools/AppBox';
 import RegForm from '../components/auth/RegForm';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import { Box, Typography, Link, Alert } from '@mui/material';
+import { Box, Typography, Link } from '@mui/material';
 import { supabase } from '../lib/supabaseClient';
 import { useState } from 'react';
 import SnackbarAlert from '../components/tools/Snackbar';
 import { useSnackbar } from '../components/services/hooks/useSnackbar';
 import SocialAuth from '../components/auth/SocialAuth';
-import upsertUser from '../components/services/upsertUser';
 import { useTranslation } from 'react-i18next';
-
+import apiFetch from '../components/services/apiFetch';
 const RenderRegistrationPage = () => {
   const navigate = useNavigate();
   const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
@@ -30,8 +28,13 @@ const RenderRegistrationPage = () => {
         },
       });
       if (Error) throw Error;
-
-      upsertUser(authData.user.id, values);
+      await apiFetch('/api/auth/signup', {
+        method: 'POST',
+        body: JSON.stringify({
+          userId: authData.user.id,
+          data: values,
+        }),
+      });
       showSnackbar(t('reg.ok'), 'success');
       setTimeout(() => navigate('/login'), 2000);
     } catch (error) {
@@ -42,38 +45,36 @@ const RenderRegistrationPage = () => {
   };
 
   return (
-    <AppBox>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          height: '100%',
-        }}>
-        <SnackbarAlert snackbar={snackbar} closeSnackbar={closeSnackbar} />
-        <RegForm onSubmit={handlesubmit} isSubmitting={isSubmitting} />
-        <Box textAlign='center' mt={3}>
-          <Typography
-            variant='body2'
-            mb={2}
-            sx={{
-              display: 'flex',
-              gap: 1,
-            }}>
-            {t('auth.account.have')}
-            <Link
-              component={RouterLink}
-              to='/login'
-              underline='hover'
-              fontWeight='bold'>
-              {t('auth.login')}
-            </Link>
-          </Typography>
-        </Box>
-        <SocialAuth />
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        height: 'calc(100% - 64px)',
+      }}>
+      <SnackbarAlert snackbar={snackbar} closeSnackbar={closeSnackbar} />
+      <RegForm onSubmit={handlesubmit} isSubmitting={isSubmitting} />
+      <Box textAlign='center' mt={3}>
+        <Typography
+          variant='body2'
+          mb={2}
+          sx={{
+            display: 'flex',
+            gap: 1,
+          }}>
+          {t('auth.account.have')}
+          <Link
+            component={RouterLink}
+            to='/login'
+            underline='hover'
+            fontWeight='bold'>
+            {t('auth.login')}
+          </Link>
+        </Typography>
       </Box>
-    </AppBox>
+      <SocialAuth />
+    </Box>
   );
 };
 

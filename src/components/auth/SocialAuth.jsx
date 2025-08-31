@@ -15,7 +15,7 @@ const style = {
   borderRadius: '8px',
   transition: 'background-color 0.3s',
   '&:hover': {
-    backgroundColor: '#fca351ff',
+    backgroundColor: '#1976d2',
   },
 };
 

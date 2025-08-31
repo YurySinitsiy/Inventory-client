@@ -30,8 +30,8 @@ const FieldItem = forwardRef(
       setFieldValue(`fields[${index}].${key}`, value);
     };
 
-    const nameError =
-      touched.fields?.[index]?.name && errors.fields?.[index]?.name;
+    const titleError =
+      touched.fields?.[index]?.title && errors.fields?.[index]?.title;
     const typeError =
       touched.fields?.[index]?.type && errors.fields?.[index]?.type;
 
@@ -48,11 +48,11 @@ const FieldItem = forwardRef(
           borderBottom: '1px solid gray',
         }}>
         <TextField
-          label='Field name'
-          value={field.name || ''}
-          onChange={(e) => handleChange('name', e.target.value)}
-          error={Boolean(nameError)}
-          helperText={nameError || ''}
+          label='Field title'
+          value={field.title || ''}
+          onChange={(e) => handleChange('title', e.target.value)}
+          error={Boolean(titleError)}
+          helperText={titleError || ''}
         />
 
         <Select

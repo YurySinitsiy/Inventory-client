@@ -10,9 +10,10 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useState } from 'react';
 import Modal from '../tools/Modal';
 import Title from '../tools/Title';
+import { useTranslation } from 'react-i18next';
 const ItemsTab = ({ isCreator, isAdmin, inventory }) => {
   const [openAddModal, setOpenAddModal] = useState(false);
-
+  const { t } = useTranslation();
   const fields = Array.isArray(inventory?.fields) ? inventory.fields : [];
   //console.log(inventory.fields);
   const columns = fields.map((field) => ({
@@ -26,7 +27,7 @@ const ItemsTab = ({ isCreator, isAdmin, inventory }) => {
       {(isCreator || isAdmin) && ( //!WriteAccess
         <Box mb={2}>
           <Button variant='outlined' onClick={() => setOpenAddModal(true)}>
-            Add Item
+            {t('item.add')}
           </Button>
           <Modal
             open={openAddModal}
@@ -77,7 +78,7 @@ const ItemsTab = ({ isCreator, isAdmin, inventory }) => {
                       />
                     );
                   })}
-                  <Button variant='outlined'>Save</Button>
+                  <Button variant='outlined'>{t('save')}</Button>
                 </Box>
               </Form>
             </Formik>

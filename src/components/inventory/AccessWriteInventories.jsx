@@ -1,27 +1,42 @@
+import { useState, useEffect } from 'react';
 import InventoryTable from '../table/InventoryTable.jsx';
-import { useInventories } from '../services/hooks/useInventories.js';
 import Loader from '../tools/Loader.jsx';
-import { Paper } from '@mui/material';
-import getColumns from '../table/InventoriesColumns.jsx';
-
+import getAllPublicInventories from '../services/getAllPublicInventories.js';
+import getAllAccessInventories from '../services/getAccessInventories.js';
 const AccessWriteInventories = () => {
-  const { allPublicInventories, allWriteAccessInventories, isLoading } =
-    useInventories();
+  const [isLoading, setIsLoading] = useState(false);
+  const [allPublicInventories, setAllPublicInventories] = useState([]);
+  const [allAccessInventories, setAllAccessInventories] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const [allPubInv, allAcsInv] = await Promise.all([
+          getAllPublicInventories(),
+          getAllAccessInventories(),
+        ]);
+        setAllPublicInventories(allPubInv);
+        setAllAccessInventories(allAcsInv);
+      } catch (error) {
+        console.error('Fetch All public inventories error', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const allInventories = [
     ...allPublicInventories,
-    ...allWriteAccessInventories,
+    ...allAccessInventories.filter(
+      (a) => !allPublicInventories.some((p) => p.id === a.id)
+    ),
   ];
-  const columns = getColumns();
   if (isLoading) return <Loader />;
 
-  return (
-    <Paper sx={{ height: 400, width: '100%' }}>
-      <InventoryTable
-        inventories={allInventories || []}
-        enotherColumns={columns}
-      />
-    </Paper>
-  );
+  return <InventoryTable inventories={allInventories || []} />;
 };
 
 export default AccessWriteInventories;

@@ -21,8 +21,14 @@
   "auth.min.symbols": "Минимум 6 символов",
   "auth.name": "Имя",
   "auth.surname": "Фамилия",
-
+  "auth.role": "Роль",
+  "auth.status": "Статус",
+  "auth.access": "Доступ",
   "profiles.my": "Мой профиль",
+
+  "users.all": "Все пользователи",
+  "user.deleted": "Пользователь(и) удален(ы)",
+  "user.updated": "Данные обновленны",
 
   "continue.with": "Продолжить с",
 
@@ -43,6 +49,7 @@
   "inventory.add": "Добавить инвентарь",
   "inventory.edit": "Редактировать",
   "inventory.delete": "Удалить",
+  "inventory.deleted": "Инвентарь удален",
   "inventory.search": "Поиск...",
   "inventory.empty": "Нет предметов",
   "inventory.added": "Инвентарь добавлен",
@@ -62,7 +69,24 @@
   "uploading": "Загрузка...",
   "public.make": "Сделать публичным",
   "required": "Обязательно ",
-
+  "delete": "Удалить",
+  "unblock": "Разблокировать",
+  "block": "Заблокировать",
+  "admin.role": "Роль администратора",
+  "user.role": "Роль пользователя",
   "version.conflict": "Конфликт версий. Текущая версия ",
-  "name.unique": "Название должно быть уникальным"
+  "name.unique": "Название должно быть уникальным",
+  "tab.items": "Элементы",
+  "tab.chat": "Обсуждение",
+  "tab.setting": "Настройки",
+  "tab.id.custom": "Идентификаторы",
+  "tab.fields": "Поля",
+  "tab.access": "Доступ",
+  "tab.stats": "Статистика",
+  "tab.export": "Экспорт",
+
+  "item.add": "Добавить элемент",
+
+  "access.give": "Предоставить доступ",
+  "access.remove": "Убрать доступ"
 }

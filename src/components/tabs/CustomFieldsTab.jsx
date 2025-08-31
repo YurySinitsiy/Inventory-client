@@ -5,6 +5,7 @@ import FieldList from './customFields/FieldList';
 import FieldTypeButtons from './customFields/FieldTypeButtons';
 import SnackbarAlert from '../tools/Snackbar';
 import { useSnackbar } from '../services/hooks/useSnackbar';
+import { useTranslation } from 'react-i18next';
 
 const fieldTypes = [
   { type: 'text', label: 'Text field' },
@@ -15,15 +16,33 @@ const fieldTypes = [
 ];
 
 const CustomFieldsTab = ({ values, setFieldValue, errors, touched }) => {
+  const { t } = useTranslation();
+
   const addField = (type) => {
+    const slotsByType = {
+      text: ['text1', 'text2', 'text3'],
+      multiline: ['multiline1', 'multiline2', 'multiline3'],
+      number: ['number1', 'number2', 'number3'],
+      link: ['link1', 'link2', 'link3'],
+      boolean: ['boolean1', 'boolean2', 'boolean3'],
+    };
+    const usedSlots = values.fields
+      .filter((f) => f.type === type)
+      .map((f) => f.slot);
+    console.log(usedSlots)
+    const freeSlot = slotsByType[type].find((s) => !usedSlots.includes(s));
+    if (!freeSlot) return; // максимум достигнут
+
     const newField = {
       id: crypto.randomUUID(),
-      name: '',
+      slot: freeSlot,
+      title: '',
       type,
       description: '',
       visibleInTable: true,
       order: values.fields.length,
     };
+
     setFieldValue('fields', [...values.fields, newField]);
   };
 
@@ -42,13 +61,8 @@ const CustomFieldsTab = ({ values, setFieldValue, errors, touched }) => {
           justifyContent: 'flex-end',
           mb: 2,
         }}>
-        <Button
-          type='submit'
-          variant='contained'
-          color='primary'
-          // disabled={!formik.dirty || formik.isSubmitting}
-        >
-          {'save '}
+        <Button type='submit' variant='contained' color='primary'>
+          {t('save')}
         </Button>
       </Box>
 
