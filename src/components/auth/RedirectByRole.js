@@ -1,7 +1,7 @@
-const RedirectByRole = (role, navigate) => {
+const redirectByRole = (role, navigate) => {
 
   const routes = { admin: '/admin', user: '/personal' };
   navigate(routes[role] || '/');
 };
 
-export default RedirectByRole;
+export default redirectByRole;
