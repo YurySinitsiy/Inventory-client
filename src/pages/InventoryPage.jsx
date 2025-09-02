@@ -27,8 +27,8 @@ import getInventory from '../components/services/inventories/getInventory.js';
 import LinkBackTo from '../components/tools/LinkBackTo.jsx';
 import apiFetch from '../components/services/apiFetch.js';
 import InventoryInfoBlock from '../components/inventory/InventoryInfoBlock.jsx';
-// import getInventoryTags from '../components/services/inventories/getInventoryTags.js';
-// import getInventoryOwner from '../components/services/inventories/getInventoryOwner.js';
+ import getInventoryTags from '../components/services/inventories/getInventoryTags.js';
+ import getInventoryOwner from '../components/services/inventories/getInventoryOwner.js';
 import isEqual from 'lodash.isequal';
 const InventoryPage = () => {
   const formikRef = useRef();
@@ -43,8 +43,8 @@ const InventoryPage = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [invLoading, setInvLoading] = useState(false);
-  // const [owner, setOwner] = useState(null);
-  // const [tags, setTags] = useState([]);
+   const [owner, setOwner] = useState(null);
+   const [tags, setTags] = useState([]);
   const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
@@ -121,21 +121,21 @@ const InventoryPage = () => {
     }
   }, [inventory]);
 
-  // useEffect(() => {
-  //   const fetchInvData = async () => {
-  //     if (!id) return;
-  //     try {
-  //       const ownerData = await getInventoryOwner(id);
-  //       const tags = await getInventoryTags(id);
-  //       setOwner(ownerData); // сохраняем в стейт
-  //       setTags(tags);
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchInvData = async () => {
+      if (!id) return;
+      try {
+        const ownerData = await getInventoryOwner(id);
+        const tags = await getInventoryTags(id);
+        setOwner(ownerData); // сохраняем в стейт
+        setTags(tags);
+      } catch (err) {
+        console.error(err);
+      }
+    };
 
-  //   fetchInvData();
-  // }, [id]);
+    fetchInvData();
+  }, [id]);
 
   // Проверка изменений
   const hasChanges = (current, lastSaved) => !isEqual(current, lastSaved);

@@ -1,7 +1,7 @@
-import apiFetch from '../apiFetch';
+import apiPublicFetch from '../apiPublicFetch';
 
 const getInventoryFields = async (inventoryId) => {
-  return apiFetch(`/api/inventories/${inventoryId}/fields`);
+  return apiPublicFetch(`/api/inventories/${inventoryId}/fields`);
 };
 
 export default getInventoryFields;

@@ -1,7 +1,7 @@
-import apiFetch from '../apiFetch';
+import apiPublicFetch from '../apiPublicFetch';
 
 const getInventoryCustomIdFormat = async (inventoryId) => {
-  return apiFetch(`/api/inventories/${inventoryId}/idFormat`);
+  return apiPublicFetch(`/api/inventories/${inventoryId}/idFormat`);
 };
 
 export default getInventoryCustomIdFormat;

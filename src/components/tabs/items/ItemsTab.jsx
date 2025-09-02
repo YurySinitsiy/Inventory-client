@@ -17,7 +17,6 @@ import { useTranslation } from 'react-i18next';
 import apiFetch from '../../services/apiFetch.js';
 import getInventoryFields from '../../services/inventories/getInventoryFields.js';
 import getInventoryItems from '../../services/items/getInventoryItems.js';
-import getInventory from '../../services/inventories/getInventory.js';
 import handleAddItem from '../../services/items/handleAddItem.js';
 import handleDeleteItems from '../../services/items/handleDeleteItems.js';
 import { useSnackbar } from '../../services/hooks/useSnackbar.jsx';
@@ -30,23 +29,35 @@ const ItemsTab = ({ user, isCreator, isAdmin, inventory }) => {
   const [items, setItems] = useState([]);
   const [customIdFormat, setCustomIdFormat] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [dataLoading, setDataLoading] = useState(false);
   const [selectionModel, setSelectionModel] = useState([]);
   const { t } = useTranslation();
   const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
 
   useEffect(() => {
-    if (!inventory || !user) return;
-
-    const load = async () => {
+    const checkAccess = async () => {
+      if (!user) return;
       setIsLoading(true);
       try {
-        // проверка доступа
         const access = await apiFetch(
           `/api/inventories/${inventory.id}/access-write/user/${user.id}`
         );
         setHasWriteAccess(access?.hasAccess || false);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-        // поля и элементы
+    checkAccess();
+  }, []);
+
+  useEffect(() => {
+    const load = async () => {
+      if (!inventory?.id) return;
+      setDataLoading(true);
+      try {
         const [fetchedFields, fetchedItems, fetchedCustomIdFormat] =
           await Promise.all([
             getInventoryFields(inventory.id),
@@ -55,20 +66,19 @@ const ItemsTab = ({ user, isCreator, isAdmin, inventory }) => {
           ]);
         setFields(fetchedFields);
         setItems(fetchedItems);
-        setCustomIdFormat(fetchedCustomIdFormat);
+        setCustomIdFormat(
+          Array.isArray(fetchedCustomIdFormat) ? fetchedCustomIdFormat : []
+        );
       } catch (err) {
         console.error(err);
       } finally {
-        setIsLoading(false);
+        setDataLoading(false);
       }
     };
     load();
-  }, [inventory, user]);
-
+  }, [inventory]);
   const canAddItem =
-    isCreator || isAdmin || inventory?.isPublic || hasWriteAccess;
-
-  if (!inventory || isLoading) return <Loader />;
+    user && (isCreator || isAdmin || inventory?.isPublic || hasWriteAccess);
 
   const defaultColumns = [
     { field: 'createdBy', headerName: t('created.by'), minWidth: 170, flex: 1 },
@@ -82,14 +92,14 @@ const ItemsTab = ({ user, isCreator, isAdmin, inventory }) => {
     { field: 'customId', headerName: t('custom.id'), minWidth: 170, flex: 1 },
   ];
 
-  const customColumns = fields.map(({ slot, title }) => ({
+  const customColumns = (fields || []).map(({ slot, title }) => ({
     field: slot,
     headerName: title,
     minWidth: 50,
     flex: 1,
   }));
   const columnVisibilityModel = Object.fromEntries(
-    fields.map(({ slot, visibleInTable }) => [slot, visibleInTable])
+    (fields || []).map(({ slot, visibleInTable }) => [slot, visibleInTable])
   );
   const columns = [...customColumns, ...defaultColumns];
 
@@ -161,6 +171,8 @@ const ItemsTab = ({ user, isCreator, isAdmin, inventory }) => {
       setIsLoading(false);
     }
   };
+  console.log(customIdFormat);
+  if (!inventory || dataLoading || isLoading) return <Loader />;
 
   return (
     <>
@@ -188,9 +200,9 @@ const ItemsTab = ({ user, isCreator, isAdmin, inventory }) => {
                 {
                   customId:
                     customIdFormat
-                      ?.map((p) => generateValue(p.type, p.value))
+                      .map((p) => generateValue(p.type, p.value))
                       .join('-') || '',
-                  createdBy: user.email,
+                  createdBy: user?.email || '',
                 }
               )}
               onSubmit={handleAdd}>
