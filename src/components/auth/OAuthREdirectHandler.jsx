@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../tools/Loader';
 import apiFetch from '../services/apiFetch';
-import  RedirectByRole  from './RedirectByRole.js';
+import  RedirectByRole  from './RedirectByRole';
 import { getSession } from '../services/users/getSession';
 const OAuthRedirectHandler = () => {
   const navigate = useNavigate();
