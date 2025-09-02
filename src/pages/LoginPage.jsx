@@ -5,7 +5,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Box, Typography, Link } from '@mui/material';
 import LoginForm from '../components/auth/LoginForm';
 import { supabase } from '../lib/supabaseClient';
-import redirectByRole from '../components/auth/redirectByRole';
+import RedirectByRole from '../components/auth/RedirectByRole';
 import { useNavigate } from 'react-router-dom';
 import SnackbarAlert from '../components/tools/Snackbar';
 import { useSnackbar } from '../components/services/hooks/useSnackbar';
@@ -37,7 +37,7 @@ const RenderLoginPage = () => {
   const afterLogin = (me, resetForm) => {
     resetForm();
     setRedirecting(true);
-    redirectByRole(me.role, navigate);
+    RedirectByRole(me.role, navigate);
   };
 
   if (isLoading || redirecting) return <Loader />;

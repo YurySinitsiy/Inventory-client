@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../tools/Loader';
 import apiFetch from '../services/apiFetch';
-import  redirectByRole  from './redirectByRole.js';
+import  RedirectByRole  from './RedirectByRole.js';
 import { getSession } from '../services/users/getSession';
 const OAuthRedirectHandler = () => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const OAuthRedirectHandler = () => {
           body: JSON.stringify({ user: session.user }),
         });
         console.log(session.user);
-        redirectByRole(data.role, navigate);
+        RedirectByRole(data.role, navigate);
       } catch (err) {
         console.error('OAuth error:', err);
         navigate('/login');

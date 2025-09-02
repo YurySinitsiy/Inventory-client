@@ -5,7 +5,7 @@ import RenderAllUsersInventories from '../components/inventory/AllUsersInventori
 import getUser from '../components/services/users/getUser.js';
 import { useState, useEffect } from 'react';
 import Loader from '../components/tools/Loader';
-import redirectByRole from '../components/auth/redirectByRole';
+import RedirectByRole from '../components/auth/RedirectByRole';
 import { useNavigate } from 'react-router-dom';
 
 const RenderMainPage = () => {
@@ -19,7 +19,7 @@ const RenderMainPage = () => {
       try {
         const userData = await getUser();
         if (!userData) return;
-        redirectByRole(userData.role, navigate);
+        RedirectByRole(userData.role, navigate);
       } catch (error) {
         console.error(error);
       } finally {
