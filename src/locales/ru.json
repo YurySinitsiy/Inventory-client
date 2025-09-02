@@ -25,7 +25,6 @@
   "auth.status": "Статус",
   "auth.access": "Доступ",
   "profiles.my": "Мой профиль",
-
   "users.all": "Все пользователи",
   "user.deleted": "Пользователь(и) удален(ы)",
   "user.updated": "Данные обновленны",
@@ -86,7 +85,20 @@
   "tab.export": "Экспорт",
 
   "item.add": "Добавить элемент",
+  "item.delete": "Удалить элемент",
+  "item.added": "Элемент добавлен!",
+  "item.deleted": "Элмент удален!",
 
   "access.give": "Предоставить доступ",
-  "access.remove": "Убрать доступ"
+  "access.remove": "Убрать доступ",
+  "owner": "Создатель",
+  "created.at": "Когда создано",
+  "created.by": "Кем создано",
+  "custom.id": "Пользовательский ID",
+
+  "field.text": "Одностр. поле",
+  "field.multiline": "Многостр. поле",
+  "field.number": "Числовое поле",
+  "field.link": "Ссылка",
+  "field.boolean": "Истина/ложь"
 }

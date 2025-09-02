@@ -1,4 +1,4 @@
-import apiFetch from './apiFetch';
+import apiFetch from '../apiFetch';
 
 const getUsers = async () => {
   return apiFetch('/api/users');

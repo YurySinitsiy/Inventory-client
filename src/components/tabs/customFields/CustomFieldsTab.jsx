@@ -1,23 +1,19 @@
 // CustomFieldsTab.jsx
-import { useState } from 'react';
 import { Box, Button } from '@mui/material';
-import FieldList from './customFields/FieldList';
-import FieldTypeButtons from './customFields/FieldTypeButtons';
-import SnackbarAlert from '../tools/Snackbar';
-import { useSnackbar } from '../services/hooks/useSnackbar';
+import FieldList from './FieldList';
+import FieldTypeButtons from './FieldTypeButtons';
 import { useTranslation } from 'react-i18next';
-
-const fieldTypes = [
-  { type: 'text', label: 'Text field' },
-  { type: 'multiline', label: 'Multiline field' },
-  { type: 'number', label: 'Number field' },
-  { type: 'link', label: 'Link field' },
-  { type: 'boolean', label: 'True/false' },
-];
 
 const CustomFieldsTab = ({ values, setFieldValue, errors, touched }) => {
   const { t } = useTranslation();
 
+  const fieldTypes = [
+    { type: 'text', label: t('field.text') },
+    { type: 'multiline', label: t('field.multiline') },
+    { type: 'number', label: t('field.number') },
+    { type: 'link', label: t('field.link') },
+    { type: 'boolean', label: t('field.boolean') },
+  ];
   const addField = (type) => {
     const slotsByType = {
       text: ['text1', 'text2', 'text3'],
@@ -26,15 +22,11 @@ const CustomFieldsTab = ({ values, setFieldValue, errors, touched }) => {
       link: ['link1', 'link2', 'link3'],
       boolean: ['boolean1', 'boolean2', 'boolean3'],
     };
-    const usedSlots = values.fields
-      .filter((f) => f.type === type)
-      .map((f) => f.slot);
-    console.log(usedSlots)
+    const usedSlots = values.fields.map((f) => f.slot); // ВСЕ занятые слоты
     const freeSlot = slotsByType[type].find((s) => !usedSlots.includes(s));
     if (!freeSlot) return; // максимум достигнут
 
     const newField = {
-      id: crypto.randomUUID(),
       slot: freeSlot,
       title: '',
       type,
@@ -54,18 +46,12 @@ const CustomFieldsTab = ({ values, setFieldValue, errors, touched }) => {
   };
 
   return (
-    <Box>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          mb: 2,
-        }}>
-        <Button type='submit' variant='contained' color='primary'>
-          {t('save')}
-        </Button>
-      </Box>
-
+    <Box sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      flexDirection: 'column',
+      alignItems: 'center',
+    }}>
       <FieldList
         fields={values.fields}
         setFieldValue={setFieldValue}

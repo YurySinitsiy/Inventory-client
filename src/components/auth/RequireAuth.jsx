@@ -1,4 +1,4 @@
-import { redirectByRole } from './RedirectByRole';
+import redirectByRole from './redirectByRole';
 import Loader from '../../components/tools/Loader';
 import { supabase } from '../../lib/supabaseClient';
 import CheckUserRole from '../auth/CheckUserRole';

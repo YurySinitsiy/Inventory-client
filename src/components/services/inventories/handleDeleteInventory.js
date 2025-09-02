@@ -1,4 +1,4 @@
-import apiFetch from './apiFetch.js';
+import apiFetch from '../apiFetch.js';
 
 const handleDeleteInventory = async (selectedIds) => {
   return apiFetch('/api/inventories', {

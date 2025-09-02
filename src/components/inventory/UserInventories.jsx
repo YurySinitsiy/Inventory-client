@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import getUserInventories from '../services/getUserInventories.js';
+import getUserInventories from '../services/inventories/getUserInventories.js';
 import { useState, useEffect } from 'react';
 import Loader from '../tools/Loader.jsx';
 import DeleteInventoryButton from '../actions/DeleteInventoryButton.jsx';

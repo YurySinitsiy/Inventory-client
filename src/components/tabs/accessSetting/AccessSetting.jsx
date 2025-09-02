@@ -3,7 +3,7 @@ import AllUsersTable from '../../table/AllUsersTable';
 import Loader from '../../tools/Loader';
 import { Box } from '@mui/material';
 import ActionsAccessWrite from '../../actions/ActionsAccessWrite';
-import getUsersAccess from '../../services/getUsersAccess';
+import getUsersAccess from '../../services/users/getUsersAccess';
 import { useTranslation } from 'react-i18next';
 
 const accessSetting = ({ inventory }) => {

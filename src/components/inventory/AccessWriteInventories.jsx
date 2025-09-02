@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import InventoryTable from '../table/InventoryTable.jsx';
 import Loader from '../tools/Loader.jsx';
-import getAllPublicInventories from '../services/getAllPublicInventories.js';
-import getAllAccessInventories from '../services/getAccessInventories.js';
+import getAllPublicInventories from '../services/inventories/getAllPublicInventories.js';
+import getAllAccessInventories from '../services/inventories/getAccessInventories.js';
 const AccessWriteInventories = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [allPublicInventories, setAllPublicInventories] = useState([]);
   const [allAccessInventories, setAllAccessInventories] = useState([]);
+  const [selectionModel, setSelectionModel] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,7 +37,14 @@ const AccessWriteInventories = () => {
   ];
   if (isLoading) return <Loader />;
 
-  return <InventoryTable inventories={allInventories || []} />;
+  return (
+    <InventoryTable
+      inventories={allInventories || []}
+      setSelectionModel={setSelectionModel}
+      selectionModel={selectionModel}
+      checkboxSelection={false}
+    />
+  );
 };
 
 export default AccessWriteInventories;

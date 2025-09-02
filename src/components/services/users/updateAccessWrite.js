@@ -1,4 +1,4 @@
-import apiFetch from './apiFetch';
+import apiFetch from '../apiFetch';
 
 const updateAccessWrite = async (giveAccess, inventoryId, selectedIds) => {
   const users = selectedIds.map((id) => ({

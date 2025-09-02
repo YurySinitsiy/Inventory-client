@@ -1,4 +1,4 @@
-import apiPublicFetch from './apiPublicFetch';
+import apiPublicFetch from '../apiPublicFetch';
 
 const getTags = (query = '') => {
   return apiPublicFetch(`/api/tags?query=${encodeURIComponent(query)}`);

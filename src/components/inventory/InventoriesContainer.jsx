@@ -5,7 +5,7 @@ import { useSnackbar } from '../services/hooks/useSnackbar.jsx';
 import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
 import InventoryTable from '../table/InventoryTable.jsx';
-import handleDeleteInventory from '../services/handleDeleteInventory.js';
+import handleDeleteInventory from '../services/inventories/handleDeleteInventory.js';
 
 const InventoriesContainer = ({
   inventories,
@@ -14,6 +14,7 @@ const InventoriesContainer = ({
   selectionModel,
   setUserInventories,
   message,
+  checkboxSelection,
 }) => {
   const { t } = useTranslation();
   const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
@@ -52,6 +53,7 @@ const InventoriesContainer = ({
       <InventoryTable
         inventories={inventories}
         setSelectionModel={setSelectionModel}
+        checkboxSelection={checkboxSelection}
       />
     </Box>
   );

@@ -20,7 +20,7 @@ import { ThemeContext } from './ThemeContext';
 import { useContext, useState, useEffect } from 'react';
 import i18n from './i18n';
 import { useTranslation } from 'react-i18next';
-import { getSession } from '../services/getSession';
+import { getSession } from '../services/users/getSession';
 
 const RenderAppBar = () => {
   const { darkMode, toggleTheme } = useContext(ThemeContext);

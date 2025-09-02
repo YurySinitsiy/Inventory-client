@@ -1,4 +1,4 @@
-import apiFetch from '../services/apiFetch';
+import apiFetch from '../apiFetch';
 
 const handleDeleteUser = async (selectedIds) => {
   return apiFetch('/api/users', {

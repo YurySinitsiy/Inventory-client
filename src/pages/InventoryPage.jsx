@@ -4,66 +4,82 @@ import {
   Box,
   Typography,
   Container,
-  Link,
   useTheme,
   useMediaQuery,
+  Button,
 } from '@mui/material';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useInventory } from '../components/services/hooks/useInventory.js';
-import { useUserData } from '../components/services/hooks/useUserData.jsx';
-import apiFetch from '../components/services/apiFetch.js';
-import AppBox from '../components/tools/AppBox';
-
+import getUser from '../components/services/users/getUser.js';
 import Loader from '../components/tools/Loader';
-import Title from '../components/tools/Title.jsx';
-import FastRewindIcon from '@mui/icons-material/FastRewind';
-import CustomFieldsTab from '../components/tabs/CustomFieldsTab.jsx';
-import CustomIdTab from '../components/tabs/CustomIdTab.jsx';
+import CustomFieldsTab from '../components/tabs/customFields/CustomFieldsTab.jsx';
+import CustomIdTab from '../components/tabs/customId/CustomIdTab.jsx';
 import AccessSetting from '../components/tabs/accessSetting/AccessSetting';
-import ItemTabs from '../components/tabs/ItemsTab.jsx';
+import ItemTabs from '../components/tabs/items/ItemsTab.jsx';
 import SnackbarAlert from '../components/tools/Snackbar.jsx';
 import { useSnackbar } from '../components/services/hooks/useSnackbar';
 import { Formik, Form } from 'formik';
-import { getSession } from '../components/services/getSession.js';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
-
-const API_URL = import.meta.env.VITE_API_URL;
-
+import getInventory from '../components/services/inventories/getInventory.js';
+import LinkBackTo from '../components/tools/LinkBackTo.jsx';
+import apiFetch from '../components/services/apiFetch.js';
+import InventoryInfoBlock from '../components/inventory/InventoryInfoBlock.jsx';
+// import getInventoryTags from '../components/services/inventories/getInventoryTags.js';
+// import getInventoryOwner from '../components/services/inventories/getInventoryOwner.js';
+import isEqual from 'lodash.isequal';
 const InventoryPage = () => {
   const formikRef = useRef();
   const { id } = useParams();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { inventory, error, loading: inventoryLoading } = useInventory(id);
-  const { user, userName, loading: userLoading } = useUserData();
-  const [role, setRole] = useState(null);
+  const [inventory, setInventory] = useState(null);
+  const [user, setUser] = useState(null);
   const [tab, setTab] = useState('1');
   const [version, setVersion] = useState(1);
   const [lastSavedValues, setLastSavedValues] = useState({});
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [invLoading, setInvLoading] = useState(false);
+  // const [owner, setOwner] = useState(null);
+  // const [tags, setTags] = useState([]);
   const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
-  // Проверка роли
+
   useEffect(() => {
-    const checkRole = async () => {
-      const me = await apiFetch('/api/me');
-      setRole(me.role);
+    const checkUser = async () => {
+      setIsLoading(true);
+      try {
+        const userData = await getUser();
+        if (!userData) return;
+        setUser(userData);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
     };
-    checkRole();
+    checkUser();
   }, []);
 
-  const mapFieldType = {
-    text: 'STRING',
-    multiline: 'STRING',
-    number: 'NUMBER',
-    link: 'STRING',
-    boolean: 'BOOLEAN',
-  };
+  useEffect(() => {
+    const fetchInventory = async () => {
+      setInvLoading(true);
+      if (!id) return;
+      try {
+        const data = await getInventory(id);
+        setInventory(data);
+      } catch (err) {
+        console.error(err.message);
+      } finally {
+        setInvLoading(false);
+      }
+    };
+    fetchInventory();
+  }, [id]);
 
   // Инициализация initialValues
   const initialValues = inventory
@@ -73,11 +89,15 @@ const InventoryPage = () => {
         imageUrl: inventory.imageUrl || '',
         isPublic: inventory.isPublic || false,
         category: inventory.category || '',
-        tags: inventory.tags || [],
+        tags: inventory.InventoryTag
+          ? inventory.InventoryTag.map((it) => it.Tag?.name) // массив названий тегов
+          : [],
         customIds: Array.isArray(inventory.customIdFormat)
           ? inventory.customIdFormat
           : [],
-        fields: Array.isArray(inventory.fields) ? inventory.fields : [],
+        fields: Array.isArray(inventory.fieldConfigs)
+          ? inventory.fieldConfigs
+          : [],
         users: Array.isArray(inventory.users) ? inventory.users : [],
         version: inventory.version || 1,
       }
@@ -101,39 +121,53 @@ const InventoryPage = () => {
     }
   }, [inventory]);
 
+  // useEffect(() => {
+  //   const fetchInvData = async () => {
+  //     if (!id) return;
+  //     try {
+  //       const ownerData = await getInventoryOwner(id);
+  //       const tags = await getInventoryTags(id);
+  //       setOwner(ownerData); // сохраняем в стейт
+  //       setTags(tags);
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   };
+
+  //   fetchInvData();
+  // }, [id]);
+
   // Проверка изменений
-  const hasChanges = (current, lastSaved) => {
-    return JSON.stringify(current) !== JSON.stringify(lastSaved);
-  };
+  const hasChanges = (current, lastSaved) => !isEqual(current, lastSaved);
 
   // Сохранение данных
   const handleSave = async (valuesToSave) => {
     if (isSaving) return;
     if (!hasChanges(valuesToSave, lastSavedValues)) return;
-
     setIsSaving(true);
     showSnackbar('Saving...', 'info');
 
     try {
-      // формируем payload для сервера
       const payload = {
         title: valuesToSave.title,
         description: valuesToSave.description,
         imageUrl: valuesToSave.imageUrl,
         isPublic: valuesToSave.isPublic,
+        customIdFormat: valuesToSave.customIds,
         category: valuesToSave.category,
         tags: valuesToSave.tags,
-        version: version, // берём актуальную версию из state
+        version: version,
+        users: valuesToSave.users,
         fields: valuesToSave.fields.map((f) => ({
-          id: f.id, // undefined → создаст новое поле
-          name: f.title, // на сервере ожидается name
+          slot: f.slot,
+          title: f.title,
           description: f.description,
           type: f.type,
           visibleInTable: f.visibleInTable,
-          order: f.order,
+          position: f.order,
         })),
       };
-
+      console.log(payload);
       const data = await apiFetch(`/api/inventories/${id}`, {
         method: 'PUT',
         body: JSON.stringify(payload),
@@ -163,25 +197,27 @@ const InventoryPage = () => {
     }
   };
 
-  // Автосохранение каждые 9 секунд
   // useEffect(() => {
   //   const interval = setInterval(() => {
-  //     if (formikRef.current) {
-  //       const currentValues = formikRef.current.values;
+  //     if (!formikRef.current) return;
 
-  //       if (hasChanges(currentValues, lastSavedValues)) {
-  //         handleSave(currentValues);
-  //       }
+  //     const currentValues = {
+  //       ...formikRef.current.values,
+  //       version: lastSavedValues.version,
+  //     };
+
+  //     if (!isEqual(currentValues, lastSavedValues)) {
+  //       handleSave(currentValues);
   //     }
   //   }, 9000);
 
   //   return () => clearInterval(interval);
-  // }, [lastSavedValues]);
+  // }, [lastSavedValues]); // подписка на lastSavedValues
 
-  if (inventoryLoading || userLoading) return <Loader />;
+  if (invLoading || isLoading) return <Loader />;
 
   const handleBackClick = () => {
-    navigate(role ? '/personal' : '/', { replace: true });
+    navigate(user?.role ? '/personal' : '/', { replace: true });
   };
 
   const handleChange = (event, newValue) => setTab(newValue);
@@ -189,25 +225,15 @@ const InventoryPage = () => {
   const validationSchema = Yup.object({
     fields: Yup.array().of(
       Yup.object({
-        id: Yup.string().required(t('required')),
         title: Yup.string().trim().required(t('required')),
         type: Yup.string().required(t('required')),
-        description: Yup.string().default(''),
-        visibleInTable: Yup.boolean().default(true),
-        order: Yup.number().required(),
+        description: Yup.string().notRequired(),
+        visibleInTable: Yup.boolean().notRequired(),
       })
     ),
-    // .default([])
-    // .test('unique-name', t('name.unique'), (fields) => {
-    //   if (!fields) return true;
-    //   const names = fields.map((f) => f.name?.trim());
-    //   return new Set(names).size === names.length;
-    // }),
   });
-
-  const isCreator = user?.id === inventory.ownerId;
-  const isAdmin = role === 'admin';
-
+  const isCreator = user?.id === inventory?.ownerId;
+  const isAdmin = user?.role === 'admin';
   return (
     <Container maxWidth='xl'>
       <SnackbarAlert snackbar={snackbar} closeSnackbar={closeSnackbar} />
@@ -217,17 +243,10 @@ const InventoryPage = () => {
           justifyContent: 'space-evenly',
           alignItems: 'center',
         }}>
-        <Title variant='h2' sx={{ marginBlock: '30px', fontWeight: '700' }}>
-          {inventory.title}
-        </Title>
-        <Link
-          component='button'
-          variant='body2'
+        <InventoryInfoBlock inventory={inventory} />
+        <LinkBackTo
           onClick={handleBackClick}
-          sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-          <FastRewindIcon />
-          {t('inventories.back')}
-        </Link>
+          text={t('inventories.back')}></LinkBackTo>
       </Box>
 
       <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -248,56 +267,55 @@ const InventoryPage = () => {
                     aria-label='Inventory Tabs'
                     variant={isSmall ? 'scrollable' : 'standard'}
                     scrollButtons={isSmall ? 'auto' : false}
-                    allowScrollButtonsMobile>
+                    allowScrollButtonsMobile
+                    centered>
                     <Tab label={t('tab.items')} value='1' />
-                    {user && <Tab label={t('tab.chat')} value='2' />}
-                    {(isCreator || isAdmin) && [
-                      <Tab label={t('tab.setting')} value='3' />,
-                      <Tab label={t('tab.id.custom')} value='4' />,
-                      <Tab label={t('tab.fields')} value='5' />,
-                      <Tab label={t('tab.access')} value='6' />,
-                      <Tab label={t('tab.stats')} value='7' />,
-                      <Tab label={t('tab.export')} value='8' />,
-                    ]}
+                    {user &&
+                      (isCreator || isAdmin) && [
+                        <Tab label={t('tab.id.custom')} value='2' />,
+                        <Tab label={t('tab.fields')} value='3' />,
+                        <Tab label={t('tab.access')} value='4' />,
+                      ]}
                   </TabList>
                 </Box>
 
                 <TabPanel value='1'>
                   <ItemTabs
                     isCreator={isCreator}
+                    user={user}
                     isAdmin={isAdmin}
                     inventory={inventory}
                   />
                 </TabPanel>
-                {user && (
-                  <TabPanel value='2'>
-                    <Typography>Chat</Typography>
-                  </TabPanel>
-                )}
-                {(isCreator || isAdmin) && (
+
+                {user && (isCreator || isAdmin) && (
                   <>
+                    <TabPanel value='2'>
+                      <CustomIdTab
+                        values={values}
+                        setFieldValue={setFieldValue}
+                        fieldName='customIds'
+                      />
+                    </TabPanel>
                     <TabPanel value='3'>
-                      <Typography>Setting</Typography>
-                    </TabPanel>
-                    <TabPanel value='4'>
-                      <CustomIdTab inventoryId={id} />
-                    </TabPanel>
-                    <TabPanel value='5'>
                       <CustomFieldsTab
                         values={values}
                         setFieldValue={setFieldValue}
                         errors={errors}
                         touched={touched}
                       />
+
+                      {/* //!Настроить авто-сейв и убрать кнопку */}
+                      <Button
+                        type='submit'
+                        variant='contained'
+                        color='success'
+                        indicator='false'>
+                        {t('save')}
+                      </Button>
                     </TabPanel>
-                    <TabPanel value='6'>
+                    <TabPanel value='4'>
                       <AccessSetting inventory={inventory} />
-                    </TabPanel>
-                    <TabPanel value='7'>
-                      <Typography>Stats</Typography>
-                    </TabPanel>
-                    <TabPanel value='8'>
-                      <Typography>Export</Typography>
                     </TabPanel>
                   </>
                 )}

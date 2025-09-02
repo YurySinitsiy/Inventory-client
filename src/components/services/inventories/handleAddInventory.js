@@ -1,5 +1,5 @@
-import apiFetch from './apiFetch';
-import { getSession } from './getSession';
+import apiFetch from '../apiFetch';
+import { getSession } from '../users/getSession';
 
 const handleAddInventory = async (values) => {
   const session = await getSession();

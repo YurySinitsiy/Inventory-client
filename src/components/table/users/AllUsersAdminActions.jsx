@@ -4,11 +4,11 @@ import SnackbarAlert from '../../tools/Snackbar.jsx';
 import { useState, useEffect } from 'react';
 import AllUsersTable from '../AllUsersTable';
 import ActionsAllUsers from '../../actions/ActionsAllUsers';
-import handleDeleteUser from '../../services/handleDeleteUser';
+import handleDeleteUser from '../../services/users/handleDeleteUser';
 import { useSnackbar } from '../../services/hooks/useSnackbar.jsx';
-import getUsers from '../../services/getUsers.js';
+import getUsers from '../../services/users/getUsers.js';
 import { useTranslation } from 'react-i18next';
-import updateUsersData from '../../services/updateUsersData.js';
+import updateUsersData from '../../services/users/updateUsersData.js';
 const RenderUsersTable = () => {
   const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
   const { t } = useTranslation();

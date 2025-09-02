@@ -1,5 +1,5 @@
 import { Box, Button } from '@mui/material';
-import updateAccessWrite from '../services/updateAccessWrite';
+import updateAccessWrite from '../services/users/updateAccessWrite';
 import Loader from '../tools/Loader';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';

@@ -86,7 +86,20 @@
   "tab.export": "Export",
 
   "item.add": "Add Item",
+  "item.delete": "Delete Item",
+  "item.added": "Item added",
+  "item.deleted": "Item deleted",
 
   "access.give": "Give access",
-  "access.remove": "Remove acess"
+  "access.remove": "Remove acess",
+  "owner": "Owner",
+  "created.at": "Created at",
+  "created.by": "Created by",
+  "custom.id": "Custom ID",
+
+  "field.text": "Text field",
+  "field.multiline": "Multiline",
+  "field.number": "Number",
+  "field.link": "Link",
+  "field.boolean": "True/false"
 }

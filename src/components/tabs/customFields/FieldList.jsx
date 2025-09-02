@@ -29,9 +29,12 @@ const FieldList = ({
           <List
             {...provided.droppableProps}
             ref={provided.innerRef}
-            sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'center' }}>
             {fields.map((field, index) => (
-              <Draggable key={field.id} draggableId={field.id} index={index}>
+              <Draggable
+                key={field.slot}
+                draggableId={field.slot}
+                index={index}>
                 {(provided) => (
                   <FieldItem
                     field={field}

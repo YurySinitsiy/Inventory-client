@@ -10,6 +10,7 @@ import {
   Tooltip,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useTranslation } from 'react-i18next';
 
 const FieldItem = forwardRef(
   (
@@ -26,6 +27,8 @@ const FieldItem = forwardRef(
     },
     ref
   ) => {
+    const { t } = useTranslation();
+
     const handleChange = (key, value) => {
       setFieldValue(`fields[${index}].${key}`, value);
     };
@@ -42,13 +45,14 @@ const FieldItem = forwardRef(
         {...dragHandleProps}
         sx={{
           display: 'flex',
-          alignItems: 'baseline',
+          alignItems: 'center',
+          justifyContent: 'center',
           flexWrap: 'wrap',
           gap: 2,
           borderBottom: '1px solid gray',
         }}>
         <TextField
-          label='Field title'
+          label={t('title')}
           value={field.title || ''}
           onChange={(e) => handleChange('title', e.target.value)}
           error={Boolean(titleError)}
@@ -67,7 +71,7 @@ const FieldItem = forwardRef(
         </Select>
 
         <TextField
-          label='Description (Tooltip)'
+          label={t('description')}
           value={field.description || ''}
           onChange={(e) => handleChange('description', e.target.value)}
         />

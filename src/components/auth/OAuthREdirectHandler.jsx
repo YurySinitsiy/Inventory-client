@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../tools/Loader';
 import apiFetch from '../services/apiFetch';
-import { redirectByRole } from './RedirectByRole';
-import { getSession } from '../services/getSession';
+import  redirectByRole  from './redirectByRole.js';
+import { getSession } from '../services/users/getSession';
 const OAuthRedirectHandler = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);

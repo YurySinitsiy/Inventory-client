@@ -1,4 +1,4 @@
-import apiFetch from './apiFetch';
+import apiFetch from '../apiFetch';
 
 const updateUsersData = async (ids, updates) => {
   return apiFetch('/api/users/update', {

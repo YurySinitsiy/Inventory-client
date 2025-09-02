@@ -1,9 +1,9 @@
-import { getSession } from './getSession';
+import { getSession } from './users/getSession';
 import { supabase } from '../../lib/supabaseClient';
 const API_URL = import.meta.env.VITE_API_URL;
 const apiFetch = async (path, options = {}) => {
   const session = await getSession();
-  if (!session) throw new Error('No active session found');
+  if (!session) return;
   const res = await fetch(`${API_URL}${path}`, {
     ...options,
     headers: {
@@ -15,7 +15,7 @@ const apiFetch = async (path, options = {}) => {
 
   if (!res.ok) {
     if (res.status === 401 || res.status === 403) {
-      if (path === '/api/me') {
+      if (path === '/api/users/me') {
         throw new Error('Account has been blocked or delete');
       } else {
         await supabase.auth.signOut(); // выходим из системы

@@ -1,10 +1,10 @@
 import Loader from '../tools/Loader.jsx';
 import { useState, useEffect } from 'react';
-import getInventories from '../services/getInventories.js';
+import getInventories from '../services/inventories/getInventories.js';
 import DeleteButton from '../actions/DeleteInventoryButton.jsx';
 import InventoriesContainer from './InventoriesContainer.jsx';
 
-const AllUsersInventories = ({ isAdmin = false }) => {
+const AllUsersInventories = ({ checkboxSelection, isAdmin = false }) => {
   const [allInventories, setAllInventories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectionModel, setSelectionModel] = useState([]);
@@ -45,6 +45,7 @@ const AllUsersInventories = ({ isAdmin = false }) => {
       actions={allUsersInventoriesActions}
       selectionModel={selectionModel}
       setUserInventories={setAllInventories}
+      checkboxSelection={checkboxSelection}
     />
   );
 };

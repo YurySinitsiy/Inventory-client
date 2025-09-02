@@ -1,4 +1,4 @@
-import apiPublicFetch from './apiPublicFetch.js';
+import apiPublicFetch from '../apiPublicFetch.js';
 
 const getInventory = async (id) => {
   return apiPublicFetch(`/api/inventories/${id}`);

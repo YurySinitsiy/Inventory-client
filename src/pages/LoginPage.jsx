@@ -1,21 +1,17 @@
-import AppBox from '../components/tools/AppBox';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Loader from '../components/tools/Loader';
 import Title from '../components/tools/Title';
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Typography, Link, Alert } from '@mui/material';
+import { Box, Typography, Link } from '@mui/material';
 import LoginForm from '../components/auth/LoginForm';
 import { supabase } from '../lib/supabaseClient';
-import CheckUserStatus from '../components/auth/CheckUserStatus';
-import CheckUserRole from '../components/auth/CheckUserRole';
-import { redirectByRole } from '../components/auth/RedirectByRole';
+import redirectByRole from '../components/auth/redirectByRole';
 import { useNavigate } from 'react-router-dom';
 import SnackbarAlert from '../components/tools/Snackbar';
 import { useSnackbar } from '../components/services/hooks/useSnackbar';
 import SocialAuth from '../components/auth/SocialAuth';
 import { useTranslation } from 'react-i18next';
-import apiFetch from '../components/services/apiFetch';
-const API_URL = import.meta.env.VITE_API_URL;
+import getUser from '../components/services/users/getUser';
 
 const RenderLoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -29,7 +25,7 @@ const RenderLoginPage = () => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword(values);
       if (error) throw error;
-      const me = await apiFetch('/api/me');
+      const me = await getUser();
       afterLogin(me, resetForm);
     } catch (err) {
       showSnackbar(err.message || t('auth.loginFailed'), 'error');

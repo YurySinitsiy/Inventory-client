@@ -1,6 +1,13 @@
 import { DataGrid } from '@mui/x-data-grid';
 
-const DefaultTable = ({ rows, columns, setSelectionModel, onRowClick }) => {
+const DefaultTable = ({
+  rows,
+  columns,
+  setSelectionModel,
+  onRowClick,
+  checkboxSelection = true,
+  columnVisibilityModel,
+}) => {
   return (
     <DataGrid
       rows={rows}
@@ -13,11 +20,12 @@ const DefaultTable = ({ rows, columns, setSelectionModel, onRowClick }) => {
           paginationModel: { pageSize: 10, page: 0 },
         },
       }}
-      checkboxSelection
+      checkboxSelection={checkboxSelection}
       onRowSelectionModelChange={(newSelection) => {
         setSelectionModel(Array.from(newSelection.ids));
       }}
       onRowClick={onRowClick}
+      columnVisibilityModel={columnVisibilityModel}
     />
   );
 };
