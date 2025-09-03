@@ -57,6 +57,7 @@
   "save": "Сохранить",
   "saved": "Успешно сохранено",
   "saved.fail": "Ошибка сохранения",
+  "saved.versionConflict": "Конфлитк версий",
   "welcome": "Добро пожаловать",
   "welcome.to": "Добро пожаловать в",
   "title": "Название",
@@ -100,5 +101,17 @@
   "field.multiline": "Многостр. поле",
   "field.number": "Числовое поле",
   "field.link": "Ссылка",
-  "field.boolean": "Истина/ложь"
+  "field.boolean": "Истина/ложь",
+
+  "id.preview": "Превью ID:",
+
+  "types.fixed": "Фиксированный текст",
+  "types.20bit": "20-битное число",
+  "types.32bit": "32-битное число",
+  "types.6digit.number": "6-значное число",
+  "types.9digit.number": "9-значное число",
+  "types.guid": "GUID",
+  "types.date": "Дата/время",
+
+  "form.invalid": "Некорректно заполнены поля"
 }

@@ -3,7 +3,7 @@ import handleAddInventory from '../services/inventories/handleAddInventory.js';
 import { useState, useEffect } from 'react';
 import Loader from '../tools/Loader.jsx';
 import getTags from '../services/inventories/getTags.js';
-import InventoryForm from '../form/InventoryForm.jsx';
+import AddInventoryForm from '../form/AddInventoryForm.jsx';
 import getCategories from '../services/inventories/getCategories.js';
 
 const AddInventoryModal = ({ open, onClose, onAdd }) => {
@@ -43,7 +43,7 @@ const AddInventoryModal = ({ open, onClose, onAdd }) => {
 
   return (
     <Modal open={open} onClose={onClose}>
-      <InventoryForm
+      <AddInventoryForm
         categories={categories}
         tagOptions={tags}
         onSubmit={onSubmit}

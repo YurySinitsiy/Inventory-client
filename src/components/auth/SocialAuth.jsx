@@ -25,6 +25,7 @@ const SocialAuth = () => {
   const handleOAuthLogin = async (provider) => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
+      //options: { redirectTo: `https://inventory-client-lac.vercel.app/oauth-redirect` },
       options: { redirectTo: `http://localhost:5173/oauth-redirect` },
     });
 

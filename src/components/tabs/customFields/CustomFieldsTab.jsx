@@ -4,7 +4,13 @@ import FieldList from './FieldList';
 import FieldTypeButtons from './FieldTypeButtons';
 import { useTranslation } from 'react-i18next';
 
-const CustomFieldsTab = ({ values, setFieldValue, errors, touched }) => {
+const CustomFieldsTab = ({
+  values,
+  setFieldValue,
+  errors,
+  touched,
+  handleBlur,
+}) => {
   const { t } = useTranslation();
 
   const fieldTypes = [
@@ -46,12 +52,13 @@ const CustomFieldsTab = ({ values, setFieldValue, errors, touched }) => {
   };
 
   return (
-    <Box sx={{
-      display: 'flex',
-      justifyContent: 'center',
-      flexDirection: 'column',
-      alignItems: 'center',
-    }}>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}>
       <FieldList
         fields={values.fields}
         setFieldValue={setFieldValue}
@@ -59,6 +66,7 @@ const CustomFieldsTab = ({ values, setFieldValue, errors, touched }) => {
         fieldTypes={fieldTypes}
         errors={errors}
         touched={touched}
+        handleBlur={handleBlur}
       />
 
       <FieldTypeButtons

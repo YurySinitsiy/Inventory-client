@@ -24,11 +24,11 @@ const FieldItem = forwardRef(
       dragHandleProps,
       errors,
       touched,
+      handleBlur,
     },
     ref
   ) => {
     const { t } = useTranslation();
-
     const handleChange = (key, value) => {
       setFieldValue(`fields[${index}].${key}`, value);
     };
@@ -45,7 +45,7 @@ const FieldItem = forwardRef(
         {...dragHandleProps}
         sx={{
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'baseline',
           justifyContent: 'center',
           flexWrap: 'wrap',
           gap: 2,
@@ -57,6 +57,8 @@ const FieldItem = forwardRef(
           onChange={(e) => handleChange('title', e.target.value)}
           error={Boolean(titleError)}
           helperText={titleError || ''}
+          onBlur={handleBlur}
+          
         />
 
         <Select

@@ -23,7 +23,7 @@ const apiFetch = async (path, options = {}) => {
       }
     }
 
-    const errorData = await res.json().catch(() => ({}));
+    const errorData = await res.json();
     throw new Error(errorData.message || `Server error: ${res.status}`);
   }
   return res.json();

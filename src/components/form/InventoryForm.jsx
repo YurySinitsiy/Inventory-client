@@ -1,110 +1,123 @@
 import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
-import { Box, Button, TextField, FormHelperText } from '@mui/material';
-import Title from '../tools/Title';
-import MarkdownField from './fields/MarkdownField';
-import CategoryField from './fields/CategoryField';
-import TagsField from './fields/TagsField';
-import PublicCheckbox from './fields/PublicCheckbox';
-import InventoryImageUpload from './fields/InventoryImageUpload';
-import { useTranslation } from 'react-i18next';
+import InventoryTabs from '../tabs/InventoryTabs.jsx';
+import inventoryInitialValues from '../services/inventories/entry/inventoryInitialValues.js';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import updateInventoryValidSchema from '../services/inventories/entry/updateInventoryValidSchema.js';
+import isEqual from 'lodash.isequal';
+import updateInventory from '../services/inventories/updateInventory.js';
+import valuesToUpdateInventory from '../services/inventories/entry/valuesToUpdateInventory.js';
+import SnackbarAlert from '../tools/Snackbar.jsx';
+import { useSnackbar } from '../services/hooks/useSnackbar';
 
-const InventoryForm = ({ categories, tagOptions, onSubmit }) => {
-  const { t } = useTranslation();
+const InventoryForm = ({ t, inventory, user }) => {
+  const formikRef = useRef();
+  const [version, setVersion] = useState(1);
+  const [lastSavedValues, setLastSavedValues] = useState({});
+  const [isSaving, setIsSaving] = useState(false);
+  const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
 
-  const validationSchema = Yup.object({
-    title: Yup.string().required(t('required')),
-    description: Yup.string().required(t('required')),
-    category: Yup.string().required(t('required')),
-  });
+  const initialValues = inventoryInitialValues(inventory);
+  const validationSchema = updateInventoryValidSchema(t);
+
+  useEffect(() => {
+    if (inventory) {
+      setVersion(initialValues.version);
+      setLastSavedValues(initialValues);
+    }
+  }, [inventory]);
+
+  const hasChanges = useCallback(
+    (current, lastSaved) => !isEqual(current, lastSaved),
+    []
+  );
+
+  const handleSave = useCallback(
+    async (valuesToUpdate) => {
+      if (isSaving) return;
+
+      if (!hasChanges(valuesToUpdate, lastSavedValues)) {
+        return;
+      }
+
+      setIsSaving(true);
+      showSnackbar('Saving...', 'info');
+
+      try {
+        const dataToUpdate = valuesToUpdateInventory(valuesToUpdate, version);
+        const data = await updateInventory(inventory.id, dataToUpdate);
+
+        setVersion(data.version);
+        setLastSavedValues({ ...valuesToUpdate, version: data.version });
+        showSnackbar(t('saved'), 'success');
+      } catch (err) {
+        console.error('Save failed', err);
+        if (err?.currentVersion) {
+          showSnackbar(
+            t('saved.versionConflict', { currentVersion: err.currentVersion }),
+            'error'
+          );
+          setVersion(err.currentVersion);
+        } else {
+          showSnackbar(t('saved.fail'), 'error');
+        }
+      } finally {
+        setIsSaving(false);
+      }
+    },
+    [isSaving, hasChanges, lastSavedValues, version, inventory]
+  );
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      if (!formikRef.current || isSaving) return;
+
+      const currentValues = {
+        ...formikRef.current.values,
+        version: version,
+      };
+
+      if (!hasChanges(currentValues, lastSavedValues)) {
+        return;
+      }
+      const errors = await formikRef.current.validateForm();
+
+      if (Object.keys(errors).length > 0) {
+        showSnackbar(t('form.invalid'), 'warning');
+      }
+      formikRef.current.submitForm();
+    }, 9000);
+
+    return () => clearInterval(interval);
+  }, [lastSavedValues, version, handleSave, isSaving]);
 
   return (
-    <Formik
-      initialValues={{
-        title: '',
-        description: '',
-        category: '',
-        tags: [],
-        imageUrl: null,
-        isPublic: false,
-      }}
-      validationSchema={validationSchema}
-      onSubmit={onSubmit}>
-      {({ values, errors, touched, setFieldValue, handleBlur }) => (
-        <Box sx={{ p: 3, borderRadius: '20px', maxWidth: '900px' }}>
-          <Title variant='h5'>{t('inventory.add')}</Title>
+    <>
+      <SnackbarAlert snackbar={snackbar} closeSnackbar={closeSnackbar} />
+
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        enableReinitialize
+        innerRef={formikRef}
+        validateOnChange={true}
+        validateOnBlur={true}
+        onSubmit={handleSave}>
+        {({ values, setFieldValue, errors, touched, handleBlur }) => (
           <Form>
-            {/* Title */}
-            <TextField
-              fullWidth
-              margin='normal'
-              label={t('title')}
-              name='title'
-              value={values.title}
-              onChange={(e) => setFieldValue('title', e.target.value)}
-              onBlur={handleBlur}
-              error={touched.title && Boolean(errors.title)}
+            <InventoryTabs
+              inventory={inventory}
+              user={user}
+              values={values}
+              setFieldValue={setFieldValue}
+              errors={errors}
+              touched={touched}
+              t={t}
+              handleBlur={handleBlur}
             />
-            {touched.title && errors.title && (
-              <FormHelperText error>{errors.title}</FormHelperText>
-            )}
-
-            {/* Description */}
-            <MarkdownField
-              value={values.description}
-              onChange={(val) => setFieldValue('description', val)}
-              label={t('description')}
-            />
-            {touched.description && errors.description && (
-              <FormHelperText error>{errors.description}</FormHelperText>
-            )}
-
-            {/* Category */}
-            <CategoryField
-              value={values.category}
-              onChange={(val) => setFieldValue('category', val)}
-              categories={categories}
-              label={t('category')}
-            />
-            {touched.category && errors.category && (
-              <FormHelperText error>{errors.category}</FormHelperText>
-            )}
-
-            {/* Tags */}
-            <TagsField
-              value={values.tags}
-              onChange={(val) => setFieldValue('tags', val)}
-              tagOptions={tagOptions}
-              label={t('tags')}
-            />
-
-            {/* Image Upload */}
-            <InventoryImageUpload
-              value={values.imageUrl}
-              onChange={(url) => setFieldValue('imageUrl', url)}
-            />
-
-            {/* Public Checkbox */}
-            <PublicCheckbox
-              name='isPublic'
-              value={values}
-              onChange={(e) => setFieldValue('isPublic', e.target.checked)}
-              onBlur={handleBlur}
-              label={t('public.make')}
-            />
-
-            {/* Submit */}
-            <Button
-              type='submit'
-              variant='contained'
-              color='primary'
-              sx={{ mt: 3 }}>
-              {t('save')}
-            </Button>
           </Form>
-        </Box>
-      )}
-    </Formik>
+        )}
+      </Formik>
+    </>
   );
 };
 

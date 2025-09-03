@@ -27,7 +27,7 @@ const TagContainer = styled(Box)({
   flexWrap: 'wrap',
   gap: '4px',
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'flex-start',
 });
 
 const InventoryInfoBlock = ({ inventory }) => {
@@ -74,7 +74,7 @@ const InventoryInfoBlock = ({ inventory }) => {
           {t('owner')}:{' '}
           {inventory.owner
             ? `${inventory.owner.name} ${inventory.owner.surname}`
-            : '-'}
+            : inventory.owner.email || '-'}
         </InfoText>
 
         <Box sx={{ display: 'flex', overflow: 'auto', '& p': { margin: 0 } }}>

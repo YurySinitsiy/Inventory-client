@@ -1,8 +1,8 @@
-import { Container, Link } from '@mui/material';
-import Title from '../components/tools/Title.jsx';
+import { Container } from '@mui/material';
+import Title from '../components/tools/Title';
 import { useTranslation } from 'react-i18next';
-import RenderAllUsersInventories from '../components/inventory/AllUsersInventories.jsx';
-import getUser from '../components/services/users/getUser.js';
+import RenderAllUsersInventories from '../components/inventory/AllUsersInventories';
+import getUser from '../components/services/users/getUser';
 import { useState, useEffect } from 'react';
 import Loader from '../components/tools/Loader';
 import RedirectByRole from '../components/auth/RedirectByRole';
@@ -13,19 +13,24 @@ const RenderMainPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  const checkUser = async () => {
+    setIsLoading(true);
+    try {
+      await redirectUser();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const redirectUser = async () => {
+    const user = await getUser();
+    if (!user) return;
+    RedirectByRole(user.role, navigate);
+  };
+
   useEffect(() => {
-    const checkUser = async () => {
-      setIsLoading(true);
-      try {
-        const userData = await getUser();
-        if (!userData) return;
-        RedirectByRole(userData.role, navigate);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
     checkUser();
   }, []);
 

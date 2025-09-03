@@ -58,6 +58,7 @@
   "save": "Save",
   "saved": "Saved successfully",
   "saved.fail": "Save failed",
+  "saved.versionConflict": "Version conflict",
   "welcome": "Welcome",
   "welcome.to": "Welcome to",
   "title": "Title",
@@ -101,5 +102,17 @@
   "field.multiline": "Multiline",
   "field.number": "Number",
   "field.link": "Link",
-  "field.boolean": "True/false"
+  "field.boolean": "True/false",
+
+  "id.preview": "ID Preview:",
+
+  "types.fixed": "Fixed text",
+  "types.20bit": "20-bit number",
+  "types.32bit": "32-bit number",
+  "types.6digit.number": "6-digit number",
+  "types.9digit.number": "9-digit number",
+  "types.guid": "GUID",
+  "types.date": "Date/Time",
+
+  "form.invalid": "Fields are filled in incorrectly"
 }

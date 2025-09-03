@@ -26,6 +26,7 @@ const DefaultTable = ({
       }}
       onRowClick={onRowClick}
       columnVisibilityModel={columnVisibilityModel}
+      disableRowSelectionOnClick
     />
   );
 };

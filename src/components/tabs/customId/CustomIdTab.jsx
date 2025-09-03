@@ -11,18 +11,26 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { v4 as uuidv4 } from 'uuid';
 import generateValue from '../../services/items/generateIdsValue';
 import UnicodeField from './UnicodeField';
-import Title from '../../tools/Title'
-const TYPES = [
-  { label: 'Фиксированный текст', value: 'fixed' },
-  { label: '20-битное число', value: 'random20' },
-  { label: '32-битное число', value: 'random32' },
-  { label: '6-значное число', value: 'random6' },
-  { label: '9-значное число', value: 'random9' },
-  { label: 'GUID', value: 'guid' },
-  { label: 'Дата/время', value: 'datetime' },
-];
+import Title from '../../tools/Title';
 
-const CustomIdTab = ({ values, setFieldValue, fieldName }) => {
+const CustomIdTab = ({
+  values,
+  setFieldValue,
+  fieldName,
+  errors,
+  touched,
+  t,
+  handleBlur
+}) => {
+  const TYPES = [
+    { label: t('types.fixed'), value: 'fixed' },
+    { label: t('types.20bit'), value: 'random20' },
+    { label: t('types.32bit'), value: 'random32' },
+    { label: t('types.6digit.number'), value: 'random6' },
+    { label: t('types.9digit.number'), value: 'random9' },
+    { label: t('types.guid'), value: 'guid' },
+    { label: t('types.date'), value: 'datetime' },
+  ];
   const rows = values[fieldName] || [];
 
   const handleAdd = () => {
@@ -58,7 +66,12 @@ const CustomIdTab = ({ values, setFieldValue, fieldName }) => {
   };
 
   const handleDragEnd = (result) => {
-    if (!result.destination) return;
+    if (!result.destination) {
+      const reordered = Array.from(rows);
+      reordered.splice(result.source.index, 1);
+      setFieldValue(fieldName, reordered);
+      return;
+    }
     const reordered = Array.from(rows);
     const [removed] = reordered.splice(result.source.index, 1);
     reordered.splice(result.destination.index, 0, removed);
@@ -76,7 +89,7 @@ const CustomIdTab = ({ values, setFieldValue, fieldName }) => {
         gap: 2,
       }}>
       <Title variant='h6'>
-        Превью итогового ID: <strong>{combinedPreview}</strong>
+        {t('id.preview')} <strong>{combinedPreview}</strong>
       </Title>
 
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -89,7 +102,7 @@ const CustomIdTab = ({ values, setFieldValue, fieldName }) => {
                     <Box
                       sx={{
                         display: 'flex',
-                        alignItems: 'center',
+                        alignItems: 'baseline',
                         flexWrap: 'wrap',
                         gap: 2,
                         borderBottom: '1px solid gray',
@@ -113,8 +126,12 @@ const CustomIdTab = ({ values, setFieldValue, fieldName }) => {
 
                       {row.type === 'fixed' ? (
                         <UnicodeField
+                          index={index}
                           value={row.value}
                           onChange={(val) => handleValueChange(row.id, val)}
+                          errors={errors}
+                          touched={touched}
+                          onBlur={handleBlur}
                         />
                       ) : (
                         <TextField
@@ -140,7 +157,7 @@ const CustomIdTab = ({ values, setFieldValue, fieldName }) => {
       </DragDropContext>
 
       <Button variant='contained' color='primary' onClick={handleAdd}>
-        Добавить элемент
+        {t('item.add')}
       </Button>
     </Box>
   );

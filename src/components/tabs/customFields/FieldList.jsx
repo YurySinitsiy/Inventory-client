@@ -10,9 +10,14 @@ const FieldList = ({
   fieldTypes,
   errors,
   touched,
+  handleBlur
 }) => {
   const handleDragEnd = (result) => {
-    if (!result.destination) return;
+    if (!result.destination) {
+      const fieldToDelete = fields[result.source.index];
+      deleteField(fieldToDelete.order);
+      return;
+    }
     const newFields = [...fields];
     const [moved] = newFields.splice(result.source.index, 1);
     newFields.splice(result.destination.index, 0, moved);
@@ -29,7 +34,13 @@ const FieldList = ({
           <List
             {...provided.droppableProps}
             ref={provided.innerRef}
-            sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'center' }}>
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
             {fields.map((field, index) => (
               <Draggable
                 key={field.slot}
@@ -47,6 +58,7 @@ const FieldList = ({
                     dragHandleProps={provided.dragHandleProps}
                     errors={errors}
                     touched={touched}
+                    handleBlur={handleBlur}
                   />
                 )}
               </Draggable>
