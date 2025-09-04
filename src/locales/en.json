@@ -117,5 +117,7 @@
   "types.guid": "GUID",
   "types.date": "Date/Time",
 
-  "form.invalid": "Fields are filled in incorrectly"
+  "form.invalid": "Fields are filled in incorrectly",
+
+  "image.size": "The file size should not exceed 5 MB"
 }

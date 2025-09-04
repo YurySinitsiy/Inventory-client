@@ -11,11 +11,12 @@ const ItemsColumns = ({ t, fields }) => {
     { field: 'customId', headerName: t('custom.id'), minWidth: 170, flex: 1 },
   ];
 
-  const customColumns = (fields || []).map(({ slot, title }) => ({
+  const customColumns = (fields || []).map(({ slot, title, type }) => ({
     field: slot,
     headerName: title,
     minWidth: 50,
     flex: 1,
+    type: type === 'boolean' ? 'boolean' : 'string',
   }));
 
   const columns = [...customColumns, ...defaultColumns];

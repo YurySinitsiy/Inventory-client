@@ -23,22 +23,22 @@ const ItemsTab = ({ t, user, isCreator, isAdmin, inventory }) => {
   const [selectionModel, setSelectionModel] = useState([]);
   const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
   const [customIdFormat, setCustomIdFormat] = useState([]);
-
-  const checkAccess = async () => {
-    if (!user) return;
-    setIsLoading(true);
-    try {
-      const access = await checkUserAccess(inventory.id, user.id);
-      setHasWriteAccess(access?.hasAccess || false);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
   useEffect(() => {
+    const checkAccess = async () => {
+      if (!user) return;
+      setIsLoading(true);
+      try {
+        const access = await checkUserAccess(inventory.id, user.id);
+        setHasWriteAccess(access?.hasAccess || false);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     checkAccess();
-  }, []);
+  }, [user, inventory]);
 
   const getInventoryData = async () => {
     const [fetchedFields, fetchedItems, fetchedCustomIdFormat] =
@@ -53,20 +53,19 @@ const ItemsTab = ({ t, user, isCreator, isAdmin, inventory }) => {
       Array.isArray(fetchedCustomIdFormat) ? fetchedCustomIdFormat : []
     );
   };
-
-  const fetchInventoryData = async () => {
-    if (!inventory?.id) return;
-    setDataLoading(true);
-    try {
-      await getInventoryData();
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setDataLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchInventoryData = async () => {
+      if (!inventory?.id) return;
+      setDataLoading(true);
+      try {
+        await getInventoryData();
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setDataLoading(false);
+      }
+    };
+
     fetchInventoryData();
   }, [inventory]);
 
@@ -83,7 +82,8 @@ const ItemsTab = ({ t, user, isCreator, isAdmin, inventory }) => {
     setIsLoading(true);
     try {
       await startAddItem(inventory.id, values, resetForm);
-    } catch (err) {
+    } catch (error) {
+      console.error(error);
       showSnackbar(t('item.add.error'), 'error');
     } finally {
       setIsLoading(false);
@@ -103,7 +103,7 @@ const ItemsTab = ({ t, user, isCreator, isAdmin, inventory }) => {
     try {
       await startDeleteItem();
     } catch (err) {
-      console.error(err)
+      console.error(err);
       showSnackbar(t('item.delete.error'), 'error');
     } finally {
       setIsLoading(false);

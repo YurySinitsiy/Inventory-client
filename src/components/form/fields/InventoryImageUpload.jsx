@@ -1,14 +1,22 @@
 import { useDropzone } from 'react-dropzone';
 import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
-import handleImageUpload from '../../services/inventories/handleImageUpload';
+import uploadImageDirect from '../../services/inventories/uploadImageDirect';
+import { useSnackbar } from '../../services/hooks/useSnackbar';
+import SnackbarAlert from '../../tools/Snackbar';
 
 const InventoryImageUpload = ({ value, onChange, t }) => {
   const [preview, setPreview] = useState(value || '');
   const [uploading, setUploading] = useState(false);
+  const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
+  const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
   const startUpload = (files) => {
     const file = files[0];
+    if (file.size > MAX_FILE_SIZE) {
+      showSnackbar(t('image.size'), 'error');
+      return;
+    }
     setUploading(true);
     const formData = new FormData();
     formData.append('file', file);
@@ -25,10 +33,10 @@ const InventoryImageUpload = ({ value, onChange, t }) => {
   const onDrop = async (files) => {
     const formData = startUpload(files);
     try {
-      const data = await handleImageUpload(formData).json();
+      const data = await uploadImageDirect(formData);
       endUpload(data.url);
     } catch (err) {
-      console.error(err);
+      console.error('Image upload error:', err);
     } finally {
       setUploading(false);
     }
@@ -37,20 +45,25 @@ const InventoryImageUpload = ({ value, onChange, t }) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
-    <Box
-      {...getRootProps()}
-      sx={{ border: '2px dashed gray', p: 2, textAlign: 'center' }}>
-      <input {...getInputProps()} />
-      {preview ? (
-        <img
-          src={preview}
-          alt='Preview'
-          style={{ maxWidth: '100%', maxHeight: 200 }}
-        />
-      ) : null}
-      <Typography>{isDragActive ? t('drop.file') : t('drag.drop')}</Typography>
-      {uploading && <Typography>{t('uploading')}</Typography>}
-    </Box>
+    <>
+      <SnackbarAlert snackbar={snackbar} closeSnackbar={closeSnackbar} />
+      <Box
+        {...getRootProps()}
+        sx={{ border: '2px dashed gray', p: 2, textAlign: 'center' }}>
+        <input {...getInputProps()} />
+        {preview ? (
+          <img
+            src={preview}
+            alt='Preview'
+            style={{ maxWidth: '100%', maxHeight: 200 }}
+          />
+        ) : null}
+        <Typography>
+          {isDragActive ? t('drop.file') : t('drag.drop')}
+        </Typography>
+        {uploading && <Typography>{t('uploading')}</Typography>}
+      </Box>
+    </>
   );
 };
 

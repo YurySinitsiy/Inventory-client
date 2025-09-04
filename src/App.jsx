@@ -1,30 +1,28 @@
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 
-import RequireAuth from "./components/auth/RequireAuth";
-import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
-import MainPage from "./pages/MainPage";
-import LoginPage from "./pages/LoginPage";
-import RegistrationPage from "./pages/RegistrationPage";
-
-import AdminPage from "./pages/AdminPage";
-import PersonalPage from "./pages/PersonalPage";
-
-import NotFound from "./pages/NotFound";
-import InventoryPage from "./pages/InventoryPage";
-import { useContext} from "react";
+import RequireAuth from './components/auth/RequireAuth';
+import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
+import MainPage from './pages/MainPage';
+import LoginPage from './pages/LoginPage';
+import RegistrationPage from './pages/RegistrationPage';
+import AdminPage from './pages/AdminPage';
+import PersonalPage from './pages/PersonalPage';
+import NotFound from './pages/NotFound';
+import InventoryPage from './pages/InventoryPage';
+import { useContext } from 'react';
 import {
   ThemeProviderWrapper,
   ThemeContext,
-} from "./components/tools/ThemeContext";
-import OAuthRedirectHandler from "./components/auth/OAuthREdirectHandler";
-import AppBar from "./components/tools/AppBar";
-import AppBox from "./components/tools/AppBox";
+} from './components/tools/ThemeContext';
+import OAuthRedirectHandler from './components/auth/OAuthREdirectHandler';
+import AppBar from './components/tools/AppBar';
+import AppBox from './components/tools/AppBox';
 
 function AppContent() {
   const { darkMode } = useContext(ThemeContext);
 
   const theme = createTheme({
-    palette: { mode: darkMode ? "dark" : "light" },
+    palette: { mode: darkMode ? 'dark' : 'light' },
   });
 
   return (
@@ -34,31 +32,31 @@ function AppContent() {
           <AppBox>
             <AppBar />
             <Routes>
-              <Route path="/" element={<MainPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/signup" element={<RegistrationPage />} />
-              <Route path="/inventory/:id" element={<InventoryPage />} />
+              <Route path='/' element={<MainPage />} />
+              <Route path='/login' element={<LoginPage />} />
+              <Route path='/signup' element={<RegistrationPage />} />
+              <Route path='/inventory/:id' element={<InventoryPage />} />
               <Route
-                path="/oauth-redirect"
+                path='/oauth-redirect'
                 element={<OAuthRedirectHandler />}
               />
               <Route
-                path="/admin"
+                path='/admin'
                 element={
-                  <RequireAuth allowedRoles={["admin"]}>
+                  <RequireAuth allowedRoles={['admin']}>
                     <AdminPage />
                   </RequireAuth>
                 }
               />
               <Route
-                path="/personal"
+                path='/personal'
                 element={
-                  <RequireAuth allowedRoles={["creator", "user"]}>
+                  <RequireAuth allowedRoles={['creator', 'user']}>
                     <PersonalPage />
                   </RequireAuth>
                 }
               />
-              <Route path="*" element={<NotFound />} />
+              <Route path='*' element={<NotFound />} />
             </Routes>
           </AppBox>
         </BrowserRouter>

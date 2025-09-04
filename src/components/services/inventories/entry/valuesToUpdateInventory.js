@@ -1,14 +1,7 @@
 const valuesToUpdateInventory = (valuesToUpdate, version) => {
   const dataToUpdate = {
-    //title: valuesToUpdate.title,
-    //description: valuesToUpdate.description,
-    //imageUrl: valuesToUpdate.imageUrl,
-    //isPublic: valuesToUpdate.isPublic,
     customIdFormat: valuesToUpdate.customIds,
-    //category: valuesToUpdate.category,
-    //tags: valuesToUpdate.tags,
     version: version,
-    //users: valuesToUpdate.users,
     fields: valuesToUpdate.fields.map((f) => ({
       slot: f.slot,
       title: f.title,
@@ -22,4 +15,4 @@ const valuesToUpdateInventory = (valuesToUpdate, version) => {
   return dataToUpdate;
 };
 
-export default valuesToUpdateInventory
+export default valuesToUpdateInventory;

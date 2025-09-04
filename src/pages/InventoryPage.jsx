@@ -8,6 +8,7 @@ import getInventory from '../components/services/inventories/getInventory';
 import LinkBackTo from '../components/tools/LinkBackTo';
 import InventoryInfoBlock from '../components/inventory/InventoryInfoBlock';
 import InventoryForm from '../components/form/InventoryForm';
+
 const InventoryPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
