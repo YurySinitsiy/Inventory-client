@@ -49,7 +49,9 @@ const ItemsTab = ({ t, user, isCreator, isAdmin, inventory }) => {
       ]);
     setFields(fetchedFields);
     setItems(fetchedItems);
-    setCustomIdFormat(fetchedCustomIdFormat);
+    setCustomIdFormat(
+      Array.isArray(fetchedCustomIdFormat) ? fetchedCustomIdFormat : []
+    );
   };
 
   const fetchInventoryData = async () => {
@@ -101,7 +103,7 @@ const ItemsTab = ({ t, user, isCreator, isAdmin, inventory }) => {
     try {
       await startDeleteItem();
     } catch (err) {
-      console.error(err);
+      console.error(err)
       showSnackbar(t('item.delete.error'), 'error');
     } finally {
       setIsLoading(false);
