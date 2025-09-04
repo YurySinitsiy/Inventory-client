@@ -1,4 +1,3 @@
-// TagsAutocomplete.jsx
 import { Autocomplete, TextField } from '@mui/material';
 
 const TagsField = ({ value, onChange, tagOptions, label }) => {

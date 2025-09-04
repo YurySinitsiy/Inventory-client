@@ -1,15 +1,18 @@
 import { Box } from '@mui/material';
-import getUserInventories from '../services/inventories/getUserInventories.js';
+import getUserInventories from '../services/inventories/getUserInventories';
 import { useState, useEffect } from 'react';
 import Loader from '../tools/Loader.jsx';
-import DeleteInventoryButton from '../actions/DeleteInventoryButton.jsx';
-import AddInventoryButton from '../actions/AddInventoryButton.jsx';
-import InventoriesContainer from './InventoriesContainer.jsx';
-const UserInventories = () => {
+import DeleteInventoryButton from '../actions/DeleteInventoryButton';
+import AddInventoryButton from '../actions/AddInventoryButton';
+import InventoriesContainer from './InventoriesContainer';
+import { useSnackbar } from '../services/hooks/useSnackbar';
+import SnackbarAlert from '../tools/Snackbar';
+
+const UserInventories = ({t}) => {
   const [userInventories, setUserInventories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectionModel, setSelectionModel] = useState([]);
-  const [message, setMessage] = useState('');
+  const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
 
   const fetchUserInventories = async () => {
     setIsLoading(true);
@@ -32,11 +35,13 @@ const UserInventories = () => {
       <Box>
         <AddInventoryButton
           setUserInventories={setUserInventories}
-          setMessage={setMessage}
+          showSnackbar={showSnackbar}
+          t={t}
         />
         <DeleteInventoryButton
           disabled={!selectionModel.length}
           onClick={deleteSelected}
+          t={t}
         />
       </Box>
     );
@@ -46,13 +51,16 @@ const UserInventories = () => {
 
   return (
     <Box>
+      <SnackbarAlert snackbar={snackbar} closeSnackbar={closeSnackbar} />
+
       <InventoriesContainer
         inventories={userInventories}
         setSelectionModel={setSelectionModel}
         actions={userInventoriesActions}
         selectionModel={selectionModel}
         setUserInventories={setUserInventories}
-        message={message}
+        showSnackbar={showSnackbar}
+        t={t}
       />
     </Box>
   );

@@ -1,12 +1,13 @@
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import CustomFieldsTab from './customFields/CustomFieldsTab.jsx';
-import CustomIdTab from './customId/CustomIdTab.jsx';
+import CustomFieldsTab from './customFields/CustomFieldsTab';
+import CustomIdTab from './customId/CustomIdTab';
 import AccessSetting from './accessSetting/AccessSetting';
 import ItemTabs from './items/ItemsTab.jsx';
-import { Tab, Box, useTheme, useMediaQuery } from '@mui/material';
+import { Tab, Box, useTheme, useMediaQuery, Button } from '@mui/material';
 import { useState } from 'react';
+
 
 const InventoryTabs = ({
   inventory,
@@ -23,6 +24,12 @@ const InventoryTabs = ({
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleChange = (event, newValue) => setTab(newValue);
+
+  const SaveButton = () => (
+    <Button variant='contained' type='submit' color='success'>
+      {t('save')}
+    </Button>
+  );
 
   const isCreator = user?.id === inventory?.ownerId;
   const isAdmin = user?.role === 'admin';
@@ -68,6 +75,7 @@ const InventoryTabs = ({
               t={t}
               handleBlur={handleBlur}
             />
+            <SaveButton />
           </TabPanel>
           <TabPanel value='3'>
             <CustomFieldsTab
@@ -78,9 +86,10 @@ const InventoryTabs = ({
               t={t}
               handleBlur={handleBlur}
             />
+            <SaveButton />
           </TabPanel>
           <TabPanel value='4'>
-            <AccessSetting inventory={inventory} />
+            <AccessSetting inventory={inventory} t={t} />
           </TabPanel>
         </>
       )}

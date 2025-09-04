@@ -28,7 +28,6 @@ const RenderAppBar = () => {
   const { t } = useTranslation();
   const [userName, setUserName] = useState('Guest');
 
-  // Получаем имя пользователя один раз при монтировании
   useEffect(() => {
     const fetchUserName = async () => {
       const session = await getSession();
@@ -41,7 +40,6 @@ const RenderAppBar = () => {
 
     fetchUserName();
 
-    // слушаем изменения сессии, чтобы имя обновлялось сразу после логина/логаута
     const { data: listener } = supabase.auth.onAuthStateChange(() => {
       fetchUserName();
     });
@@ -58,9 +56,8 @@ const RenderAppBar = () => {
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
-      console.error('Ошибка выхода:', error.message);
+      console.error(error);
     } else {
-      console.log('Пользователь вышел из системы');
       setUserName('Guest');
       navigate('/');
     }
@@ -95,7 +92,7 @@ const RenderAppBar = () => {
             </Box>
 
             <Button onClick={toggleLanguage} sx={{ color: 'white' }}>
-              EN <Language /> RU
+              {i18n.language.toUpperCase()} <Language />
             </Button>
 
             <Button

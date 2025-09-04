@@ -1,31 +1,32 @@
 import { useDropzone } from 'react-dropzone';
 import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import handleImageUpload from '../../services/inventories/handleImageUpload';
 
-const API_URL = import.meta.env.VITE_API_URL;
-
-const InventoryImageUpload = ({ value, onChange }) => {
+const InventoryImageUpload = ({ value, onChange, t }) => {
   const [preview, setPreview] = useState(value || '');
   const [uploading, setUploading] = useState(false);
-  const { t } = useTranslation();
 
-  const onDrop = async (files) => {
+  const startUpload = (files) => {
     const file = files[0];
     setUploading(true);
     const formData = new FormData();
     formData.append('file', file);
+    return formData;
+  };
 
+  const endUpload = (url) => {
+    if (url) {
+      setPreview(url);
+      onChange(url);
+    }
+  };
+
+  const onDrop = async (files) => {
+    const formData = startUpload(files);
     try {
-      const res = await fetch(`${API_URL}/api/upload`, {
-        method: 'POST',
-        body: formData,
-      });
-      const data = await res.json();
-      if (data.url) {
-        setPreview(data.url);
-        onChange(data.url);
-      }
+      const data = await handleImageUpload(formData).json();
+      endUpload(data.url);
     } catch (err) {
       console.error(err);
     } finally {

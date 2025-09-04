@@ -1,7 +1,7 @@
 import { Container } from '@mui/material';
 import Title from '../components/tools/Title';
 import { useTranslation } from 'react-i18next';
-import RenderAllUsersInventories from '../components/inventory/AllUsersInventories';
+import AllUsersInventories from '../components/inventory/AllUsersInventories';
 import getUser from '../components/services/users/getUser';
 import { useState, useEffect } from 'react';
 import Loader from '../components/tools/Loader';
@@ -42,7 +42,7 @@ const RenderMainPage = () => {
         {t('inventories.all')}
       </Title>
 
-      <RenderAllUsersInventories checkboxSelection={false} />
+      <AllUsersInventories checkboxSelection={false} t={t} />
     </Container>
   );
 };

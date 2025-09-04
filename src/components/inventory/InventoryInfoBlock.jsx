@@ -2,7 +2,6 @@ import { Box, Typography, Avatar, Chip } from '@mui/material';
 import { styled, useTheme } from '@mui/system';
 import PublicIcon from '@mui/icons-material/Public';
 import LockIcon from '@mui/icons-material/Lock';
-import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 
 const Title = styled(Typography)({
@@ -30,8 +29,7 @@ const TagContainer = styled(Box)({
   justifyContent: 'flex-start',
 });
 
-const InventoryInfoBlock = ({ inventory }) => {
-  const { t } = useTranslation();
+const InventoryInfoBlock = ({ inventory, t }) => {
   const theme = useTheme();
   const formatDate = (dateStr) => {
     if (!dateStr) return '-';

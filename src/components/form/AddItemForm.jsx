@@ -16,7 +16,13 @@ const AddItemForm = ({ t, customIdFormat, fields, user, handleAdd }) => {
 
     fields.forEach((f) => {
       if (!f.visibleInTable) return;
-      schema[f.slot] = Yup.string().required(t('required'));
+      if (f.type === 'number') {
+        schema[f.slot] = Yup.number().required(t('required'));
+      } else if (f.type === 'boolean') {
+        schema[f.slot] = Yup.boolean().required(t('required'));
+      } else {
+        schema[f.slot] = Yup.string().required(t('required'));
+      }
     });
 
     return Yup.object().shape(schema);

@@ -7,34 +7,28 @@ import SnackbarAlert from '../components/tools/Snackbar';
 import { useSnackbar } from '../components/services/hooks/useSnackbar';
 import SocialAuth from '../components/auth/SocialAuth';
 import { useTranslation } from 'react-i18next';
-import apiFetch from '../components/services/apiFetch';
-const RenderRegistrationPage = () => {
+import handleRegistration from '../components/services/users/handleRegistration';
+const RegistrationPage = () => {
   const navigate = useNavigate();
   const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { t } = useTranslation();
 
+  const signUpUser = async (values) => {
+    const { data, error } = await supabase.auth.signUp({
+      email: values.email,
+      password: values.password,
+      options: { data: { name: values.name, surname: values.surname } },
+    });
+    if (error) throw error;
+    return data;
+  };
+
   const handlesubmit = async (values) => {
     setIsSubmitting(true);
     try {
-      const { data: authData, error: Error } = await supabase.auth.signUp({
-        email: values.email,
-        password: values.password,
-        options: {
-          data: {
-            name: values.name,
-            surname: values.surname,
-          },
-        },
-      });
-      if (Error) throw Error;
-      await apiFetch('/api/auth/signup', {
-        method: 'POST',
-        body: JSON.stringify({
-          userId: authData.user.id,
-          data: values,
-        }),
-      });
+      const authData = await signUpUser(values);
+      await handleRegistration(authData, values);
       showSnackbar(t('reg.ok'), 'success');
       setTimeout(() => navigate('/login'), 2000);
     } catch (error) {
@@ -54,7 +48,7 @@ const RenderRegistrationPage = () => {
         height: 'calc(100% - 64px)',
       }}>
       <SnackbarAlert snackbar={snackbar} closeSnackbar={closeSnackbar} />
-      <RegForm onSubmit={handlesubmit} isSubmitting={isSubmitting} />
+      <RegForm onSubmit={handlesubmit} isSubmitting={isSubmitting} t={t} />
       <Box textAlign='center' mt={3}>
         <Typography
           variant='body2'
@@ -78,4 +72,4 @@ const RenderRegistrationPage = () => {
   );
 };
 
-export default RenderRegistrationPage;
+export default RegistrationPage;

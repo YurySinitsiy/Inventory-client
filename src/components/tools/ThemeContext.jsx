@@ -6,7 +6,6 @@ export const ThemeContext = createContext({
 });
 
 export const ThemeProviderWrapper = ({ children }) => {
-  // Читаем сразу из localStorage, чтобы state сразу был правильный
   const getInitialTheme = () => {
     try {
       const savedTheme = localStorage.getItem("theme");

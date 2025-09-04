@@ -56,6 +56,7 @@
   "inventories.back": "Back to inventories list",
 
   "save": "Save",
+  "saving": "Saving...",
   "saved": "Saved successfully",
   "saved.fail": "Save failed",
   "saved.versionConflict": "Version conflict",
@@ -90,6 +91,8 @@
   "item.delete": "Delete Item",
   "item.added": "Item added",
   "item.deleted": "Item deleted",
+  "item.delete.error": "Item delete error",
+  "item.add.error": "Item add error",
 
   "access.give": "Give access",
   "access.remove": "Remove acess",

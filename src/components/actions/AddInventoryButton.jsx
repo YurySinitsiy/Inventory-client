@@ -1,9 +1,7 @@
 import { Button, Box } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import AddInventory from '../inventory/AddInventoryModal';
+import AddInventoryModal from '../inventory/AddInventoryModal';
 import { useState } from 'react';
-const AddInventoryButton = ({ setUserInventories, setMessage }) => {
-  const { t } = useTranslation();
+const AddInventoryButton = ({ setUserInventories, showSnackbar, t }) => {
   const [openModal, setOpenModal] = useState(false);
   return (
     <Box>
@@ -14,13 +12,14 @@ const AddInventoryButton = ({ setUserInventories, setMessage }) => {
         {t('inventory.add')}
       </Button>
       {openModal && (
-        <AddInventory
+        <AddInventoryModal
           open={openModal}
           onClose={() => setOpenModal(false)}
+          t={t}
           onAdd={(newInventory) => {
             if (!newInventory) return;
             setUserInventories((prev) => [...prev, newInventory]);
-            setMessage(t('inventory.added'), 'success');
+            showSnackbar(t('inventory.added'), 'success');
           }}
         />
       )}

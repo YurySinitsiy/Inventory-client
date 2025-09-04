@@ -7,11 +7,8 @@ import CategoryField from './fields/CategoryField';
 import TagsField from './fields/TagsField';
 import PublicCheckbox from './fields/PublicCheckbox';
 import InventoryImageUpload from './fields/InventoryImageUpload';
-import { useTranslation } from 'react-i18next';
 
-const AddInventoryForm = ({ categories, tagOptions, onSubmit }) => {
-  const { t } = useTranslation();
-
+const AddInventoryForm = ({ categories, tagOptions, onSubmit, t }) => {
   const validationSchema = Yup.object({
     title: Yup.string().required(t('required')),
     description: Yup.string().required(t('required')),
@@ -34,7 +31,6 @@ const AddInventoryForm = ({ categories, tagOptions, onSubmit }) => {
         <Box sx={{ p: 3, borderRadius: '20px', maxWidth: '900px' }}>
           <Title variant='h5'>{t('inventory.add')}</Title>
           <Form>
-            {/* Title */}
             <TextField
               fullWidth
               margin='normal'
@@ -49,7 +45,6 @@ const AddInventoryForm = ({ categories, tagOptions, onSubmit }) => {
               <FormHelperText error>{errors.title}</FormHelperText>
             )}
 
-            {/* Description */}
             <MarkdownField
               value={values.description}
               onChange={(val) => setFieldValue('description', val)}
@@ -59,7 +54,6 @@ const AddInventoryForm = ({ categories, tagOptions, onSubmit }) => {
               <FormHelperText error>{errors.description}</FormHelperText>
             )}
 
-            {/* Category */}
             <CategoryField
               value={values.category}
               onChange={(val) => setFieldValue('category', val)}
@@ -69,22 +63,17 @@ const AddInventoryForm = ({ categories, tagOptions, onSubmit }) => {
             {touched.category && errors.category && (
               <FormHelperText error>{errors.category}</FormHelperText>
             )}
-
-            {/* Tags */}
             <TagsField
               value={values.tags}
               onChange={(val) => setFieldValue('tags', val)}
               tagOptions={tagOptions}
               label={t('tags')}
             />
-
-            {/* Image Upload */}
             <InventoryImageUpload
               value={values.imageUrl}
               onChange={(url) => setFieldValue('imageUrl', url)}
+              t={t}
             />
-
-            {/* Public Checkbox */}
             <PublicCheckbox
               name='isPublic'
               value={values}
@@ -92,8 +81,6 @@ const AddInventoryForm = ({ categories, tagOptions, onSubmit }) => {
               onBlur={handleBlur}
               label={t('public.make')}
             />
-
-            {/* Submit */}
             <Button
               type='submit'
               variant='contained'

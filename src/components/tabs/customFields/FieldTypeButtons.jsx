@@ -1,4 +1,4 @@
-// FieldTypeButtons.jsx
+
 import { Box, Button } from '@mui/material';
 
 const FieldTypeButtons = ({ fieldTypes, addField, fields = [] }) => {

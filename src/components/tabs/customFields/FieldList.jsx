@@ -1,4 +1,3 @@
-// FieldList.jsx
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { List } from '@mui/material';
 import FieldItem from './FieldItem';
@@ -10,21 +9,20 @@ const FieldList = ({
   fieldTypes,
   errors,
   touched,
-  handleBlur
+  handleBlur,
 }) => {
-  const handleDragEnd = (result) => {
-    if (!result.destination) {
-      const fieldToDelete = fields[result.source.index];
-      deleteField(fieldToDelete.order);
-      return;
-    }
-    const newFields = [...fields];
-    const [moved] = newFields.splice(result.source.index, 1);
-    newFields.splice(result.destination.index, 0, moved);
+  const updateOrder = (list) =>
     setFieldValue(
       'fields',
-      newFields.map((f, i) => ({ ...f, order: i }))
+      list.map((f, i) => ({ ...f, order: i }))
     );
+
+  const handleDragEnd = ({ source, destination }) => {
+    if (!destination) return deleteField(fields[source.index].order);
+    const newFields = [...fields];
+    const [moved] = newFields.splice(source.index, 1);
+    newFields.splice(destination.index, 0, moved);
+    updateOrder(newFields);
   };
 
   return (

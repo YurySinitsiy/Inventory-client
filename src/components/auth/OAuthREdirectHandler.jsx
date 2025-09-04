@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../tools/Loader';
-import apiFetch from '../services/apiFetch';
-import  RedirectByRole  from './RedirectByRole';
+import RedirectByRole from './RedirectByRole';
 import { getSession } from '../services/users/getSession';
+import socialLogin from '../services/users/socialLogin';
 const OAuthRedirectHandler = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -16,11 +16,7 @@ const OAuthRedirectHandler = () => {
         return;
       }
       try {
-        const data = await apiFetch('/api/auth/social-login', {
-          method: 'PUT',
-          body: JSON.stringify({ user: session.user }),
-        });
-        console.log(session.user);
+        const data = await socialLogin(session);
         RedirectByRole(data.role, navigate);
       } catch (err) {
         console.error('OAuth error:', err);

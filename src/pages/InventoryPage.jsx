@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Box, Container } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
-import getUser from '../components/services/users/getUser.js';
+import getUser from '../components/services/users/getUser';
 import Loader from '../components/tools/Loader';
 import { useTranslation } from 'react-i18next';
-import getInventory from '../components/services/inventories/getInventory.js';
-import LinkBackTo from '../components/tools/LinkBackTo.jsx';
-import InventoryInfoBlock from '../components/inventory/InventoryInfoBlock.jsx';
-import InventoryForm from '../components/form/InventoryForm.jsx';
+import getInventory from '../components/services/inventories/getInventory';
+import LinkBackTo from '../components/tools/LinkBackTo';
+import InventoryInfoBlock from '../components/inventory/InventoryInfoBlock';
+import InventoryForm from '../components/form/InventoryForm';
 const InventoryPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -15,41 +15,26 @@ const InventoryPage = () => {
   const [inventory, setInventory] = useState(null);
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [invLoading, setInvLoading] = useState(false);
 
   useEffect(() => {
-    const checkUser = async () => {
-      setIsLoading(true);
+    const fetchData = async () => {
       try {
-        const userData = await getUser();
-        if (!userData) return;
-        setUser(userData);
-      } catch (error) {
-        console.error(error);
+        const [userData, invData] = await Promise.all([
+          getUser(),
+          getInventory(id),
+        ]);
+        if (userData) setUser(userData);
+        if (invData) setInventory(invData);
+      } catch (e) {
+        console.error(e);
       } finally {
         setIsLoading(false);
       }
     };
-    checkUser();
-  }, []);
-
-  useEffect(() => {
-    const fetchInventory = async () => {
-      setInvLoading(true);
-      if (!id) return;
-      try {
-        const data = await getInventory(id);
-        setInventory(data);
-      } catch (err) {
-        console.error(err.message);
-      } finally {
-        setInvLoading(false);
-      }
-    };
-    fetchInventory();
+    fetchData();
   }, [id]);
 
-  if (invLoading || isLoading) return <Loader />;
+  if (isLoading) return <Loader />;
 
   const handleBackClick = () => {
     navigate(user?.role ? '/personal' : '/', { replace: true });
@@ -63,7 +48,7 @@ const InventoryPage = () => {
           justifyContent: 'space-evenly',
           alignItems: 'center',
         }}>
-        <InventoryInfoBlock inventory={inventory} />
+        <InventoryInfoBlock inventory={inventory} t={t} />
         <LinkBackTo
           onClick={handleBackClick}
           text={t('inventories.back')}></LinkBackTo>

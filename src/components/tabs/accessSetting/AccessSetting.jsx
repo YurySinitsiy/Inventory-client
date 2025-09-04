@@ -4,13 +4,11 @@ import Loader from '../../tools/Loader';
 import { Box } from '@mui/material';
 import ActionsAccessWrite from '../../actions/ActionsAccessWrite';
 import getUsersAccess from '../../services/users/getUsersAccess';
-import { useTranslation } from 'react-i18next';
 
-const accessSetting = ({ inventory }) => {
+const AccessSetting = ({ inventory, t }) => {
   const [selectionModel, setSelectionModel] = useState([]);
   const [allUsersAccess, setAllUsersAccess] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { t } = useTranslation();
 
   const fetchUsersAccess = async () => {
     try {
@@ -58,4 +56,4 @@ const accessSetting = ({ inventory }) => {
   );
 };
 
-export default accessSetting;
+export default AccessSetting;

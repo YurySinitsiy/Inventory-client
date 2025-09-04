@@ -1,9 +1,8 @@
-import RedirectByRole from './RedirectByRole'; 
+import RedirectByRole from './RedirectByRole';
 import Loader from '../../components/tools/Loader';
-import { supabase } from '../../lib/supabaseClient';
-import CheckUserRole from '../auth/CheckUserRole';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import getUser from '../services/users/getUser';
 
 const RequireAuth = ({ allowedRoles, children }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -11,39 +10,26 @@ const RequireAuth = ({ allowedRoles, children }) => {
 
   const navigate = useNavigate();
 
+  const checkAccess = async () => {
+    setIsLoading(true);
+    try {
+      const user = await getUser();
+      handleAccess(user);
+    } catch {
+      navigate('/login');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleAccess = (user) => {
+    if (!user?.role) return navigate('/login');
+    if (!allowedRoles.includes(user.role))
+      return RedirectByRole(user.role, navigate);
+    setHasAccess(true);
+  };
+
   useEffect(() => {
-    const checkAccess = async () => {
-      setIsLoading(true);
-      try {
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
-
-        if (!user) {
-          navigate('/login');
-          return;
-        }
-
-        const userRole = await CheckUserRole(user.id);
-        if (!userRole) {
-          navigate('/login');
-          return;
-        }
-
-        if (!allowedRoles.includes(userRole)) {
-          RedirectByRole(userRole, navigate);
-          return;
-        }
-
-        setHasAccess(true);
-      } catch (err) {
-        console.error(err);
-        navigate('/login');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     checkAccess();
   }, [allowedRoles, navigate]);
 

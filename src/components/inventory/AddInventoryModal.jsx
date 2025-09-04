@@ -1,12 +1,12 @@
-import Modal from '../tools/Modal.jsx';
-import handleAddInventory from '../services/inventories/handleAddInventory.js';
+import Modal from '../tools/Modal';
+import handleAddInventory from '../services/inventories/handleAddInventory';
 import { useState, useEffect } from 'react';
-import Loader from '../tools/Loader.jsx';
-import getTags from '../services/inventories/getTags.js';
-import AddInventoryForm from '../form/AddInventoryForm.jsx';
-import getCategories from '../services/inventories/getCategories.js';
+import Loader from '../tools/Loader';
+import getTags from '../services/inventories/getTags';
+import AddInventoryForm from '../form/AddInventoryForm';
+import getCategories from '../services/inventories/getCategories';
 
-const AddInventoryModal = ({ open, onClose, onAdd }) => {
+const AddInventoryModal = ({ open, onClose, onAdd, t }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(true);
   const [categories, setCategories] = useState([]);
@@ -47,6 +47,7 @@ const AddInventoryModal = ({ open, onClose, onAdd }) => {
         categories={categories}
         tagOptions={tags}
         onSubmit={onSubmit}
+        t={t}
       />
     </Modal>
   );

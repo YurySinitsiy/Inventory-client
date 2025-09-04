@@ -20,7 +20,7 @@ const CustomIdTab = ({
   errors,
   touched,
   t,
-  handleBlur
+  handleBlur,
 }) => {
   const TYPES = [
     { label: t('types.fixed'), value: 'fixed' },
@@ -33,6 +33,12 @@ const CustomIdTab = ({
   ];
   const rows = values[fieldName] || [];
 
+  const updateRow = (id, fn) =>
+    setFieldValue(
+      fieldName,
+      rows.map((r) => (r.id === id ? fn(r) : r))
+    );
+
   const handleAdd = () => {
     const newRow = {
       id: uuidv4(),
@@ -42,39 +48,23 @@ const CustomIdTab = ({
     setFieldValue(fieldName, [...rows, newRow]);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (id) =>
     setFieldValue(
       fieldName,
       rows.filter((r) => r.id !== id)
     );
-  };
 
-  const handleTypeChange = (id, type) => {
-    setFieldValue(
-      fieldName,
-      rows.map((r) =>
-        r.id === id ? { ...r, type, value: generateValue(type) } : r
-      )
-    );
-  };
+  const handleTypeChange = (id, type) =>
+    updateRow(id, (r) => ({ ...r, type, value: generateValue(type) }));
 
-  const handleValueChange = (id, userValue) => {
-    setFieldValue(
-      fieldName,
-      rows.map((r) => (r.id === id ? { ...r, value: userValue } : r))
-    );
-  };
+  const handleValueChange = (id, value) =>
+    updateRow(id, (r) => ({ ...r, value }));
 
-  const handleDragEnd = (result) => {
-    if (!result.destination) {
-      const reordered = Array.from(rows);
-      reordered.splice(result.source.index, 1);
-      setFieldValue(fieldName, reordered);
-      return;
-    }
-    const reordered = Array.from(rows);
-    const [removed] = reordered.splice(result.source.index, 1);
-    reordered.splice(result.destination.index, 0, removed);
+  const handleDragEnd = ({ source, destination }) => {
+    if (!destination) return handleDelete(rows[source.index].id);
+    const reordered = [...rows];
+    const [moved] = reordered.splice(source.index, 1);
+    reordered.splice(destination.index, 0, moved);
     setFieldValue(fieldName, reordered);
   };
 

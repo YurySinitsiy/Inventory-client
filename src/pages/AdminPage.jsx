@@ -41,13 +41,13 @@ const renderAdminPage = () => {
             </TabList>
           </Box>
           <TabPanel value='1'>
-            <UserInventories />
+            <UserInventories t={t} />
           </TabPanel>
           <TabPanel value='2'>
-            <AllUsersInventories isAdmin={true} />
+            <AllUsersInventories isAdmin={true} t={t} />
           </TabPanel>
           <TabPanel value='3'>
-            <AllUsersAdminActions />
+            <AllUsersAdminActions t={t} />
           </TabPanel>
         </TabContext>
       </Box>

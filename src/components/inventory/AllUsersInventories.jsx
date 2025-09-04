@@ -1,10 +1,10 @@
-import Loader from '../tools/Loader.jsx';
+import Loader from '../tools/Loader';
 import { useState, useEffect } from 'react';
-import getInventories from '../services/inventories/getInventories.js';
-import DeleteButton from '../actions/DeleteInventoryButton.jsx';
-import InventoriesContainer from './InventoriesContainer.jsx';
+import getInventories from '../services/inventories/getInventories';
+import DeleteButton from '../actions/DeleteInventoryButton';
+import InventoriesContainer from './InventoriesContainer';
 
-const AllUsersInventories = ({ checkboxSelection, isAdmin = false }) => {
+const AllUsersInventories = ({ checkboxSelection, isAdmin = false, t }) => {
   const [allInventories, setAllInventories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectionModel, setSelectionModel] = useState([]);
@@ -25,12 +25,13 @@ const AllUsersInventories = ({ checkboxSelection, isAdmin = false }) => {
     fetchInventories();
   }, []);
 
-  const allUsersInventoriesActions = ({ deleteSelected }) => {
+  const renderActions = ({ deleteSelected }) => {
     return (
       isAdmin && (
         <DeleteButton
           disabled={!selectionModel.length}
           onClick={deleteSelected}
+          t={t}
         />
       )
     );
@@ -42,7 +43,7 @@ const AllUsersInventories = ({ checkboxSelection, isAdmin = false }) => {
     <InventoriesContainer
       inventories={allInventories}
       setSelectionModel={setSelectionModel}
-      actions={allUsersInventoriesActions}
+      actions={renderActions}
       selectionModel={selectionModel}
       setUserInventories={setAllInventories}
       checkboxSelection={checkboxSelection}

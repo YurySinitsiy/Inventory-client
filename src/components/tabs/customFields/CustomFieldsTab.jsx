@@ -1,8 +1,6 @@
-// CustomFieldsTab.jsx
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import FieldList from './FieldList';
 import FieldTypeButtons from './FieldTypeButtons';
-import { useTranslation } from 'react-i18next';
 
 const CustomFieldsTab = ({
   values,
@@ -10,9 +8,8 @@ const CustomFieldsTab = ({
   errors,
   touched,
   handleBlur,
+  t,
 }) => {
-  const { t } = useTranslation();
-
   const fieldTypes = [
     { type: 'text', label: t('field.text') },
     { type: 'multiline', label: t('field.multiline') },
@@ -20,28 +17,32 @@ const CustomFieldsTab = ({
     { type: 'link', label: t('field.link') },
     { type: 'boolean', label: t('field.boolean') },
   ];
+
+  const slotsByType = {
+    text: ['text1', 'text2', 'text3'],
+    multiline: ['multiline1', 'multiline2', 'multiline3'],
+    number: ['number1', 'number2', 'number3'],
+    link: ['link1', 'link2', 'link3'],
+    boolean: ['boolean1', 'boolean2', 'boolean3'],
+  };
+
+  const createNewField = (slot, type, order) => ({
+    slot,
+    title: '',
+    type,
+    description: '',
+    visibleInTable: true,
+    order,
+  });
+
   const addField = (type) => {
-    const slotsByType = {
-      text: ['text1', 'text2', 'text3'],
-      multiline: ['multiline1', 'multiline2', 'multiline3'],
-      number: ['number1', 'number2', 'number3'],
-      link: ['link1', 'link2', 'link3'],
-      boolean: ['boolean1', 'boolean2', 'boolean3'],
-    };
-    const usedSlots = values.fields.map((f) => f.slot); // ВСЕ занятые слоты
+    const usedSlots = values.fields.map((f) => f.slot);
     const freeSlot = slotsByType[type].find((s) => !usedSlots.includes(s));
-    if (!freeSlot) return; // максимум достигнут
-
-    const newField = {
-      slot: freeSlot,
-      title: '',
-      type,
-      description: '',
-      visibleInTable: true,
-      order: values.fields.length,
-    };
-
-    setFieldValue('fields', [...values.fields, newField]);
+    if (!freeSlot) return;
+    setFieldValue('fields', [
+      ...values.fields,
+      createNewField(freeSlot, type, values.fields.length),
+    ]);
   };
 
   const deleteField = (index) => {

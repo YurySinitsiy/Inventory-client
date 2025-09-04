@@ -18,7 +18,7 @@ const apiFetch = async (path, options = {}) => {
       if (path === '/api/users/me') {
         throw new Error('Account has been blocked or delete');
       } else {
-        await supabase.auth.signOut(); // выходим из системы
+        await supabase.auth.signOut();
         window.location.href = '/login';
       }
     }
