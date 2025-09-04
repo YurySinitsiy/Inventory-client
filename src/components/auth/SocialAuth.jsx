@@ -10,7 +10,7 @@ const SocialAuth = () => {
   const redirectUrl =
     import.meta.env.MODE === 'development'
       ? 'http://localhost:5173/oauth-redirect'
-      : `${import.meta.env.VITE_APP_URL}/oauth-redirect`;
+      : `${import.meta.env.VITE_API_URL}/oauth-redirect`;
 
   const handleOAuthLogin = async (provider) => {
     const { error } = await supabase.auth.signInWithOAuth({
