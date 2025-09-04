@@ -19,7 +19,7 @@ const AddItemForm = ({ t, customIdFormat, fields, user, handleAdd }) => {
       if (f.type === 'number') {
         schema[f.slot] = Yup.number().required(t('required'));
       } else if (f.type === 'boolean') {
-        schema[f.slot] = Yup.boolean().required(t('required'));
+        schema[f.slot] = Yup.boolean().notRequired();
       } else {
         schema[f.slot] = Yup.string().required(t('required'));
       }
