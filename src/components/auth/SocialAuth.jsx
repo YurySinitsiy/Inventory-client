@@ -6,11 +6,12 @@ import { useTranslation } from 'react-i18next';
 
 const SocialAuth = () => {
   const { t } = useTranslation();
-  const API_URL = import.meta.env.VITE_API_URL;
+  const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL;
+
   const redirectUrl =
     import.meta.env.MODE === 'development'
       ? 'http://localhost:5173/oauth-redirect'
-      : `${API_URL}/oauth-redirect`;
+      : `${FRONTEND_URL}/oauth-redirect`;
 
   const handleOAuthLogin = async (provider) => {
     const { error } = await supabase.auth.signInWithOAuth({
