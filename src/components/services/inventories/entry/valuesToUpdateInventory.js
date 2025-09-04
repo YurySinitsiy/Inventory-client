@@ -11,7 +11,6 @@ const valuesToUpdateInventory = (valuesToUpdate, version) => {
       position: f.order,
     })),
   };
-
   return dataToUpdate;
 };
 
