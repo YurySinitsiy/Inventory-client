@@ -11,7 +11,7 @@ import PersonalPage from "./pages/PersonalPage";
 
 import NotFound from "./pages/NotFound";
 import InventoryPage from "./pages/InventoryPage";
-import { useContext, useState } from "react";
+import { useContext} from "react";
 import {
   ThemeProviderWrapper,
   ThemeContext,
@@ -19,7 +19,6 @@ import {
 import OAuthRedirectHandler from "./components/auth/OAuthREdirectHandler";
 import AppBar from "./components/tools/AppBar";
 import AppBox from "./components/tools/AppBox";
-const API_URL = import.meta.env.VITE_API_URL;
 
 function AppContent() {
   const { darkMode } = useContext(ThemeContext);
