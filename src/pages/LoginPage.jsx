@@ -11,10 +11,12 @@ import SocialAuth from '../components/auth/SocialAuth';
 import { useTranslation } from 'react-i18next';
 import getUser from '../components/services/users/getUser';
 import { useSnackbar } from '../components/context/SnackbarContext';
+import { useUser } from '../components/context/UserContext';
 const RenderLoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [redirecting, setRedirecting] = useState(false);
   const { showSnackbar } = useSnackbar();
+  const { setUser } = useUser();
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -24,6 +26,7 @@ const RenderLoginPage = () => {
       const { error } = await supabase.auth.signInWithPassword(values);
       if (error) throw error;
       const me = await getUser();
+      setUser(me);
       afterLogin(me, resetForm);
     } catch (err) {
       showSnackbar(err.message || t('auth.loginFailed'), 'error');

@@ -1,6 +1,5 @@
-import { Card, CardContent, Typography, Button } from '@mui/material';
+import { Card, CardContent, Typography} from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import EditIcon from '@mui/icons-material/Edit';
 
 const UserInfo = ({ user }) => {
   const { t } = useTranslation();

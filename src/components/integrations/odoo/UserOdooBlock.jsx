@@ -66,7 +66,7 @@ const UserOdooBlock = ({ isOwner }) => {
 
     return (
       <Button variant='outlined' onClick={generateToken}>
-        {t('Сгенерировать токен')}
+        {t('token.generate')}
       </Button>
     );
   };
