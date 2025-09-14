@@ -6,7 +6,7 @@ import AccessWriteInventories from '../components/inventory/AccessWriteInventori
 import { useTranslation } from 'react-i18next';
 import LinkToProfile from '../components/tools/LinkToProfile';
 import Loader from '../components/tools/Loader';
-import { useUser } from '../components/auth/UserContext';
+import { useUser } from '../components/context/UserContext.jsx';
 
 const RenderCreatorPage = () => {
   const [value, setValue] = useState('1');

@@ -2,7 +2,7 @@ import RedirectByRole from './RedirectByRole';
 import Loader from '../../components/tools/Loader';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useUser } from './UserContext';
+import { useUser } from '../context/UserContext';
 
 const RequireAuth = ({ allowedRoles, children }) => {
   const { user, isLoading } = useUser();

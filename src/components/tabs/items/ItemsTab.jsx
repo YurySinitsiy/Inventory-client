@@ -2,18 +2,20 @@ import { Box, Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Modal from '../../tools/Modal';
 import Loader from '../../tools/Loader';
-import SnackbarAlert from '../../tools/Snackbar';
+import { useSnackbar } from '../../context/SnackbarContext';
 import DefaultTable from '../../table/DefaultTable';
 import getInventoryFields from '../../services/inventories/getInventoryFields';
 import getInventoryItems from '../../services/items/getInventoryItems';
 import handleDeleteItems from '../../services/items/handleDeleteItems';
-import { useSnackbar } from '../../services/hooks/useSnackbar';
 import getInventoryCustomIdFormat from '../../services/inventories/getInventoryCustomIdFormat';
 import AddItemForm from '../../form/AddItemForm';
 import handleAddItem from '../../services/items/handleAddItem';
 import checkUserAccess from '../../services/inventories/checkUserAccess';
 import ItemsColumns from './ItemsColumns';
-const ItemsTab = ({ t, user, isCreator, isAdmin, inventory }) => {
+import { useTranslation } from 'react-i18next';
+
+const ItemsTab = ({ user, isCreator, isAdmin, inventory }) => {
+  const { t } = useTranslation();
   const [openAddModal, setOpenAddModal] = useState(false);
   const [hasWriteAccess, setHasWriteAccess] = useState(false);
   const [fields, setFields] = useState([]);
@@ -21,7 +23,7 @@ const ItemsTab = ({ t, user, isCreator, isAdmin, inventory }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [dataLoading, setDataLoading] = useState(false);
   const [selectionModel, setSelectionModel] = useState([]);
-  const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
+  const { showSnackbar } = useSnackbar();
   const [customIdFormat, setCustomIdFormat] = useState([]);
   useEffect(() => {
     const checkAccess = async () => {
@@ -122,7 +124,6 @@ const ItemsTab = ({ t, user, isCreator, isAdmin, inventory }) => {
 
   return (
     <>
-      <SnackbarAlert snackbar={snackbar} closeSnackbar={closeSnackbar} />
       {canAddItem && (
         <Box mb={2}>
           <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
@@ -140,7 +141,6 @@ const ItemsTab = ({ t, user, isCreator, isAdmin, inventory }) => {
 
           <Modal open={openAddModal} onClose={() => setOpenAddModal(false)}>
             <AddItemForm
-              t={t}
               customIdFormat={customIdFormat}
               fields={fields}
               user={user}

@@ -1,6 +1,9 @@
 import { Button } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
-const DeleteButton = ({ disabled, onClick, t }) => {
+const DeleteButton = ({ disabled, onClick}) => {
+    const { t } = useTranslation();
+  
   return (
     <Button
       variant='outlined'

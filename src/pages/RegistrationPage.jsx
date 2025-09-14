@@ -3,14 +3,13 @@ import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Box, Typography, Link } from '@mui/material';
 import { supabase } from '../lib/supabaseClient';
 import { useState } from 'react';
-import SnackbarAlert from '../components/tools/Snackbar';
-import { useSnackbar } from '../components/services/hooks/useSnackbar';
 import SocialAuth from '../components/auth/SocialAuth';
 import { useTranslation } from 'react-i18next';
 import handleRegistration from '../components/services/users/handleRegistration';
+import { useSnackbar } from '../components/context/SnackbarContext';
 const RegistrationPage = () => {
   const navigate = useNavigate();
-  const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
+  const { showSnackbar } = useSnackbar();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { t } = useTranslation();
 
@@ -48,7 +47,6 @@ const RegistrationPage = () => {
         height: 'calc(100% - 64px)',
         paddingBlock: '200px'
       }}>
-      <SnackbarAlert snackbar={snackbar} closeSnackbar={closeSnackbar} />
       <RegForm onSubmit={handlesubmit} isSubmitting={isSubmitting} t={t} />
       <Box textAlign='center' mt={3}>
         <Typography

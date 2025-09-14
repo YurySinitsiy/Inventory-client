@@ -5,8 +5,10 @@ import Loader from '../tools/Loader';
 import getTags from '../services/inventories/getTags';
 import AddInventoryForm from '../form/AddInventoryForm';
 import getCategories from '../services/inventories/getCategories';
+import { useTranslation } from 'react-i18next';
 
-const AddInventoryModal = ({ open, onClose, onAdd, t }) => {
+const AddInventoryModal = ({ open, onClose, onAdd }) => {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(true);
   const [categories, setCategories] = useState([]);
@@ -47,7 +49,6 @@ const AddInventoryModal = ({ open, onClose, onAdd, t }) => {
         categories={categories}
         tagOptions={tags}
         onSubmit={onSubmit}
-        t={t}
       />
     </Modal>
   );

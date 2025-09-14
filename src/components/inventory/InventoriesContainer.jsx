@@ -3,6 +3,8 @@ import Loader from '../tools/Loader';
 import { useState } from 'react';
 import InventoryTable from '../table/InventoryTable';
 import handleDeleteInventory from '../services/inventories/handleDeleteInventory';
+import { useTranslation } from 'react-i18next';
+
 const InventoriesContainer = ({
   inventories,
   actions,
@@ -10,10 +12,10 @@ const InventoriesContainer = ({
   selectionModel,
   setUserInventories,
   checkboxSelection,
-  t,
   showSnackbar,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation();
 
   const removeDeleted = (prev) =>
     prev.filter((row) => !selectionModel.includes(row.id));
@@ -27,7 +29,7 @@ const InventoriesContainer = ({
       showSnackbar(t('inventory.deleted'), 'success');
       setSelectionModel([]);
     } catch (err) {
-      console.error(err)
+      console.error(err);
     } finally {
       setIsLoading(false);
     }

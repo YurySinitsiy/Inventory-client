@@ -4,7 +4,11 @@ import Title from '../tools/Title';
 import generateValue from '../services/items/generateIdsValue';
 import * as Yup from 'yup';
 import ItemFormFields from './fields/ItemFormFields';
-const AddItemForm = ({ t, customIdFormat, fields, user, handleAdd }) => {
+import { useTranslation } from 'react-i18next';
+
+const AddItemForm = ({ customIdFormat, fields, user, handleAdd }) => {
+  const { t } = useTranslation();
+
   const initialValues = fields.reduce((acc, f) => ({ ...acc, [f.slot]: '' }), {
     customId:
       customIdFormat.map((p) => generateValue(p.type, p.value)).join('-') || '',

@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import LinkBackTo from '../components/tools/LinkBackTo';
 import InventoryInfoBlock from '../components/inventory/InventoryInfoBlock';
 import InventoryForm from '../components/form/InventoryForm';
-import { useUser } from '../components/auth/UserContext';
-import { useInventory } from '../components/inventory/InventoryContext';
+import { useUser } from '../components/context/UserContext';
+import { useInventory } from '../components/context/InventoryContext';
 import { useState, useEffect } from 'react';
 import getInventory from '../components/services/inventories/getInventory';
 import { useParams } from 'react-router-dom';
@@ -46,6 +46,7 @@ const InventoryPage = () => {
           display: 'flex',
           justifyContent: 'space-evenly',
           alignItems: 'center',
+          flexWrap: 'wrap'
         }}>
         <InventoryInfoBlock inventory={inventory} t={t} />
         <LinkBackTo

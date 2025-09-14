@@ -1,21 +1,22 @@
 import { Box } from '@mui/material';
 import Loader from '../../tools/Loader';
-import SnackbarAlert from '../../tools/Snackbar';
 import { useState, useEffect } from 'react';
-import AllUsersTable from '../AllUsersTable';
 import ActionsAllUsers from '../../actions/ActionsAllUsers';
 import handleDeleteUser from '../../services/users/handleDeleteUser';
-import { useSnackbar } from '../../services/hooks/useSnackbar';
+import { useSnackbar } from '../../context/SnackbarContext';
 import getUsers from '../../services/users/getUsers';
 import updateUsersData from '../../services/users/updateUsersData';
 import UsersColumns from './UsersColumns';
 import { useNavigate } from 'react-router-dom';
-const AllUsersAdminActions = ({ t }) => {
-  const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
+import DefaultTable from '../DefaultTable';
+import { useTranslation } from 'react-i18next';
+const AllUsersAdminActions = () => {
+  const { t } = useTranslation();
+  const { showSnackbar } = useSnackbar();
   const [selectionModel, setSelectionModel] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [users, setUsers] = useState([]);
-  const usersColumns = UsersColumns({ t });
+  const usersColumns = UsersColumns();
   const navigate = useNavigate();
 
   const fetchUsers = async () => {
@@ -79,14 +80,12 @@ const AllUsersAdminActions = ({ t }) => {
 
   return (
     <Box>
-      <SnackbarAlert snackbar={snackbar} closeSnackbar={closeSnackbar} />
-
       <ActionsAllUsers
         selectedIds={selectionModel}
         deleteUsers={deleteSelected}
         updateUsers={updateUsers}
       />
-      <AllUsersTable
+      <DefaultTable
         rows={users}
         setSelectionModel={setSelectionModel}
         columns={usersColumns}

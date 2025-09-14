@@ -1,4 +1,8 @@
-const UsersColumns = ({t}) => {
+import { useTranslation } from 'react-i18next';
+
+const UsersColumns = () => {
+  const { t } = useTranslation();
+
   const columns = [
     { field: 'id', headerName: 'ID', minWidth: 170, flex: 1 },
     { field: 'email', headerName: t('auth.email'), minWidth: 170, flex: 1 },
@@ -18,7 +22,7 @@ const UsersColumns = ({t}) => {
     },
   ];
 
-  return columns
-}
+  return columns;
+};
 
-export default UsersColumns
+export default UsersColumns;

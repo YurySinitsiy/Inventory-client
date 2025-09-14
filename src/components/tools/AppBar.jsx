@@ -16,7 +16,7 @@ import {
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabaseClient';
-import { ThemeContext } from './ThemeContext';
+import { ThemeContext } from '../context/ThemeContext';
 import { useContext, useState, useEffect } from 'react';
 import i18n from './i18n';
 import { useTranslation } from 'react-i18next';

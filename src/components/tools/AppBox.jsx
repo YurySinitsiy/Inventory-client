@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-const RenderAppBox = ({ children }) => {
+const AppBox = ({ children }) => {
   return (
     <Box
       style={{
@@ -11,4 +11,4 @@ const RenderAppBox = ({ children }) => {
   );
 };
 
-export default RenderAppBox;
+export default AppBox;

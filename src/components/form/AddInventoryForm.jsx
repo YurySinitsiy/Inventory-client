@@ -7,8 +7,10 @@ import CategoryField from './fields/CategoryField';
 import TagsField from './fields/TagsField';
 import PublicCheckbox from './fields/PublicCheckbox';
 import InventoryImageUpload from './fields/InventoryImageUpload';
+import { useTranslation } from 'react-i18next';
 
-const AddInventoryForm = ({ categories, tagOptions, onSubmit, t }) => {
+const AddInventoryForm = ({ categories, tagOptions, onSubmit }) => {
+  const { t } = useTranslation();
   const validationSchema = Yup.object({
     title: Yup.string().required(t('required')),
     description: Yup.string().required(t('required')),
@@ -72,7 +74,6 @@ const AddInventoryForm = ({ categories, tagOptions, onSubmit, t }) => {
             <InventoryImageUpload
               value={values.imageUrl}
               onChange={(url) => setFieldValue('imageUrl', url)}
-              t={t}
             />
             <PublicCheckbox
               name='isPublic'

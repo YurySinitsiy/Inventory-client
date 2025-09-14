@@ -3,7 +3,7 @@ import SupportForm from '../form/SupportForm';
 const SupportModal = ({ open, onClose }) => {
   return (
     <Modal open={open} onClose={onClose}>
-    <SupportForm/>
+    <SupportForm onClose={onClose}/>
   </Modal>
   )
 };

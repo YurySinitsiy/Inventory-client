@@ -5,14 +5,12 @@ import Loader from '../tools/Loader.jsx';
 import DeleteInventoryButton from '../actions/DeleteInventoryButton';
 import AddInventoryButton from '../actions/AddInventoryButton';
 import InventoriesContainer from './InventoriesContainer';
-import { useSnackbar } from '../services/hooks/useSnackbar';
-import SnackbarAlert from '../tools/Snackbar';
-
-const UserInventories = ({t}) => {
+import { useSnackbar } from '../context/SnackbarContext.jsx';
+const UserInventories = () => {
   const [userInventories, setUserInventories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectionModel, setSelectionModel] = useState([]);
-  const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
+  const { showSnackbar } = useSnackbar();
 
   const fetchUserInventories = async () => {
     setIsLoading(true);
@@ -36,12 +34,10 @@ const UserInventories = ({t}) => {
         <AddInventoryButton
           setUserInventories={setUserInventories}
           showSnackbar={showSnackbar}
-          t={t}
         />
         <DeleteInventoryButton
           disabled={!selectionModel.length}
           onClick={deleteSelected}
-          t={t}
         />
       </Box>
     );
@@ -51,8 +47,6 @@ const UserInventories = ({t}) => {
 
   return (
     <Box>
-      <SnackbarAlert snackbar={snackbar} closeSnackbar={closeSnackbar} />
-
       <InventoriesContainer
         inventories={userInventories}
         setSelectionModel={setSelectionModel}
@@ -60,7 +54,6 @@ const UserInventories = ({t}) => {
         selectionModel={selectionModel}
         setUserInventories={setUserInventories}
         showSnackbar={showSnackbar}
-        t={t}
       />
     </Box>
   );

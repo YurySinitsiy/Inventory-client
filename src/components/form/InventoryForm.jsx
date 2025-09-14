@@ -6,15 +6,16 @@ import updateInventoryValidSchema from '../services/inventories/entry/updateInve
 import isEqual from 'lodash.isequal';
 import updateInventory from '../services/inventories/updateInventory';
 import valuesToUpdateInventory from '../services/inventories/entry/valuesToUpdateInventory';
-import SnackbarAlert from '../tools/Snackbar';
-import { useSnackbar } from '../services/hooks/useSnackbar';
+import { useSnackbar } from '../context/SnackbarContext';
+import { useTranslation } from 'react-i18next';
 
-const InventoryForm = ({ t, inventory, user }) => {
+const InventoryForm = ({ inventory, user }) => {
+  const { t } = useTranslation();
   const formikRef = useRef();
   const [version, setVersion] = useState(1);
   const [lastSavedValues, setLastSavedValues] = useState({});
   const [isSaving, setIsSaving] = useState(false);
-  const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
+  const { showSnackbar } = useSnackbar();
 
   const initialValues = inventoryInitialValues(inventory);
   const validationSchema = updateInventoryValidSchema(t);
@@ -86,7 +87,6 @@ const InventoryForm = ({ t, inventory, user }) => {
 
   return (
     <>
-      <SnackbarAlert snackbar={snackbar} closeSnackbar={closeSnackbar} />
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -95,7 +95,14 @@ const InventoryForm = ({ t, inventory, user }) => {
         validateOnChange={true}
         validateOnBlur={true}
         onSubmit={handleSave}>
-        {({ values, setFieldValue, errors, touched, handleBlur, isSubmitting }) => (
+        {({
+          values,
+          setFieldValue,
+          errors,
+          touched,
+          handleBlur,
+          isSubmitting,
+        }) => (
           <Form>
             <InventoryTabs
               inventory={inventory}
@@ -104,7 +111,6 @@ const InventoryForm = ({ t, inventory, user }) => {
               setFieldValue={setFieldValue}
               errors={errors}
               touched={touched}
-              t={t}
               handleBlur={handleBlur}
               isSubmitting={isSubmitting}
             />

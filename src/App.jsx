@@ -12,15 +12,16 @@ import { useContext } from 'react';
 import {
   ThemeProviderWrapper,
   ThemeContext,
-} from './components/tools/ThemeContext';
+} from './components/context/ThemeContext';
 import OAuthRedirectHandler from './components/auth/OAuthREdirectHandler';
 import AppBar from './components/tools/AppBar';
 import AppBox from './components/tools/AppBox';
 import UserPage from './pages/UserPage';
 import IntegrationSuccessPage from './pages/IntegrationSuccessPage';
 import SupportButton from './components/support/SupportButton';
-import { UserProvider } from './components/auth/UserContext';
-import { InventoryProvider } from './components/inventory/InventoryContext';
+import { UserProvider } from './components/context/UserContext';
+import { InventoryProvider } from './components/context/InventoryContext';
+import { SnackbarProvider } from './components/context/SnackbarContext';
 function AppContent() {
   const { darkMode } = useContext(ThemeContext);
 
@@ -86,11 +87,13 @@ function AppContent() {
 function App() {
   return (
     <ThemeProviderWrapper>
-      <UserProvider>
-        <InventoryProvider>
-          <AppContent />
-        </InventoryProvider>
-      </UserProvider>
+      <SnackbarProvider>
+        <UserProvider>
+          <InventoryProvider>
+            <AppContent />
+          </InventoryProvider>
+        </UserProvider>
+      </SnackbarProvider>
     </ThemeProviderWrapper>
   );
 }

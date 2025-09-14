@@ -7,7 +7,7 @@ import AccessSetting from './accessSetting/AccessSetting';
 import ItemTabs from './items/ItemsTab.jsx';
 import { Tab, Box, useTheme, useMediaQuery, Button } from '@mui/material';
 import { useState } from 'react';
-
+import { useTranslation } from 'react-i18next';
 
 const InventoryTabs = ({
   inventory,
@@ -17,9 +17,9 @@ const InventoryTabs = ({
   errors,
   touched,
   handleBlur,
-  t,
   isSubmitting,
 }) => {
+  const { t } = useTranslation();
   const [tab, setTab] = useState('1');
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
@@ -27,7 +27,11 @@ const InventoryTabs = ({
   const handleChange = (event, newValue) => setTab(newValue);
 
   const SaveButton = () => (
-    <Button variant='contained' type='submit' color='success' disabled={isSubmitting}>
+    <Button
+      variant='contained'
+      type='submit'
+      color='success'
+      disabled={isSubmitting}>
       {t('save')}
     </Button>
   );
@@ -60,7 +64,6 @@ const InventoryTabs = ({
           user={user}
           isAdmin={isAdmin}
           inventory={inventory}
-          t={t}
         />
       </TabPanel>
 
@@ -73,7 +76,6 @@ const InventoryTabs = ({
               fieldName='customIds'
               errors={errors}
               touched={touched}
-              t={t}
               handleBlur={handleBlur}
             />
             <SaveButton />
@@ -84,13 +86,12 @@ const InventoryTabs = ({
               setFieldValue={setFieldValue}
               errors={errors}
               touched={touched}
-              t={t}
               handleBlur={handleBlur}
             />
             <SaveButton />
           </TabPanel>
           <TabPanel value='4'>
-            <AccessSetting inventory={inventory} t={t} />
+            <AccessSetting inventory={inventory} />
           </TabPanel>
         </>
       )}

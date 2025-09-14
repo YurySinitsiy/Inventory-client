@@ -9,13 +9,12 @@ import UserSalesforceBlock from '../components/integrations/salesforce/UserSales
 import { useNavigate } from 'react-router-dom';
 import UserInfo from '../components/tools/UserInfo';
 import UserOdooBlock from '../components/integrations/odoo/UserOdooBlock';
-import { useUser } from '../components/auth/UserContext';
+import { useUser } from '../components/context/UserContext';
 const UserPage = () => {
   const { id } = useParams();
   const { user, isLoading } = useUser();
   const [userDataLoad, setUserDataLoad] = useState(false);
   const [userData, setUserData] = useState(null);
-
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -36,7 +35,6 @@ const UserPage = () => {
   }, [id]);
 
   const isOwner = user?.id === userData?.id;
-
   if (isLoading || userDataLoad) return <Loader />;
   return (
     <Container maxWidth='md'>
@@ -57,10 +55,10 @@ const UserPage = () => {
             gap: 1,
           }}>
           <Button variant='outlined' onClick={() => navigate(-1)}>
-            Назад
+            {t('back')}
           </Button>
           <Button variant='outlined' onClick={() => navigate('/')}>
-            На главную
+            {t('to.main')}
           </Button>
         </Box>
         {userData && <UserInfo user={userData} />}

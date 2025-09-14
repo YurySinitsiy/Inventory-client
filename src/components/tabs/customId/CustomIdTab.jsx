@@ -12,17 +12,18 @@ import { v4 as uuidv4 } from 'uuid';
 import generateValue from '../../services/items/generateIdsValue';
 import UnicodeField from './UnicodeField';
 import Title from '../../tools/Title';
-
+import { useTranslation } from 'react-i18next';
 const CustomIdTab = ({
   values,
   setFieldValue,
   fieldName,
   errors,
   touched,
-  t,
   handleBlur,
 }) => {
-  const TYPES = [
+  const { t } = useTranslation();
+
+  const types = [
     { label: t('types.fixed'), value: 'fixed' },
     { label: t('types.20bit'), value: 'random20' },
     { label: t('types.32bit'), value: 'random32' },
@@ -107,7 +108,7 @@ const CustomIdTab = ({
                           handleTypeChange(row.id, e.target.value)
                         }
                         sx={{ mr: 1, minWidth: 180 }}>
-                        {TYPES.map((t) => (
+                        {types.map((t) => (
                           <MenuItem key={t.value} value={t.value}>
                             {t.label}
                           </MenuItem>

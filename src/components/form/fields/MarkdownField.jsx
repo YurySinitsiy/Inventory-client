@@ -1,7 +1,7 @@
 import MDEditor from '@uiw/react-md-editor';
 import { Box } from '@mui/material';
 import { useContext } from 'react';
-import { ThemeContext } from '../../tools/ThemeContext';
+import { ThemeContext } from '../../context/ThemeContext';
 import { useTheme } from '@mui/material/styles';
 
 const MarkdownField = ({ value, onChange, label }) => {

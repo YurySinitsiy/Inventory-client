@@ -2,13 +2,14 @@ import { useDropzone } from 'react-dropzone';
 import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
 import uploadImageDirect from '../../services/inventories/uploadImageDirect';
-import { useSnackbar } from '../../services/hooks/useSnackbar';
-import SnackbarAlert from '../../tools/Snackbar';
+import { useSnackbar } from '../../context/SnackbarContext';
+import { useTranslation } from 'react-i18next';
 
-const InventoryImageUpload = ({ value, onChange, t }) => {
+const InventoryImageUpload = ({ value, onChange }) => {
+  const { t } = useTranslation();
   const [preview, setPreview] = useState(value || '');
   const [uploading, setUploading] = useState(false);
-  const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
+  const { showSnackbar } = useSnackbar();
   const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
   const startUpload = (files) => {
@@ -51,7 +52,6 @@ const InventoryImageUpload = ({ value, onChange, t }) => {
 
   return (
     <>
-      <SnackbarAlert snackbar={snackbar} closeSnackbar={closeSnackbar} />
       <Box
         {...getRootProps()}
         sx={{ border: '2px dashed gray', p: 2, textAlign: 'center' }}>

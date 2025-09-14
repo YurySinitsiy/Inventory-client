@@ -146,10 +146,19 @@
   "support.title": "Contacting support",
   "support.send": "Send message",
   "message": "Message",
+  "message.sent": "The message has been sent",
+  "message.not.sent": "The message was not sent",
   "priority": "Priority",
   "high": "High",
   "medium": "Medium",
-  "low": "Low"
+  "low": "Low",
 
+  "submitting": "Submitting...",
+  "back": "Back",
+  "back.to.profile": "Back to profile",
+  "to.main": "To main",
+  "connection.success": "Connection success!",
 
+  "unlink.success": "Accaunt has ben unlink!",
+  "unlink.error": "Error. Account is not unlink"
 }

@@ -1,17 +1,16 @@
 import BaseForm from './BaseForm';
 import * as Yup from 'yup';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-//import { useUser } from '../auth/UserContext';
 import { useLocation } from 'react-router-dom';
-import { useInventory } from '../inventory/InventoryContext';
+import { useInventory } from '../context/InventoryContext';
 import sendToSupport from '../services/users/sendToSupport';
-const SupportForm = () => {
+import { useSnackbar } from '../context/SnackbarContext';
+
+const SupportForm = ({ onClose }) => {
   const { t } = useTranslation();
-  const [isSubmiting, setIsSubmiting] = useState(false);
-  //const { user } = useUser();
   const location = useLocation();
   const { inventory } = useInventory();
+  const { showSnackbar } = useSnackbar();
 
   let inventoryTitle = null;
   const isInventory = location.pathname.startsWith('/inventory');
@@ -26,9 +25,9 @@ const SupportForm = () => {
       label: t('priority'),
       type: 'select',
       options: [
-        { value: 'high', label: t('high') },
-        { value: 'medium', label: t('medium') },
-        { value: 'low', label: t('low') },
+        { value: 'High', label: t('high') },
+        { value: 'Medium', label: t('medium') },
+        { value: 'Low', label: t('low') },
       ],
     },
   ];
@@ -43,15 +42,23 @@ const SupportForm = () => {
     priority: Yup.string().required(t('required')),
   });
 
-  const onSubmit = async (values) => {
-    const payload = {
+  const getDataToSend = (values) => {
+    return {
       link: window.location.href,
-      inventoryTitle,
+      ...(inventoryTitle ? { inventoryTitle } : {}),
       ...values,
     };
+  };
+
+  const onSubmit = async (values) => {
     try {
+      const payload = getDataToSend(values);
+      console.log(payload);
       await sendToSupport(payload);
+      onClose();
+      showSnackbar(t('message.sent'), 'success');
     } catch (error) {
+      showSnackbar(t('message.not.sent'), 'error');
       console.error(error);
     }
   };

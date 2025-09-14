@@ -7,16 +7,14 @@ import LoginForm from '../components/auth/LoginForm';
 import { supabase } from '../lib/supabaseClient';
 import RedirectByRole from '../components/auth/RedirectByRole';
 import { useNavigate } from 'react-router-dom';
-import SnackbarAlert from '../components/tools/Snackbar';
-import { useSnackbar } from '../components/services/hooks/useSnackbar';
 import SocialAuth from '../components/auth/SocialAuth';
 import { useTranslation } from 'react-i18next';
 import getUser from '../components/services/users/getUser';
-
+import { useSnackbar } from '../components/context/SnackbarContext';
 const RenderLoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [redirecting, setRedirecting] = useState(false);
-  const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
+  const { showSnackbar } = useSnackbar();
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -52,7 +50,6 @@ const RenderLoginPage = () => {
         height: 'calc(100% - 64px)',
         paddingBlock: '200px',
       }}>
-      <SnackbarAlert snackbar={snackbar} closeSnackbar={closeSnackbar} />
       <Title variant='h4' sx={{ marginBottom: '30px', fontWeight: '700' }}>
         {t('welcome.to')} Invy!
       </Title>

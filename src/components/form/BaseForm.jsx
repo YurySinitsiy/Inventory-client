@@ -11,7 +11,7 @@ import {
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Title from '../tools/Title';
-
+import { useTranslation } from 'react-i18next';
 const BaseForm = ({
   title,
   fields,
@@ -20,6 +20,7 @@ const BaseForm = ({
   onSubmit,
   submitText,
 }) => {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword((prev) => !prev);
 
@@ -97,7 +98,7 @@ const BaseForm = ({
               size='large'
               sx={{ mt: 3, py: 1.5 }}
               disabled={isSubmitting}>
-              {isSubmitting ? 'Submitting...' : submitText}
+              {isSubmitting ? t('submitting') : submitText}
             </Button>
           </Box>
         </Form>

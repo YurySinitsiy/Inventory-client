@@ -3,6 +3,7 @@ import { styled, useTheme } from '@mui/system';
 import PublicIcon from '@mui/icons-material/Public';
 import LockIcon from '@mui/icons-material/Lock';
 import ReactMarkdown from 'react-markdown';
+import { useTranslation } from 'react-i18next';
 
 const Title = styled(Typography)({
   fontWeight: 700,
@@ -29,8 +30,10 @@ const TagContainer = styled(Box)({
   justifyContent: 'flex-start',
 });
 
-const InventoryInfoBlock = ({ inventory, t }) => {
+const InventoryInfoBlock = ({ inventory}) => {
+  const { t } = useTranslation();
   const theme = useTheme();
+
   const formatDate = (dateStr) => {
     if (!dateStr) return '-';
     const date = new Date(dateStr);

@@ -7,12 +7,14 @@ import SalesforceLinkForm from '../../form/SalesforceLinkForm';
 import UserSalesforceInfo from './UserSalesforceInfo';
 import { useTranslation } from 'react-i18next';
 import InfoBlock from '../../tools/InfoBlock';
+import { useSnackbar } from '../../context/SnackbarContext';
 
 const UserSalesforceBlock = ({ user, isOwner }) => {
   const [unlinking, setUnlinking] = useState(false);
   const [salesforceId, setSalesforceId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const { showSnackbar } = useSnackbar();
   const { t } = useTranslation();
 
   const fetchData = async () => {
@@ -30,7 +32,6 @@ const UserSalesforceBlock = ({ user, isOwner }) => {
   useEffect(() => {
     fetchData();
   }, [user?.id]);
-
   const profileId = user?.id;
 
   const handleUnlink = async () => {
@@ -38,8 +39,10 @@ const UserSalesforceBlock = ({ user, isOwner }) => {
     try {
       await handleSalesforceUnlink(profileId);
       setSalesforceId(null);
+      showSnackbar(t('unlink.success'), 'success');
     } catch (error) {
       console.error(error);
+      showSnackbar(t('unlink.error'), 'error');
     } finally {
       setUnlinking(false);
     }
@@ -63,7 +66,7 @@ const UserSalesforceBlock = ({ user, isOwner }) => {
             {t('account.add')}
           </Button>
           <Modal open={openModal} onClose={() => setOpenModal(false)}>
-            <SalesforceLinkForm />
+            <SalesforceLinkForm user={user} />
           </Modal>
         </>
       );

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import AllUsersTable from '../../table/AllUsersTable';
 import Loader from '../../tools/Loader';
 import { Box } from '@mui/material';
 import ActionsAccessWrite from '../../actions/ActionsAccessWrite';
 import getUsersAccess from '../../services/users/getUsersAccess';
-
-const AccessSetting = ({ inventory, t }) => {
+import { useTranslation } from 'react-i18next';
+import DefaultTable from '../../table/DefaultTable';
+const AccessSetting = ({ inventory }) => {
+  const { t } = useTranslation();
   const [selectionModel, setSelectionModel] = useState([]);
   const [allUsersAccess, setAllUsersAccess] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -47,7 +48,7 @@ const AccessSetting = ({ inventory, t }) => {
         setSelectedIds={setSelectionModel}
         fetchUsersAccess={fetchUsersAccess}
       />
-      <AllUsersTable
+      <DefaultTable
         columns={usersColumns}
         rows={allUsersAccess}
         setSelectionModel={setSelectionModel}

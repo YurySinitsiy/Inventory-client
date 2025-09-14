@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
 import FieldList from './FieldList';
 import FieldTypeButtons from './FieldTypeButtons';
+import { useTranslation } from 'react-i18next';
 
 const CustomFieldsTab = ({
   values,
@@ -8,8 +9,9 @@ const CustomFieldsTab = ({
   errors,
   touched,
   handleBlur,
-  t,
 }) => {
+  const { t } = useTranslation();
+
   const fieldTypes = [
     { type: 'text', label: t('field.text') },
     { type: 'multiline', label: t('field.multiline') },

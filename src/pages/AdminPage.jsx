@@ -10,7 +10,7 @@ import AllUsersInventories from '../components/inventory/AllUsersInventories';
 import { useTranslation } from 'react-i18next';
 import LinkToProfile from '../components/tools/LinkToProfile';
 import Loader from '../components/tools/Loader';
-import { useUser } from '../components/auth/UserContext';
+import { useUser } from '../components/context/UserContext';
 
 const AdminPage = () => {
   const [value, setValue] = useState('1');

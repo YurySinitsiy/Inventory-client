@@ -1,4 +1,8 @@
-const ItemsColumns = ({ t, fields }) => {
+import { useTranslation } from 'react-i18next';
+
+const ItemsColumns = ({ fields }) => {
+  const { t } = useTranslation();
+  
   const defaultColumns = [
     { field: 'createdBy', headerName: t('created.by'), minWidth: 170, flex: 1 },
     {
