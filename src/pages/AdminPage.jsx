@@ -19,7 +19,6 @@ const AdminPage = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  console.log(user)
   const userId = user?.id;
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));

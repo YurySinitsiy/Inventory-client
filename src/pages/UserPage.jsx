@@ -33,8 +33,7 @@ const UserPage = () => {
   useEffect(() => {
     if (id) fetchUserData(id);
   }, [id]);
-  console.log(user)
-  console.log(userData)
+
   const isOwner = user?.id === userData?.id;
   if (isLoading || userDataLoad) return <Loader />;
   return (

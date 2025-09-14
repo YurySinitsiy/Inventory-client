@@ -66,7 +66,7 @@ const UserSalesforceBlock = ({ user, isOwner }) => {
             {t('account.add')}
           </Button>
           <Modal open={openModal} onClose={() => setOpenModal(false)}>
-            <SalesforceLinkForm user={user} />
+            <SalesforceLinkForm user={user} setSalesforceId={setSalesforceId}/>
           </Modal>
         </>
       );
