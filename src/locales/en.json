@@ -135,6 +135,7 @@
 
   "token": "Token",
   "token.no": "No token",
+  "token.generate": "Get token",
   "token.view.info": "Only the user can view information about the token",
 
   "odoo.link": "To work with Odoo, follow the link ",
