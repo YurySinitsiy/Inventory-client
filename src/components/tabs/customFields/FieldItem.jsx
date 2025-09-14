@@ -57,19 +57,17 @@ const FieldItem = forwardRef(
           error={Boolean(titleError)}
           helperText={titleError || ''}
           onBlur={handleBlur}
-          
         />
 
-        <Select
-          value={field.type}
-          onChange={(e) => handleChange('type', e.target.value)}
-          error={Boolean(typeError)}>
-          {fieldTypes.map((ft) => (
-            <MenuItem key={ft.type} value={ft.type}>
-              {ft.label}
-            </MenuItem>
-          ))}
-        </Select>
+        <TextField
+          label={t('type')}
+          value={
+            fieldTypes.find((ft) => ft.type === field.type)?.label || field.type
+          }
+          InputProps={{
+            readOnly: true,
+          }}
+        />
 
         <TextField
           label={t('description')}

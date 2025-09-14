@@ -158,7 +158,8 @@
   "back.to.profile": "Back to profile",
   "to.main": "To main",
   "connection.success": "Connection success!",
-
+  "type": "Type",
   "unlink.success": "Accaunt has ben unlink!",
   "unlink.error": "Error. Account is not unlink"
+  
 }

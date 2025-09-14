@@ -53,7 +53,6 @@ const SupportForm = ({ onClose }) => {
   const onSubmit = async (values) => {
     try {
       const payload = getDataToSend(values);
-      console.log(payload);
       await sendToSupport(payload);
       onClose();
       showSnackbar(t('message.sent'), 'success');

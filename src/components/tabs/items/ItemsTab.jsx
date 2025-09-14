@@ -70,8 +70,9 @@ const ItemsTab = ({ user, isCreator, isAdmin, inventory }) => {
 
     fetchInventoryData();
   }, [inventory]);
-
+  
   const startAddItem = async (inventoryId, values, resetForm) => {
+    console.log(values)
     await handleAddItem(inventoryId, values);
     resetForm();
     setOpenAddModal(false);
@@ -118,7 +119,7 @@ const ItemsTab = ({ user, isCreator, isAdmin, inventory }) => {
   const columnVisibilityModel = Object.fromEntries(
     (fields || []).map(({ slot, visibleInTable }) => [slot, visibleInTable])
   );
-  const columns = ItemsColumns({ t, fields });
+  const columns = ItemsColumns({ fields });
 
   if (!inventory || dataLoading || isLoading) return <Loader />;
 
