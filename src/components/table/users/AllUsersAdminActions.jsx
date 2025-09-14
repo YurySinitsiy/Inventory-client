@@ -9,13 +9,14 @@ import { useSnackbar } from '../../services/hooks/useSnackbar';
 import getUsers from '../../services/users/getUsers';
 import updateUsersData from '../../services/users/updateUsersData';
 import UsersColumns from './UsersColumns';
+import { useNavigate } from 'react-router-dom';
 const AllUsersAdminActions = ({ t }) => {
   const { snackbar, showSnackbar, closeSnackbar } = useSnackbar();
   const [selectionModel, setSelectionModel] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [users, setUsers] = useState([]);
-
   const usersColumns = UsersColumns({ t });
+  const navigate = useNavigate();
 
   const fetchUsers = async () => {
     setIsLoading(true);
@@ -89,6 +90,9 @@ const AllUsersAdminActions = ({ t }) => {
         rows={users}
         setSelectionModel={setSelectionModel}
         columns={usersColumns}
+        onRowClick={(row) => {
+          navigate(`/users/${row.id}`);
+        }}
       />
     </Box>
   );

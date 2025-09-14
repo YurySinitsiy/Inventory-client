@@ -1,45 +1,43 @@
-import { useState, useEffect } from 'react';
 import { Box, Container } from '@mui/material';
-import { useParams, useNavigate } from 'react-router-dom';
-import getUser from '../components/services/users/getUser';
+import { useNavigate } from 'react-router-dom';
 import Loader from '../components/tools/Loader';
 import { useTranslation } from 'react-i18next';
-import getInventory from '../components/services/inventories/getInventory';
 import LinkBackTo from '../components/tools/LinkBackTo';
 import InventoryInfoBlock from '../components/inventory/InventoryInfoBlock';
 import InventoryForm from '../components/form/InventoryForm';
+import { useUser } from '../components/auth/UserContext';
+import { useInventory } from '../components/inventory/InventoryContext';
+import { useState, useEffect } from 'react';
+import getInventory from '../components/services/inventories/getInventory';
+import { useParams } from 'react-router-dom';
 
 const InventoryPage = () => {
-  const { id } = useParams();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [inventory, setInventory] = useState(null);
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { id } = useParams();
+  const { user, isLoading } = useUser();
+  const { inventory, setInventory } = useInventory();
+  const [invLoading, setInvLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchInventory = async () => {
+      setInvLoading(true);
       try {
-        const [userData, invData] = await Promise.all([
-          getUser(),
-          getInventory(id),
-        ]);
-        if (userData) setUser(userData);
-        if (invData) setInventory(invData);
+        const data = await getInventory(id);
+        setInventory(data);
       } catch (e) {
         console.error(e);
       } finally {
-        setIsLoading(false);
+        setInvLoading(false);
       }
     };
-    fetchData();
+    fetchInventory();
   }, [id]);
-
-  if (isLoading) return <Loader />;
 
   const handleBackClick = () => {
     navigate(user?.role ? '/personal' : '/', { replace: true });
   };
+  if (isLoading || invLoading) return <Loader />;
 
   return (
     <Container maxWidth='xl'>

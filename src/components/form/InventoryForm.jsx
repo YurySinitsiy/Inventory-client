@@ -95,7 +95,7 @@ const InventoryForm = ({ t, inventory, user }) => {
         validateOnChange={true}
         validateOnBlur={true}
         onSubmit={handleSave}>
-        {({ values, setFieldValue, errors, touched, handleBlur }) => (
+        {({ values, setFieldValue, errors, touched, handleBlur, isSubmitting }) => (
           <Form>
             <InventoryTabs
               inventory={inventory}
@@ -106,6 +106,7 @@ const InventoryForm = ({ t, inventory, user }) => {
               touched={touched}
               t={t}
               handleBlur={handleBlur}
+              isSubmitting={isSubmitting}
             />
           </Form>
         )}

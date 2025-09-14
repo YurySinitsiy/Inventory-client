@@ -1,7 +1,9 @@
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import { useTheme } from '@mui/material/styles';
 
-const Loader = () => {
+const BlockLoader = () => {
+  const theme = useTheme();
   return (
     <Box
       sx={{
@@ -9,15 +11,16 @@ const Loader = () => {
         top: '0',
         left: '0',
         zIndex: '9',
-        width: '100vw',
-        height: '100vh',
+        width: '100%',
+        height: '100%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: theme.palette.background.paper
       }}>
       <CircularProgress />
     </Box>
   );
 };
 
-export default Loader;
+export default BlockLoader;

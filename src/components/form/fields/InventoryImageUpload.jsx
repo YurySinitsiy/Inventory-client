@@ -42,7 +42,12 @@ const InventoryImageUpload = ({ value, onChange, t }) => {
     }
   };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      'image/*': ['.jpeg', '.jpg', '.png', '.gif'],
+    },
+  });
 
   return (
     <>

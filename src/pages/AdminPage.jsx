@@ -1,31 +1,32 @@
 import { Container } from '@mui/material';
-import Title from '../components/tools/Title.jsx';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import UserInventories from '../components/inventory/UserInventories.jsx';
+import UserInventories from '../components/inventory/UserInventories';
 import { Box, Tab, useTheme, useMediaQuery } from '@mui/material';
 import { useState } from 'react';
-import AllUsersAdminActions from '../components/table/users/AllUsersAdminActions.jsx';
-import AllUsersInventories from '../components/inventory/AllUsersInventories.jsx';
+import AllUsersAdminActions from '../components/table/users/AllUsersAdminActions';
+import AllUsersInventories from '../components/inventory/AllUsersInventories';
 import { useTranslation } from 'react-i18next';
+import LinkToProfile from '../components/tools/LinkToProfile';
+import Loader from '../components/tools/Loader';
+import { useUser } from '../components/auth/UserContext';
 
-const renderAdminPage = () => {
+const AdminPage = () => {
   const [value, setValue] = useState('1');
+  const { user, isLoading } = useUser();
   const { t } = useTranslation();
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  const userId = user?.id;
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
-
+  if (isLoading) return <Loader />;
   return (
     <Container maxWidth='xl'>
-      <Title variant='h4' sx={{ marginBlock: '30px', fontWeight: '700' }}>
-        {t('profiles.my')}
-      </Title>
+      <LinkToProfile userId={userId} />
       <Box sx={{ width: '100%', typography: 'body1' }}>
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -55,4 +56,4 @@ const renderAdminPage = () => {
   );
 };
 
-export default renderAdminPage;
+export default AdminPage;

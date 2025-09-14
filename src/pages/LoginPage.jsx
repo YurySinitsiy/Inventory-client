@@ -23,7 +23,7 @@ const RenderLoginPage = () => {
   const handleSubmit = async (values, { resetForm }) => {
     setIsLoading(true);
     try {
-      const { data, error } = await supabase.auth.signInWithPassword(values);
+      const { error } = await supabase.auth.signInWithPassword(values);
       if (error) throw error;
       const me = await getUser();
       afterLogin(me, resetForm);
@@ -50,6 +50,7 @@ const RenderLoginPage = () => {
         flexDirection: 'column',
         justifyContent: 'center',
         height: 'calc(100% - 64px)',
+        paddingBlock: '200px',
       }}>
       <SnackbarAlert snackbar={snackbar} closeSnackbar={closeSnackbar} />
       <Title variant='h4' sx={{ marginBottom: '30px', fontWeight: '700' }}>

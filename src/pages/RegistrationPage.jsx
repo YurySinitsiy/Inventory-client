@@ -46,6 +46,7 @@ const RegistrationPage = () => {
         flexDirection: 'column',
         justifyContent: 'center',
         height: 'calc(100% - 64px)',
+        paddingBlock: '200px'
       }}>
       <SnackbarAlert snackbar={snackbar} closeSnackbar={closeSnackbar} />
       <RegForm onSubmit={handlesubmit} isSubmitting={isSubmitting} t={t} />

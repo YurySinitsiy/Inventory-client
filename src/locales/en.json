@@ -24,8 +24,12 @@
   "auth.role": "Role",
   "auth.status": "Status",
   "auth.access": "Access",
+  "auth.phone": "Phone",
 
   "profiles.my": "My Profile",
+  "profile.info": "Profile info",
+  "profile.edit": "Edit profile",
+  "profile.other.info": "Other info",
 
   "users.all": "All users",
   "user.deleted": "User(s) deleted",
@@ -119,5 +123,33 @@
 
   "form.invalid": "Fields are filled in incorrectly",
 
-  "image.size": "The file size should not exceed 5 MB"
+  "image.size": "The file size should not exceed 5 MB",
+
+  "account.add": "Add account",
+  "account.remove": "Remove account",
+  "account.name": "Account name",
+  "account.view": "View account",
+
+  "sf.account.not": "The Salesforce account is not linked to this profile",
+  "sf.account.add": "Link Salesforce",
+
+  "token": "Token",
+  "token.no": "No token",
+  "token.view.info": "Only the user can view information about the token",
+
+  "odoo.link": "To work with Odoo, follow the link ",
+  "odoo.link.paste": " and paste your token here",
+
+  "copy": "Copy",
+  "copied": "Copied",
+
+  "support.title": "Contacting support",
+  "support.send": "Send message",
+  "message": "Message",
+  "priority": "Priority",
+  "high": "High",
+  "medium": "Medium",
+  "low": "Low"
+
+
 }

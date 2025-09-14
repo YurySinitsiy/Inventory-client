@@ -18,6 +18,7 @@ const InventoryTabs = ({
   touched,
   handleBlur,
   t,
+  isSubmitting,
 }) => {
   const [tab, setTab] = useState('1');
   const theme = useTheme();
@@ -26,7 +27,7 @@ const InventoryTabs = ({
   const handleChange = (event, newValue) => setTab(newValue);
 
   const SaveButton = () => (
-    <Button variant='contained' type='submit' color='success'>
+    <Button variant='contained' type='submit' color='success' disabled={isSubmitting}>
       {t('save')}
     </Button>
   );
