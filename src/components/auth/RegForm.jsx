@@ -1,7 +1,9 @@
 import * as Yup from 'yup';
 import BaseForm from '../form/BaseForm';
+import { useTranslation } from 'react-i18next';
 
-const RegForm = ({ onSubmit, isSubmitting, t }) => {
+const RegForm = ({ onSubmit, isSubmitting }) => {
+  const { t } = useTranslation;
   const validationSchema = Yup.object({
     email: Yup.string().email(t('auth.email.invalid')).required(t('required')),
     name: Yup.string().required(t('required')),
