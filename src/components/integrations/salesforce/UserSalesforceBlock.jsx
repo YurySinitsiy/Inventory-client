@@ -1,5 +1,5 @@
 import { Typography, Button } from '@mui/material';
-import getSalesforceId from '../../services/users/salesforce/getSalesforceId';
+import getSalesforceData from '../../services/users/salesforce/getSalesforceData';
 import handleSalesforceUnlink from '../../services/users/salesforce/handleSalesforceUnlink';
 import { useState, useEffect } from 'react';
 import Modal from '../../tools/Modal';
@@ -11,7 +11,7 @@ import { useSnackbar } from '../../context/SnackbarContext';
 
 const UserSalesforceBlock = ({ user, isOwner }) => {
   const [unlinking, setUnlinking] = useState(false);
-  const [salesforceId, setSalesforceId] = useState(null);
+  const [sfData, setSfData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const { showSnackbar } = useSnackbar();
@@ -20,8 +20,8 @@ const UserSalesforceBlock = ({ user, isOwner }) => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const sfData = await getSalesforceId(user.id);
-      setSalesforceId(sfData);
+      const sfData = await getSalesforceData(user.id);
+      setSfData(sfData);
     } catch (error) {
       console.error(error);
     } finally {
@@ -38,7 +38,8 @@ const UserSalesforceBlock = ({ user, isOwner }) => {
     setUnlinking(true);
     try {
       await handleSalesforceUnlink(profileId);
-      setSalesforceId(null);
+      setSfData(null);
+      setOpenModal(false);
       showSnackbar(t('unlink.success'), 'success');
     } catch (error) {
       console.error(error);
@@ -49,12 +50,13 @@ const UserSalesforceBlock = ({ user, isOwner }) => {
   };
 
   const renderContent = () => {
-    if (salesforceId) {
+    if (sfData && sfData !== null) {
       return (
         <UserSalesforceInfo
-          salesforceId={salesforceId}
+          sfData={sfData}
           handleUnlink={handleUnlink}
           unlinking={unlinking}
+          isOwner={isOwner}
         />
       );
     }
@@ -66,7 +68,7 @@ const UserSalesforceBlock = ({ user, isOwner }) => {
             {t('account.add')}
           </Button>
           <Modal open={openModal} onClose={() => setOpenModal(false)}>
-            <SalesforceLinkForm user={user} setSalesforceId={setSalesforceId}/>
+            <SalesforceLinkForm user={user} setSfData={setSfData} />
           </Modal>
         </>
       );

@@ -161,6 +161,9 @@
   "connection.success": "Connection success!",
   "type": "Type",
   "unlink.success": "Accaunt has ben unlink!",
-  "unlink.error": "Error. Account is not unlink"
+  "unlink.error": "Error. Account is not unlink",
+  "phone.format": "Enter the number with the country code, just the numbers. Example: +12345678901",
+  "invalid.phone": "Incorrect number format"
+
   
 }

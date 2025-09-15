@@ -1,7 +1,7 @@
 import apiFetch from '../../apiFetch';
 
-const getSalesforceId = async (userId) => {
+const getSalesforceData = async (userId) => {
   return await apiFetch(`/api/salesforce/user/${userId}`);
 };
 
-export default getSalesforceId;
+export default getSalesforceData;
