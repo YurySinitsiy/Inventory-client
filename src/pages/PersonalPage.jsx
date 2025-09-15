@@ -40,7 +40,7 @@ const RenderCreatorPage = () => {
             </TabList>
           </Box>
           <TabPanel value='1'>
-            <UserInventories t={t} />
+            <UserInventories/>
           </TabPanel>
           <TabPanel value='2'>
             <AccessWriteInventories />

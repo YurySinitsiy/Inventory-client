@@ -33,7 +33,6 @@ const AllUsersInventories = ({ checkboxSelection, isAdmin = false }) => {
         <DeleteButton
           disabled={!selectionModel.length}
           onClick={deleteSelected}
-          t={t}
         />
       )
     );

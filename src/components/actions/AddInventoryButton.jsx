@@ -19,7 +19,6 @@ const AddInventoryButton = ({ setUserInventories, showSnackbar }) => {
         <AddInventoryModal
           open={openModal}
           onClose={() => setOpenModal(false)}
-          t={t}
           onAdd={(newInventory) => {
             if (!newInventory) return;
             setUserInventories((prev) => [...prev, newInventory]);

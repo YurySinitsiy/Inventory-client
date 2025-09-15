@@ -47,7 +47,7 @@ const RegistrationPage = () => {
         height: 'calc(100% - 64px)',
         paddingBlock: '200px'
       }}>
-      <RegForm onSubmit={handlesubmit} isSubmitting={isSubmitting} t={t} />
+      <RegForm onSubmit={handlesubmit} isSubmitting={isSubmitting}/>
       <Box textAlign='center' mt={3}>
         <Typography
           variant='body2'

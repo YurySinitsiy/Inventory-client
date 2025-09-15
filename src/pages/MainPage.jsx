@@ -42,7 +42,7 @@ const RenderMainPage = () => {
         {t('inventories.all')}
       </Title>
 
-      <AllUsersInventories checkboxSelection={false} t={t} />
+      <AllUsersInventories checkboxSelection={false}/>
     </Container>
   );
 };

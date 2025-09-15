@@ -48,14 +48,14 @@ const InventoryPage = () => {
           alignItems: 'center',
           flexWrap: 'wrap'
         }}>
-        <InventoryInfoBlock inventory={inventory} t={t} />
+        <InventoryInfoBlock inventory={inventory}/>
         <LinkBackTo
           onClick={handleBackClick}
           text={t('inventories.back')}></LinkBackTo>
       </Box>
 
       <Box sx={{ width: '100%', typography: 'body1' }}>
-        <InventoryForm inventory={inventory} user={user} t={t} />
+        <InventoryForm inventory={inventory} user={user}/>
       </Box>
     </Container>
   );
