@@ -54,11 +54,12 @@ const SupportForm = ({ onClose }) => {
     try {
       const payload = getDataToSend(values);
       await sendToSupport(payload);
-      onClose();
       showSnackbar(t('message.sent'), 'success');
     } catch (error) {
-      showSnackbar(t('message.not.sent'), 'error');
+      showSnackbar(error.message, 'error');
       console.error(error);
+    } finally {
+      onClose();
     }
   };
 
