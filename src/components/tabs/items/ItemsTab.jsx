@@ -72,7 +72,6 @@ const ItemsTab = ({ user, isCreator, isAdmin, inventory }) => {
   }, [inventory]);
   
   const startAddItem = async (inventoryId, values, resetForm) => {
-    console.log(values)
     await handleAddItem(inventoryId, values);
     resetForm();
     setOpenAddModal(false);
